@@ -21,3 +21,7 @@ export function rotate(v, angle) {
     (v.x * Math.sin(angle)) + (v.y * Math.cos(angle)),
   );
 }
+
+export function shift(v, shift) {
+  return new Vertex(v.x + shift[0], v.y + shift[1]);
+}

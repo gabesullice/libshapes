@@ -41,3 +41,21 @@ test("Can rotate a Vertex", t => {
     t.true(vertex.same(vertex.rotate(vo, test.angle), ve));
   });
 });
+
+test("Can shift a Vertex", t => {
+  // Rotate the point (0,2) counter-clockwise about the origin (0,0) in 90'
+  // increments. Must use radians.
+  const tests = [
+    {o: [2,3], e: [2,3], shift: [0,0]},
+    {o: [2,3], e: [2,4], shift: [0,1]},
+    {o: [2,3], e: [3,3], shift: [1,0]},
+    {o: [2,3], e: [3,4], shift: [1,1]},
+    {o: [2,3], e: [2,2], shift: [0,-1]},
+    {o: [2,3], e: [1,2], shift: [-1,-1]},
+  ];
+  tests.forEach(test => {
+    const vo = new vertex.Vertex(test.o[0], test.o[1]);
+    const ve = new vertex.Vertex(test.e[0], test.e[1]);
+    t.true(vertex.same(vertex.shift(vo, test.shift), ve));
+  });
+});

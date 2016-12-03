@@ -20,4 +20,11 @@ export default class Shape {
     }));
   }
 
+  shift(shift) {
+    return new Shape(this._vertices.map(v => {
+      const shifted = vertex.shift(v, shift);
+      return [shifted.x, shifted.y];
+    }));
+  }
+
 }

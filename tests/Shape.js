@@ -31,3 +31,20 @@ test("Can rotate a Shape", t => {
     t.true(vertex.same(v, vs[i]));
   });
 });
+
+test("Can shift a Shape", t => {
+  const tests = [
+    {o: new Shape([[0,0], [0,2], [2,0]]), e: new Shape([[0,0], [0,2], [2,0]]), shift: [0,0]},
+    {o: new Shape([[0,0], [0,2], [2,0]]), e: new Shape([[0,1], [0,3], [2,1]]), shift: [0,1]},
+    {o: new Shape([[0,0], [0,2], [2,0]]), e: new Shape([[1,0], [1,2], [3,0]]), shift: [1,0]},
+    {o: new Shape([[0,0], [0,2], [2,0]]), e: new Shape([[1,1], [1,3], [3,1]]), shift: [1,1]},
+    {o: new Shape([[0,0], [0,2], [2,0]]), e: new Shape([[-1,-1], [-1,1], [1,-1]]), shift: [-1,-1]},
+  ];
+  tests.forEach(test => {
+    const actual = test.o.shift(test.shift);
+    actual.vertices().forEach((v, i) => {
+      const vs = test.e.vertices();
+      t.true(vertex.same(v, vs[i]));
+    });
+  });
+});
