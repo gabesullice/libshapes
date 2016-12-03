@@ -1,0 +1,18 @@
+{
+  "name": "libshapes",
+  "version": "0.0.0",
+  "description": "Library for manipulating shapes",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib",
+    "test": "ava tests"
+  },
+  "repository": "git@github.com:gabesullice/shapes.git",
+  "author": "Gabriel SULLICE",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0"
+  }
+}
