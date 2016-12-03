@@ -1,6 +1,6 @@
 import test from "ava";
-import * as vertex from "../lib/Vertex.js";
-import Shape from "../lib/Shape.js";
+import * as vertex from "../lib/Vertex";
+import Shape from "../lib/Shape";
 
 test("Can instantiate a Shape", t => {
   const rightTriangle = new Shape([[0,0], [1,0], [0,1]]);

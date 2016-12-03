@@ -1,4 +1,4 @@
-const EPSILON = 0.0000001;
+export const EPSILON = 0.0000001;
  
 export class Vertex {
 
