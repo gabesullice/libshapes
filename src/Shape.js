@@ -1,4 +1,5 @@
-import * as vertex from "./Vertex.js";
+import * as vertex from "./Vertex";
+import { Edge } from "./Edge";
 
 export default class Shape {
 
@@ -11,6 +12,15 @@ export default class Shape {
 
   vertices() {
     return this._vertices;
+  }
+
+  edges() {
+    return this._vertices.reduce((edges, v, i, arr) => {
+      // If this is the first vertex, create an edge to join it with the last.
+      const next = (i == arr.length - 1) ? arr[0] : arr[i + 1];
+      edges.push(new Edge([[v.x, v.y], [next.x, next.y]]));
+      return edges;
+    }, []);
   }
 
   rotate(angle) {

@@ -1,13 +1,14 @@
 import test from "ava";
 import * as vertex from "../lib/Vertex";
 import Shape from "../lib/Shape";
+import { Edge } from "../lib/Edge";
 
 test("Can instantiate a Shape", t => {
   const rightTriangle = new Shape([[0,0], [1,0], [0,1]]);
   const square = new Shape([[0,0], [1,0], [1,1], [0,1]]);
 });
 
-test("Can get vertices from a Shape", t => {
+test("Can get vertices of a Shape", t => {
   const len = 1;
   const height = Math.sqrt(len - Math.pow(len/2, 2))
   const isoTriangle = new Shape([[0,0], [(len/2),height], [len,0]]);
@@ -19,6 +20,16 @@ test("Can get vertices from a Shape", t => {
   isoTriangle.vertices().forEach((v, i) => {
     t.true(vertex.same(v, expected[i]));
   });
+});
+
+test("Can get edges of a Shape", t => {
+  const input = new Shape([[0,0], [1,0], [0,1]]);
+  const expected = [
+    new Edge([[0,0], [1,0]]),
+    new Edge([[1,0], [0,1]]),
+    new Edge([[0,1], [0,0]]),
+  ];
+  t.deepEqual(input.edges(), expected);
 });
 
 test("Can rotate a Shape", t => {
