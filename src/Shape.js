@@ -1,17 +1,23 @@
-import { Vertex } from "./Vertex.js";
+import * as vertex from "./Vertex.js";
 
-export default class {
+export default class Shape {
 
-  constructor() {
-    const args = Array.from(arguments);
+  constructor(points) {
     this._vertices = [];
-    args.forEach((arg, index) => {
-      this._vertices[index] = new Vertex(arg[0], arg[1]);
+    points.forEach((point, index) => {
+      this._vertices[index] = new vertex.Vertex(point[0], point[1]);
     });
   }
 
   vertices() {
     return this._vertices;
+  }
+
+  rotate(angle) {
+    return new Shape(this._vertices.map(v => {
+      const rotated = vertex.rotate(v, angle);
+      return [rotated.x, rotated.y];
+    }));
   }
 
 }
