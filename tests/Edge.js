@@ -48,3 +48,19 @@ test("Can detect the intersection of two Edges", t => {
     t.is(edges.intersect(e0, e1), test.expected);
   });
 });
+
+test("Can determine if two edges are coincident", t => {
+  const tests = [
+    {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: true}, // Same.
+    {input: [[[0.25,0.25], [0.75,0.75]], [[0,0], [1,1]]], expected: true}, // First witin the second.
+    {input: [[[0,0], [1,1]], [[0.25,0.25], [0.75,0.75]]], expected: true}, // Second witin the first.
+    {input: [[[0,0], [2,2]], [[-1,-1], [1,1]]], expected: true}, // Same slope, first first.
+    {input: [[[-1,-1], [1,1]], [[0,0], [2,2]]], expected: true}, // Same slope, first second.
+    {input: [[[0,0], [1,1]], [[0,1], [1,0]]], expected: false}, // Intersecting.
+    {input: [[[0,0], [1,1]], [[0,1], [1,2]]], expected: false}, // Parallel, but offset.
+  ];
+  tests.forEach(test => {
+    const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);
+    t.is(edges.coincident(e0, e1), test.expected);
+  });
+});
