@@ -34,9 +34,14 @@ test("Can get vertices of an Edge", t => {
 
 test("Can detect the intersection of two Edges", t => {
   const tests = [
-    {input: [[[0,0], [1,1]], [[0,1], [1,0]]], expected: true},
+    {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: false},
     {input: [[[0,0], [1,1]], [[0,2], [1,1]]], expected: false},
+    {input: [[[0,0], [1,1]], [[0,3], [1,2]]], expected: false},
     {input: [[[0,0], [1,1]], [[0,1], [1,2]]], expected: false},
+    {input: [[[0,0], [1,1]], [[0,1], [1,2]]], expected: false},
+    {input: [[[0,0], [1,1]], [[0,1], [1,0]]], expected: true},
+    {input: [[[-2,2], [0,0]], [[-2,0], [0,2]]], expected: true},
+    {input: [[[-1,1], [1,-1]], [[-1,-1], [1,1]]], expected: true},
   ];
   tests.forEach(test => {
     const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);
