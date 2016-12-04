@@ -30,6 +30,45 @@ Composed of two vertices, an `Edge` is the line between to `Vertex`s.
 
 Constructs a new `Edge`. _Note_: takes an array of length 2, containing two arrays of two real numbers. Does _not_ take two `Vertex`s.
 
+`Edge.slope()`
+
+Returns the slope of the `Edge`.
+
+`Edge.vertices()`
+
+Returns the `Vertex`s of the `Edge`.
+
+`Edge.interceptY()`
+
+Returns the y-intercept of the line defined by the `Edge`. _Note_: The `Edge` does _not_ need to intersect the y-axis to have a y-intercept.
+
+`Edge.left()`
+
+Returns the `Vertex` of the `Edge` with the lesser x coordinate.
+
+`Edge.right()`
+
+Returns the `Vertex` of the `Edge` with the greater x coordinate.
+
+`Edge.top()`
+
+Returns the `Vertex` of the `Edge` with the greater y coordinate.
+
+`Edge.bottom()`
+
+Returns the `Vertex` of the `Edge` with the lesser y coordinate.
+
+`function intersect(Edge, Edge)`
+
+Whether two `Edge`s intersect.
+
+`function coincident(Edge, Edge)`
+
+Whether two `Edge`s are _coincident_. That is, whether they are parallel and overlapped.
+
+`function subsect(Edge, Edge)`
+
+Returns a new array of `Edge`s. Derived from the `Vertex`s of two coincident `Edge`s. If the given `Edge`s are _not_ coincident, an empty array is returned.
 
 ## `Shape`
 A geometric object composed of three or more `Vertex`s.
