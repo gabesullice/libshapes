@@ -15,6 +15,21 @@ export default class Figure {
     return this._computed.edges();
   }
 
+  position(pos) {
+    if (pos !== undefined) {
+      this._position = pos;
+      this._compute();
+    }
+    return this._position;
+  }
+
+  translate(offset) {
+    this._position[0] += offset[0];
+    this._position[1] += offset[1];
+    this._compute();
+    return this._position;
+  }
+
   _compute() {
     this._computed =
       this._shape

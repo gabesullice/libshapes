@@ -132,3 +132,20 @@ A representation of a `Shape` combined with positional coordinates and a rotatio
 `class Figure({shape: Shape[, position: [offsetX, offsetY][, rotation: angle]})`
 
 Constructs a new `Figure`. The only required key is `shape`. Defaults: `{position: [0,0], rotation: 0}`. `rotation` is given in radians.
+
+`Figure.vertices()`
+
+Returns the computed `Vertex`s of the figure, taking into account the shape, position, and rotation of the `Figure`.
+
+`Figure.edges()`
+
+Returns the computed `Edge`s of the figure, taking into account the shape, position, and rotation of the `Figure`.
+
+`Figure.position()`
+`Figure.position([offsetX, offsetY])`
+
+Getter/Setter for the `Figure`'s position. Always returns the final position of the `Figure`.
+
+`Figure.translate([offsetX, offsetY])`
+
+Translates the `Figure`'s position by the given offset. Always returns the final position of the `Figure`.

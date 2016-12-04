@@ -20,6 +20,30 @@ test("Can create a new Figure", t => {
   });
 });
 
+test("Can get and set the position of a Figure", t => {
+  const testShape = new Shape([[0,0], [0,1], [1,0]]);
+  const f = new Figure({shape: testShape});
+  t.deepEqual(f.position(), [0,0]);
+  t.deepEqual(f.position([1,1]), [1,1]);
+  t.deepEqual(f.position([-1,-1]), [-1,-1]);
+});
+
+test("Can translate the position of a Figure", t => {
+  const cases = [
+    {input: [0,0],   expected: [0,0]},
+    {input: [0,1],   expected: [0,1]},
+    {input: [1,0],   expected: [1,1]},
+    {input: [1,1],   expected: [2,2]},
+    {input: [0,-1],  expected: [2,1]},
+    {input: [-1,0],  expected: [1,1]},
+    {input: [-1,-1], expected: [0,0]},
+  ];
+  const f = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  cases.forEach(item => {
+    t.deepEqual(f.translate(item.input), item.expected);
+  });
+});
+
 test("Can get the computed vertices of a figure", t => {
   const tests = [
     {
