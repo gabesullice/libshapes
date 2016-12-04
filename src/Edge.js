@@ -67,19 +67,16 @@ export function coincident(e0, e1) {
   const m0 = e0.slope(), m1 = e1.slope();
   // If the slopes are not the same, these edges cannot be coincident.
   if (Math.abs(m1 - m0) > EPSILON) {
-    console.log('slopes');
     return false;
   }
   // Find the y-intercepts of the lines.
   const b0 = e0.interceptY(), b1 = e1.interceptY();
   // If the y-intercepts are not the same, these edges cannot be coincident.
   if (Math.abs(b1 - b0) > EPSILON) {
-    console.log('y-int');
     return false;
   }
   // If these edges share the same vertices, then they are coincident.
   if (sharedVertices(e0, e1)) {
-    console.log('vertices');
     return true;
   }
   // If any vertex falls within the bounds of an edge, the edges are coincident.
