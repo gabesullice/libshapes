@@ -17,7 +17,7 @@ export class Edge {
     return [this._a, this._b];
   }
 
-  interceptY() {
+  yIntercept() {
     return this._a.y - (this.slope() * this._a.x);
   }
 
@@ -51,7 +51,7 @@ export function intersect(e0, e1) {
     return false;
   }
   // Find the y-intercepts of the lines.
-  const b0 = e0.interceptY(), b1 = e1.interceptY();
+  const b0 = e0.yIntercept(), b1 = e1.yIntercept();
   // Find the x intersection.
   const x = (b1 - b0)/(m0 - m1);
   // Find the y intersection.
@@ -70,7 +70,7 @@ export function coincident(e0, e1) {
     return false;
   }
   // Find the y-intercepts of the lines.
-  const b0 = e0.interceptY(), b1 = e1.interceptY();
+  const b0 = e0.yIntercept(), b1 = e1.yIntercept();
   // If the y-intercepts are not the same, these edges cannot be coincident.
   if (Math.abs(b1 - b0) > EPSILON) {
     return false;

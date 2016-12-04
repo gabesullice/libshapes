@@ -38,7 +38,7 @@ Returns the slope of the `Edge`.
 
 Returns the `Vertex`s of the `Edge`.
 
-`Edge.interceptY()`
+`Edge.yIntercept()`
 
 Returns the y-intercept of the line defined by the `Edge`. _Note_: The `Edge` does _not_ need to intersect the y-axis to have a y-intercept.
 
