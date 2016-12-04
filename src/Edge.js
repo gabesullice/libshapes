@@ -90,6 +90,27 @@ export function coincident(e0, e1) {
   return false;
 }
 
+export function subsect(e0, e1) {
+  // If edges are not coincident, there are no edge subsections.
+  if (!coincident(e0, e1)) {
+    return [];
+  }
+  // Sort the edge vertices left to right, bottom to top on the cartesian plane.
+  const vertices = e0.vertices().concat(e1.vertices());
+  const sorted = vertices.sort((va, vb) => {
+    if (vertex.same(va, vb)) return 0;
+    return (va.x < vb.x || va.y < vb.y) ? -1 : 1;
+  });
+  // Collect the all edges between the sorted vertices.
+  return sorted.reduceRight((edges, v, i, arr) => {
+    // If we're on the last vertex or the vertices are the same skip.
+    if (i == 0 || vertex.same(v, arr[i - 1])) return edges;
+    // Create and edge and add it to all our edges.
+    edges.unshift(new Edge([[arr[i - 1].x, arr[i - 1].y], [v.x, v.y]]));
+    return edges;
+  }, []);
+}
+
 function withinBounds(edge, v) {
   return (
     (edge.left().x < v.x && v.x < edge.right().x)
