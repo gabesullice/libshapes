@@ -5,6 +5,21 @@ libshapes
 
 `libshapes` is a package exporting classes and functions for representing, manipulating, and inspecting 2d geometric shapes.
 
+# Contents
+
+- [Overview](#overview)
+- [Documentation](#documentation)
+  - [Vertex](#vertex)
+  - [Edge](#edge)
+  - [Shape](#shape)
+  - [Figure](#figure)
+
+# Overview
+
+`libshapes` is composed of small modules which can be combined to represent complex geometric shapes and collections of shapes. At the most basic level is the `Vertex`, which provides a class for an (x,y) coordinate. This includes methods and functions for comparing, rotating, and translating vertices. Above this, is the `Edge` module. This module provides a class which contains two `Vertex`s, the line between them being the "edge". This module also includes comparison, mutation, and a few other utilities for working with edges. Above this, the `Shape`. This is a class composed of many edges. These too can be compared and mutated. A `Figure` is a `Shape` paired with a position and angle of rotation. This allows a shape to be represented and moved about a cartesian plane. `Figure`s can be compared for overlap, colocation, and shape. `Figure`s can all be mutated.
+
+# Documentation
+
 ## `Vertex`
 Building block for all shapes. A `Vertex` is defined by an `x` and a `y` coordinates.
 
