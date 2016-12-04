@@ -10,9 +10,13 @@ export class Vertex {
 }
 
 export function same(va, vb) {
-  const xeq = (Math.abs(va.x - vb.x) <= EPSILON);
-  const yeq = (Math.abs(va.y - vb.y) <= EPSILON);
-  return xeq && yeq;
+  return distance(va, vb) <= EPSILON;
+}
+
+export function distance(va, vb) {
+  return Math.sqrt(
+    Math.pow(Math.abs(va.x - vb.x), 2) + Math.pow(Math.abs(va.y - vb.y), 2)
+  );
 }
 
 export function rotate(v, angle) {

@@ -26,6 +26,23 @@ test("Can compare two vertices", t => {
   });
 });
 
+test("Can find the distance between two vertices", t => {
+  const coords = [
+    {x1: 0, y1: 0, x2: 0, y2: 0, expect: 0},
+    {x1: 0, y1: 0, x2: 0, y2: 1, expect: 1},
+    {x1: 0, y1: 0, x2: 1, y2: 0, expect: 1},
+    {x1: 0, y1: 0, x2: 1, y2: 1, expect: Math.sqrt(2)},
+    {x1: 0, y1: 0, x2: 1.5, y2: 1.5, expect: Math.sqrt(Math.pow(1.5, 2) * 2)},
+    {x1: 1, y1: 1, x2: 1.5, y2: 1.5, expect: Math.sqrt(Math.pow(0.5, 2) * 2)},
+    {x1: 0, y1: 0, x2: -1, y2: -1, expect: Math.sqrt(2)},
+  ];
+  coords.forEach(test => {
+    const va = new vertex.Vertex(test.x1, test.y1);
+    const vb = new vertex.Vertex(test.x2, test.y2);
+    t.is(vertex.distance(va, vb), test.expect)
+  });
+});
+
 test("Can rotate a Vertex", t => {
   // Rotate the point (0,2) counter-clockwise about the origin (0,0) in 90'
   // increments. Must use radians.

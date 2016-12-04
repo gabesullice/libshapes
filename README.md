@@ -10,9 +10,13 @@ Building block for all shapes. A `Vertex` is defined by an `x` and a `y` coordin
 
 Constructs a new `Vertex`.
 
+`function distance(Vertex, Vertex)`
+
+Computes the absolute distance between two `Vertex`s.
+
 `function same(Vertex, Vertex)`
 
-Whether two `Vertex`s share the same coordinates.
+Whether two `Vertex`s share the same coordinates, accurate to within `0.0000001`.
 
 `function rotate(Vertex, angle)`
 
