@@ -18,9 +18,9 @@ Whether two `Vertex`s share the same coordinates.
 
 Returns a new `Vertex` rotated about the origin (0,0). `angle` is given in radians.
 
-`function translate(Vertex, [x, y])`
+`function translate(Vertex, [offsetX, offsetY])`
 
-Returns a new `Vertex` translated by `Vertex.x + x` and `Vertex.y + y`.
+Returns a new `Vertex` translated by `Vertex.x + offsetX` and `Vertex.y + offsetY`.
 
 
 ## `Edge`
@@ -76,3 +76,19 @@ A geometric object composed of three or more `Vertex`s.
 `class Shape([[x0, y0], [x1, y1], [x2, x2][, ...[xN, yN]]])`
 
 Constructs a new `Shape`. _Note_: takes an array, `V`, of [x, y] coordinates where `V.length >= 2`.
+
+`Shape.vertices()`
+
+Returns the `Vertex`s of the `Shape`.
+
+`Shape.edges()`
+
+Returns the `Edge`s defined by the `Vertex`s of the `Shape`.
+
+`Shape.rotate(angle)`
+
+Returns a new `Shape` rotated about the origin (0,0). `angle` is given in radians.
+
+`Shape.translate([offsetX, offsetY])`
+
+Returns a new `Shape` translated by the given offsets.
