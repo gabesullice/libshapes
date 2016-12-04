@@ -106,3 +106,10 @@ Returns a new `Shape` rotated about the origin (0,0). `angle` is given in radian
 `Shape.translate([offsetX, offsetY])`
 
 Returns a new `Shape` translated by the given offsets.
+
+## `Figure`
+A representation of a `Shape` combined with positional coordinates and a rotation angle.
+
+`class Figure({shape: Shape[, position: [offsetX, offsetY][, rotation: angle]})`
+
+Constructs a new `Figure`. The only required key is `shape`. Defaults: `{position: [0,0], rotation: 0}`. `rotation` is given in radians.
