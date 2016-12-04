@@ -18,7 +18,7 @@ Whether two `Vertex`s share the same coordinates.
 
 Returns a new `Vertex` rotated about the origin (0,0). `angle` is given in radians.
 
-`function shift(Vertex, [x, y])`
+`function translate(Vertex, [x, y])`
 
 Returns a new `Vertex` translated by `Vertex.x + x` and `Vertex.y + y`.
 

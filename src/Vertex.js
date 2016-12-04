@@ -22,6 +22,6 @@ export function rotate(v, angle) {
   );
 }
 
-export function shift(v, shift) {
-  return new Vertex(v.x + shift[0], v.y + shift[1]);
+export function translate(v, translation) {
+  return new Vertex(v.x + translation[0], v.y + translation[1]);
 }

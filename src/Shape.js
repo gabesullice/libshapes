@@ -30,10 +30,10 @@ export default class Shape {
     }));
   }
 
-  shift(shift) {
+  translate(translation) {
     return new Shape(this._vertices.map(v => {
-      const shifted = vertex.shift(v, shift);
-      return [shifted.x, shifted.y];
+      const translated = vertex.translate(v, translation);
+      return [translated.x, translated.y];
     }));
   }
 
