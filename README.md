@@ -79,6 +79,10 @@ Returns the `Vertex` of the `Edge` with the greater y coordinate.
 
 Returns the `Vertex` of the `Edge` with the lesser y coordinate.
 
+`function same(Edge, Edge)`
+
+Whether the given `Edge`s share the same `Vertex`s.
+
 `function intersect(Edge, Edge)`
 
 Whether two `Edge`s intersect.

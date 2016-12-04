@@ -39,6 +39,14 @@ export class Edge {
 
 }
 
+export function same(e0, e1) {
+  const v0 = e0.left(), v1 = e0.right(), v2 = e1.left(), v3 = e1.right();
+  return (
+    vertex.same(v0, v2)
+    && vertex.same(v1, v3)
+  );
+}
+
 export function intersect(e0, e1) {
   // If any of the edge vertices as the same, these edges cannot intersect.
   if (sharedVertices(e0, e1)) {

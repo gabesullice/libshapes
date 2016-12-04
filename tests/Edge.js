@@ -32,6 +32,18 @@ test("Can get vertices of an Edge", t => {
   });
 });
 
+test("Can that two edges are the same", t => {
+  const tests = [
+    {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: true},
+    {input: [[[0,0], [1,1]], [[1,1], [0,0]]], expected: true},
+    {input: [[[0,0], [1,1]], [[0,2], [1,1]]], expected: false},
+  ];
+  tests.forEach(test => {
+    const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);
+    t.is(edges.same(e0, e1), test.expected);
+  });
+});
+
 test("Can detect the intersection of two Edges", t => {
   const tests = [
     {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: false},
