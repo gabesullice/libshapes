@@ -4,14 +4,18 @@ export default class Figure {
     this._shape = values.shape;
     this._position = values.position === undefined ? [0,0] : values.position;
     this._rotation = values.rotation === undefined ? 0 : values.rotation;
-    this.compute()
+    this._compute()
   }
 
   vertices() {
     return this._computed.vertices();
   }
 
-  compute() {
+  edges() {
+    return this._computed.edges();
+  }
+
+  _compute() {
     this._computed =
       this._shape
       .rotate(this._rotation)
