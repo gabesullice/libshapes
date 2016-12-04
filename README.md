@@ -1,7 +1,7 @@
 libshapes
 ====
 
-[![Travis](https://img.shields.io/travis/gabesullice/libshapes.svg)]()
+[![Travis](https://img.shields.io/travis/gabesullice/libshapes.svg)](https://travis-ci.org/gabesullice/libshapes)
 
 `libshapes` is a package exporting classes and functions for representing, manipulating, and inspecting 2d geometric shapes.
 
