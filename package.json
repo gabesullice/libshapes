@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src --out-dir lib",
-    "test": "ava"
-  },
+    "test": "ava tests"
+ },
   "repository": "git@github.com:gabesullice/shapes.git",
   "author": "Gabriel SULLICE",
   "license": "MIT",
