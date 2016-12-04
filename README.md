@@ -74,6 +74,14 @@ Whether two `Edge`s are _coincident_. That is, whether they are parallel and ove
 
 Returns a new array of `Edge`s. Derived from the `Vertex`s of two coincident `Edge`s. If the given `Edge`s are _not_ coincident, an empty array is returned.
 
+`function vertexIntersection(Edge, Vertex)`
+
+Finds a `Vertex`, `iv`, along `Edge` where a line perpendicular to `Edge` also passes through `Vertex`. If one does not exist, returns `null`.
+
+`function vertexDistance(Edge, Vertex)`
+
+Find the shortest distance between any point on `Edge` to `Vertex`.
+
 ## `Shape`
 A geometric object composed of three or more `Vertex`s.
 

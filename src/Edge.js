@@ -111,6 +111,34 @@ export function subsect(e0, e1) {
   }, []);
 }
 
+export function vertexIntersection(e, v) {
+  // Find the line defined by e.
+  const m = e.slope(), b = e.yIntercept();
+  // Now, find the line perpendicular to e which passes through v.
+  // Find the x-coord where this line intersects e.
+  const ix = ( b - (v.y + v.x / m) ) * -m / (m * m + 1); 
+  // Find the y-coord where this line intersects e.
+  const iy = m * ix + b;
+  // Create the vertex at (ix,iy).
+  const iv = new vertex.Vertex(ix, iy);
+  // Return iv if it's within the bounds of e. If not, there is no intersection.
+  return (withinBounds(e, iv)) ? iv : null;
+}
+
+export function vertexDistance(e, v) {
+  const iv = vertexIntersection(e, v);
+  // If there is a perpendicular intersection of e and v, compute that distance.
+  if (iv !== null) {
+    return vertex.distance(iv, v);
+  } else {
+    // Otherwise, find the distance of v to the nearest vertex of e.
+    return Math.min(
+      vertex.distance(e.left(), v),
+      vertex.distance(e.right(), v)
+    );
+  }
+}
+
 function withinBounds(edge, v) {
   return (
     (edge.left().x < v.x && v.x < edge.right().x)

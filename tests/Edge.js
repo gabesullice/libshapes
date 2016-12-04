@@ -85,3 +85,40 @@ test("Can find all sub-edges created two coincident edges", t => {
     t.deepEqual(edges.subsect(e0, e1), expected);
   });
 });
+
+test("Can find a perpindicular intersection through an edge and a vertex", t => {
+  const tests = [
+    {e: [[0,0], [1,1]],   v: [1,0],   expected: [0.5,0.5]},
+    {e: [[0,0], [10,10]], v: [10,0],  expected: [5,5]},
+    {e: [[0,0], [5,5]],   v: [5,4],   expected: [4.5,4.5]},
+    {e: [[-1,-1], [1,1]], v: [-1,1],  expected: [0,0]},
+    {e: [[0,0], [1,1]],   v: [2,2],   expected: null},
+    {e: [[-2,-1], [2,1]], v: [-1, 2], expected: [0,0]},
+    {e: [[0,0], [2,2]],   v: [1,1],   expected: [1,1]},
+    {e: [[0,0], [2,2]],   v: [2,2],   expected: null},
+    {e: [[0,0], [1,1]],   v: [1,2],   expected: null},
+  ];
+  tests.forEach(test => {
+    const e = new edges.Edge(test.e), v = new vertex.Vertex(test.v[0], test.v[1]);
+    const ve = (test.expected) ? new vertex.Vertex(test.expected[0], test.expected[1]): null;
+    t.deepEqual(edges.vertexIntersection(e, v), ve);
+  });
+});
+
+test("Can detect the compute the shortest distance bettween an edge and a vertex", t => {
+  const tests = [
+    {e: [[0,0], [1,1]],   v: [1,0],   expected: Math.sqrt(Math.pow(0.5, 2) * 2)},
+    {e: [[0,0], [10,10]], v: [10,0],  expected: Math.sqrt(Math.pow(5, 2) * 2)},
+    {e: [[0,0], [5,5]],   v: [5,4],   expected: Math.sqrt(Math.pow(0.5, 2) * 2)},
+    {e: [[-1,-1], [1,1]], v: [-1,1],  expected: Math.sqrt(2)},
+    {e: [[0,0], [1,1]],   v: [2,2],   expected: Math.sqrt(2)},
+    {e: [[-2,-1], [2,1]], v: [-1, 2], expected: Math.sqrt(Math.pow(2, 2) + 1)},
+    {e: [[0,0], [2,2]],   v: [1,1],   expected: 0},
+    {e: [[0,0], [2,2]],   v: [2,2],   expected: 0},
+    {e: [[0,0], [1,1]],   v: [1,2],   expected: 1},
+  ];
+  tests.forEach(test => {
+    const e = new edges.Edge(test.e), v = new vertex.Vertex(test.v[0], test.v[1]);
+    t.is(edges.vertexDistance(e, v), test.expected);
+  });
+});
