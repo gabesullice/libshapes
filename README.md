@@ -5,6 +5,8 @@ libshapes
 
 `libshapes` is a package exporting classes and functions for representing, manipulating, and inspecting 2d geometric shapes.
 
+**Version Note**: API should not be considered stable until a 1.0.0 release.
+
 # Contents
 
 - [Overview](#overview)
