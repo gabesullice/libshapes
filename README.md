@@ -152,4 +152,4 @@ Translates the `Figure`'s position by the given offset. Always returns the final
 
 `Figure.rotation(angle)`
 
-Sets the rotation of the figure.
+Getter/Setter for the `Figure`'s rotation. Always returns the final rotation of the `Figure`.
