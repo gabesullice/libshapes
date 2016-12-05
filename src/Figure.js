@@ -31,8 +31,11 @@ export default class Figure {
   }
 
   rotation(angle) {
-    this._rotation = angle;
-    this._compute();
+    if (angle !== undefined) {
+      this._rotation = angle;
+      this._compute();
+    }
+    return this._rotation;
   }
 
   _compute() {

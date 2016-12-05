@@ -44,9 +44,10 @@ test("Can translate the position of a Figure", t => {
   });
 });
 
-test("Can set the rotation of a Figure", t => {
+test("Can get and set the rotation of a Figure", t => {
   const cases = [
     // tracks the corner of a triangle about the origin
+    {input: undefined,      expected: [1,0]},
     {input: Math.PI/2,      expected: [0,1]},
     {input: Math.PI,        expected: [-1,0]},
     {input: 3 * Math.PI/2,  expected: [0,-1]},
