@@ -30,6 +30,11 @@ export default class Figure {
     return this._position;
   }
 
+  rotation(angle) {
+    this._rotation = angle;
+    this._compute();
+  }
+
   _compute() {
     this._computed =
       this._shape

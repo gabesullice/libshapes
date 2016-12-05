@@ -149,3 +149,7 @@ Getter/Setter for the `Figure`'s position. Always returns the final position of 
 `Figure.translate([offsetX, offsetY])`
 
 Translates the `Figure`'s position by the given offset. Always returns the final position of the `Figure`.
+
+`Figure.rotation(angle)`
+
+Sets the rotation of the figure.
