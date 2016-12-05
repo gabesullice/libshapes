@@ -44,7 +44,25 @@ test("Can translate the position of a Figure", t => {
   });
 });
 
+test("Can rotate a Figure", t => {
+  const cases = [
+    // tracks the corner of a triangle about the origin
+    {input: Math.PI/2,  expected: [-1,0]},
+    {input: Math.PI/2,  expected: [0,-1]},
+    {input: Math.PI,    expected: [0,1]},
+    {input: Math.PI/2,  expected: [-1,0]},
+    {input: Math.PI,    expected: [1,0]},
+  ];
+  const f = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  cases.forEach(item => {
+    const expected = new vertex.Vertex(item.expected[0], item.expected[1]);
+    f.rotate(item.input);
+    t.true(vertex.same(f.vertices()[1], expected));
+  });
+});
+
 test("Can get and set the rotation of a Figure", t => {
+  t.is(Math.PI/2 + Math.PI/2, Math.PI);
   const cases = [
     // tracks the corner of a triangle about the origin
     {input: undefined,      expected: [1,0]},

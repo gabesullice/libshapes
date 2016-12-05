@@ -24,10 +24,9 @@ export default class Figure {
   }
 
   translate(offset) {
-    this._position[0] += offset[0];
-    this._position[1] += offset[1];
-    this._compute();
-    return this._position;
+    return this.position([
+      this._position[0] + offset[0], this._position[1] + offset[1]
+    ]);
   }
 
   rotation(angle) {
@@ -36,6 +35,10 @@ export default class Figure {
       this._compute();
     }
     return this._rotation;
+  }
+
+  rotate(angle) {
+    return this.rotation((this._rotation + angle) % (2 * Math.PI));
   }
 
   _compute() {
