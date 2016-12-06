@@ -9,13 +9,15 @@ test("Can instantiate a new composition", t => {
 
 test("Can set the bounds of a composition", t => {
   const cases = [
-    {input: undefined, expected: [100,100]},
-    {input: [1000,1000], expected: [1000,1000]},
-    {input: [-100,-100], expected: [-100,-100]},
+    {input: undefined, expected: [[0,0], [100,100]]},
+    {input: [[0,0], [1000,1000]], expected: [[0,0], [1000,1000]]},
+    {input: [[-100,-100], [0,0]], expected: [[-100,-100], [0,0]]},
+    {input: [[-100,-100], [100,100]], expected: [[-100,-100], [100,100]]},
+    {input: [[100,100], [-100,-100]], expected: [[-100,-100], [100,100]]},
   ];
   cases.forEach(item => {
     const c = new Composition();
-    t.deepEqual(c.bounds(item.input), item.expected);
+    t.deepEqual(c.bounds.apply(c, item.input), item.expected);
   });
 });
 

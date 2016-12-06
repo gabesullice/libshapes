@@ -155,3 +155,32 @@ Translates the `Figure`'s position by the given offset. Always returns the final
 `Figure.rotation(angle)`
 
 Getter/Setter for the `Figure`'s rotation. Always returns the final rotation of the `Figure`.
+
+`Figure.rotate(angle)`
+
+Rotates the `Figure`'s by the given angle. Always returns the final rotation angle of the `Figure`.
+
+## `Composition`
+Can represent many figures on a plane and answer questions of the relationships between those figures.
+
+`class Composition()`
+`class Composition({bounds: [boundX, boundY])`
+
+Constructs a new `Composition`. May take an options argument which sets the bounds of the plane (_see_: `Composition.bounds()`).
+
+`Composition.bounds()`
+`Composition.bounds([boundX, boundY], [boundX, boundY])`
+
+Getter/Setter for the `Composition`'s position. Bounds are used to determine the allowable placement of a figure. The defualt bounds are the bounding box created by (0,0) and (100,100). Always returns the final bounds of the `Composition`.
+
+`Composition.figures()`
+
+Returns an object containing all the `Figure`s within the composition. Each figure is assigned a unique key.
+
+`Compostion.add(Figure)`
+
+Inserts a new `Figure` into the `Composition`. Returns a unique string to be used to identify the `Figure` within the composition.
+
+`Composition.remove(id)`
+
+Deletes a `Figure` by its ID.
