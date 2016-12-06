@@ -35,6 +35,10 @@ export default class Composition {
     return delete this._figures[id];
   }
 
+  get(id) {
+    return (this._figures.hasOwnProperty(id)) ? this._figures[id] : null;
+  }
+
   _getID() {
     const id = "fig-" + this._count;
     this._count++;

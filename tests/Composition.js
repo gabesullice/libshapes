@@ -47,6 +47,22 @@ test("Can get all figures in a composition", t => {
   });
 });
 
+test("Can get a figure in a composition by ID", t => {
+  const figureA = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figureB = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const cases = [
+    {input: [figureA],          get: "fig-0", expected: figureA},
+    {input: [figureA, figureB], get: "fig-0", expected: figureA},
+    {input: [figureA, figureB], get: "fig-1", expected: figureB},
+    {input: [figureA, figureB], get: "fig-2", expected: null},
+  ];
+  cases.forEach(item => {
+    const c = new Composition();
+    item.input.forEach(fig => { c.add(fig)});
+    t.deepEqual(c.get(item.get), item.expected);
+  });
+});
+
 test("Can remove figures in a composition by ID", t => {
   const figure = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
   const cases = [

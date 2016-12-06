@@ -177,10 +177,14 @@ Getter/Setter for the `Composition`'s position. Bounds are used to determine the
 
 Returns an object containing all the `Figure`s within the composition. Each figure is assigned a unique key.
 
-`Compostion.add(Figure)`
+`Composition.add(Figure)`
 
 Inserts a new `Figure` into the `Composition`. Returns a unique string to be used to identify the `Figure` within the composition.
 
 `Composition.remove(id)`
 
 Deletes a `Figure` by its ID.
+
+`Composition.get(id)`
+
+Retrieves a figure within `Composition` by its ID. Returns `null` if no `Figure` by the given ID exists.
