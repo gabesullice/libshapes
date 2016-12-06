@@ -42,7 +42,7 @@ test("Can get all figures in a composition", t => {
   ];
   cases.forEach(item => {
     const c = new Composition();
-    item.input.forEach(fig => { c.add(fig)});
+    item.input.forEach(fig => { c.add(fig) });
     t.deepEqual(Object.keys(c.figures()), item.expected);
   });
 });
@@ -58,7 +58,7 @@ test("Can get a figure in a composition by ID", t => {
   ];
   cases.forEach(item => {
     const c = new Composition();
-    item.input.forEach(fig => { c.add(fig)});
+    item.input.forEach(fig => { c.add(fig) });
     t.deepEqual(c.get(item.get), item.expected);
   });
 });
@@ -73,8 +73,25 @@ test("Can remove figures in a composition by ID", t => {
   ];
   cases.forEach(item => {
     const c = new Composition();
-    item.input.forEach(fig => { c.add(fig)});
-    item.remove.forEach(id => { c.remove(id)});
+    item.input.forEach(fig => { c.add(fig) });
+    item.remove.forEach(id => { c.remove(id) });
     t.deepEqual(Object.keys(c.figures()), item.expected);
   });
 });
+
+//test("Can find overlapping figures", t => {
+//  const figureA = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+//  const figureB = new Figure({shape: new Shape([[0,0], [0,1], [1,0]]), position: [2, 0]});
+//  const figureC = new Figure({shape: new Shape([[0,0], [0,1], [1,0]]), position: [2.5, 0]});
+//  const cases = [
+//    //{input: [], expected: []},
+//    //{input: [figureA], expected: []},
+//    //{input: [figureA, figureB], expected: []},
+//    {input: [figureA, figureB, figureC], expected: ["fig-1", "fig-2"]},
+//  ];
+//  cases.forEach(item => {
+//    const c = new Composition();
+//    item.input.forEach(fig => { c.add(fig) });
+//    t.deepEqual(Object.keys(c.overlapping()), item.expected);
+//  });
+//});

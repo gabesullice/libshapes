@@ -39,10 +39,64 @@ export default class Composition {
     return (this._figures.hasOwnProperty(id)) ? this._figures[id] : null;
   }
 
+  overlapping() {
+    const pairs = this._findPairs((a, b) => {
+      let same = true;
+      // Check all edge combinations.
+      // @todo: optimize this so that it doesn't run each check twice.
+      a.edges().forEach(ea => {
+        b.edges().forEach(eb => {
+          console.log(ea, eb);
+          if (edges.intersect(ea, eb)) {
+            console.log('intersecting');
+            return true;
+          }
+            //console.log('not intersecting');
+          if (!same && !edges.same(ea, eb)) {
+            same = false;
+          }
+        });
+      });
+      return !same;
+    });
+    return Object.keys(pairs);
+  }
+
+  _findPairs(paired) {
+    const pairs = {};
+    const figures = this.figures();
+    console.log(figures);
+    const figureNames = Object.getOwnPropertyNames(figures);
+    figureNames.forEach(idA => {
+      figureNames.forEach(idB => {
+        if (!pairs.hasOwnProperty(idB) || !pairs[idB].includes(idA)) {
+          const A = figures[idA], B = figures[idB];
+          if (paired(A, B)) {
+            insertPair(pairs, idA, idB);
+          }
+        }
+      })
+    });
+    return pairs;
+  }
+
   _getID() {
     const id = "fig-" + this._count;
     this._count++;
     return id;
   }
 
+}
+
+function insertPair(pairs, a, b) {
+  if (!pairs[a]) {
+    pairs[a] = [b];
+  } else {
+    pairs[a].push(b);
+  }
+  if (!pairs[b]) {
+    pairs[b] = [a];
+  } else {
+    pairs[b].push(a);
+  }
 }
