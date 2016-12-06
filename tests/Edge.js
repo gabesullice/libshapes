@@ -123,7 +123,7 @@ test("Can find a perpindicular intersection through an edge and a vertex", t => 
   });
 });
 
-test("Can detect the compute the shortest distance bettween an edge and a vertex", t => {
+test("Can compute the shortest distance between an edge and a vertex", t => {
   const tests = [
     {e: [[0,0], [1,1]],   v: [1,0],   expected: Math.sqrt(Math.pow(0.5, 2) * 2)},
     {e: [[0,0], [10,10]], v: [10,0],  expected: Math.sqrt(Math.pow(5, 2) * 2)},
@@ -135,6 +135,7 @@ test("Can detect the compute the shortest distance bettween an edge and a vertex
     {e: [[0,0], [2,2]],   v: [2,2],   expected: 0},
     {e: [[0,0], [1,1]],   v: [1,2],   expected: 1},
     {e: [[0,0], [0,2]],   v: [1,1],   expected: 1},
+    {e: [[0,0], [2,0]],   v: [1,1],   expected: 1},
   ];
   tests.forEach(test => {
     const e = new edges.Edge(test.e), v = new vertex.Vertex(test.v[0], test.v[1]);
