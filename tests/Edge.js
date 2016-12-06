@@ -14,6 +14,8 @@ test("Can derive a slope from an Edge", t => {
     {input: [[0,0], [1,2]], expected: 2},
     {input: [[0,0], [2,1]], expected: 1/2},
     {input: [[0,5], [5,0]], expected: -1},
+    {input: [[0,1], [0,0]], expected: -Infinity},
+    {input: [[0,0], [0,1]], expected: Infinity},
   ];
   tests.forEach(test => {
     const e = new edges.Edge(test.input);
@@ -32,11 +34,12 @@ test("Can get vertices of an Edge", t => {
   });
 });
 
-test("Can that two edges are the same", t => {
+test("Can detect that two edges are the same", t => {
   const tests = [
     {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: true},
     {input: [[[0,0], [1,1]], [[1,1], [0,0]]], expected: true},
     {input: [[[0,0], [1,1]], [[0,2], [1,1]]], expected: false},
+    {input: [[[0,0], [2,2]], [[1,0], [1,2]]], expected: false},
   ];
   tests.forEach(test => {
     const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);
@@ -54,6 +57,8 @@ test("Can detect the intersection of two Edges", t => {
     {input: [[[0,0], [1,1]], [[0,1], [1,0]]], expected: true},
     {input: [[[-2,2], [0,0]], [[-2,0], [0,2]]], expected: true},
     {input: [[[-1,1], [1,-1]], [[-1,-1], [1,1]]], expected: true},
+    {input: [[[2,1], [3,0]], [[2.5,0], [2.5,1]]], expected: true},
+    {input: [[[2,1], [3,0]], [[2,0.5], [3,0.5]]], expected: true},
   ];
   tests.forEach(test => {
     const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);
@@ -71,6 +76,7 @@ test("Can determine if two edges are coincident", t => {
     {input: [[[0,0], [1,1]], [[2,2], [3,3]]], expected: false}, // Same line, space bettween edges.
     {input: [[[0,0], [1,1]], [[0,1], [1,0]]], expected: false}, // Intersecting.
     {input: [[[0,0], [1,1]], [[0,1], [1,2]]], expected: false}, // Parallel, but offset.
+    {input: [[[0,0], [2,2]], [[1,0], [1,2]]], expected: false},
   ];
   tests.forEach(test => {
     const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);
@@ -117,7 +123,7 @@ test("Can find a perpindicular intersection through an edge and a vertex", t => 
   });
 });
 
-test("Can detect the compute the shortest distance bettween an edge and a vertex", t => {
+test("Can compute the shortest distance between an edge and a vertex", t => {
   const tests = [
     {e: [[0,0], [1,1]],   v: [1,0],   expected: Math.sqrt(Math.pow(0.5, 2) * 2)},
     {e: [[0,0], [10,10]], v: [10,0],  expected: Math.sqrt(Math.pow(5, 2) * 2)},
@@ -128,6 +134,8 @@ test("Can detect the compute the shortest distance bettween an edge and a vertex
     {e: [[0,0], [2,2]],   v: [1,1],   expected: 0},
     {e: [[0,0], [2,2]],   v: [2,2],   expected: 0},
     {e: [[0,0], [1,1]],   v: [1,2],   expected: 1},
+    {e: [[0,0], [0,2]],   v: [1,1],   expected: 1},
+    {e: [[0,0], [2,0]],   v: [1,1],   expected: 1},
   ];
   tests.forEach(test => {
     const e = new edges.Edge(test.e), v = new vertex.Vertex(test.v[0], test.v[1]);

@@ -35,6 +35,7 @@ test("Can find the distance between two vertices", t => {
     {x1: 0, y1: 0, x2: 1.5, y2: 1.5, expect: Math.sqrt(Math.pow(1.5, 2) * 2)},
     {x1: 1, y1: 1, x2: 1.5, y2: 1.5, expect: Math.sqrt(Math.pow(0.5, 2) * 2)},
     {x1: 0, y1: 0, x2: -1, y2: -1, expect: Math.sqrt(2)},
+    {x1: 1, y1: 0, x2: 1, y2: 1, expect: 1},
   ];
   coords.forEach(test => {
     const va = new vertex.Vertex(test.x1, test.y1);

@@ -55,15 +55,23 @@ export function intersect(e0, e1) {
   // Find the slope of the lines.
   const m0 = e0.slope(), m1 = e1.slope();
   // If the slopes are the same, these edges cannot intersect.
-  if (Math.abs(m1 - m0) <= EPSILON) {
+  // Using atan() to convert slope of Infinity into something we can use.
+  if (Math.abs(Math.atan(m1) - Math.atan(m0)) <= EPSILON) {
     return false;
   }
-  // Find the y-intercepts of the lines.
-  const b0 = e0.yIntercept(), b1 = e1.yIntercept();
-  // Find the x intersection.
-  const x = (b1 - b0)/(m0 - m1);
-  // Find the y intersection.
-  const y = m0 * x + b0;
+  // If either slope is Infinity, we can skip some work.
+  let x, y;
+  if (Math.abs(m0) == Infinity ^ Math.abs(m1) == Infinity) {
+    x = (Math.abs(m0) == Infinity) ? e0.left().x : e1.left().x;
+    y = (Math.abs(m0) == Infinity) ? m1 * x + e1.yIntercept() : m0 * x + e0.yIntercept();
+  } else {
+    // Find the y-intercepts of the lines.
+    const b0 = e0.yIntercept(), b1 = e1.yIntercept();
+    // Find the x intersection.
+    x = (b1 - b0)/(m0 - m1);
+    // Find the y intersection.
+    y = m0 * x + b0;
+  }
   // Define a vertex at the point (x,y).
   const intersection = new vertex.Vertex(x, y);
   // Now determine if (x,y) falls within the bounding box of e0.
@@ -122,28 +130,51 @@ export function subsect(e0, e1) {
 export function vertexIntersection(e, v) {
   // Find the line defined by e.
   const m = e.slope(), b = e.yIntercept();
-  // Now, find the line perpendicular to e which passes through v.
-  // Find the x-coord where this line intersects e.
-  const ix = ( b - (v.y + v.x / m) ) * -m / (m * m + 1); 
-  // Find the y-coord where this line intersects e.
-  const iy = m * ix + b;
+  let ix, iy;
+  // If the slope is +/-Infinity we can skip some computation.
+  if (Math.abs(m) == Infinity) {
+    ix =  e.left().x;
+    iy =  v.y;
+  } else if (Math.abs(m) === 0) {
+    ix = v.x;
+    // Find the y-coord where this line intersects e.
+    iy = e.left().y;
+  } else {
+    // Find the line perpendicular to e which passes through v.
+    // Find the x-coord where this line intersects e.
+    ix = ( b - (v.y + v.x / m) ) * -m / (m * m + 1); 
+    // Find the y-coord where this line intersects e.
+    iy = m * ix + b;
+  }
   // Create the vertex at (ix,iy).
   const iv = new vertex.Vertex(ix, iy);
-  // Return iv if it's within the bounds of e. If not, there is no intersection.
-  return (withinBounds(e, iv)) ? iv : null;
+  // Return iv if falls on e. If not, there is no intersection.
+  return (on(e, iv)) ? iv : null;
 }
 
-export function vertexDistance(e, v) {
-  const iv = vertexIntersection(e, v);
+export function vertexDistance(edge, v) {
+  const iv = vertexIntersection(edge, v);
   // If there is a perpendicular intersection of e and v, compute that distance.
   if (iv !== null) {
     return vertex.distance(iv, v);
   } else {
     // Otherwise, find the distance of v to the nearest vertex of e.
     return Math.min(
-      vertex.distance(e.left(), v),
-      vertex.distance(e.right(), v)
+      vertex.distance(edge.left(), v),
+      vertex.distance(edge.right(), v)
     );
+  }
+}
+
+function on(edge, v) {
+  // Find the line defined by e.
+  const m = edge.slope(), b = edge.yIntercept();
+  if (Math.abs(m) == Infinity) {
+    return v.x >= edge.left().x && v.x <= edge.right().x;
+  } else if (Math.abs(m) === 0) {
+    return v.y >= edge.bottom().y && v.y <= edge.top().y;
+  } else {
+    return withinBounds(edge, new vertex.Vertex(v.x, m * v.x + b)); 
   }
 }
 
