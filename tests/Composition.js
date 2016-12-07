@@ -84,11 +84,13 @@ test("Can find overlapping figures", t => {
   const figA = new figures.Figure({shape: rightTriangle});
   const figB = new figures.Figure({shape: rightTriangle, position: [2, 0]});
   const figC = new figures.Figure({shape: rightTriangle, position: [2.5, 0]});
+  const figD = new figures.Figure({shape: rightTriangle, position: [2.75, 0]});
   const cases = [
     {input: [], expected: []},
     {input: [figA], expected: []},
     {input: [figA, figB], expected: []},
     {input: [figA, figB, figC], expected: ["fig-1", "fig-2"]},
+    {input: [figA, figB, figC, figD], expected: ["fig-1", "fig-2", "fig-3"]},
   ];
   cases.forEach(item => {
     const c = new Composition();

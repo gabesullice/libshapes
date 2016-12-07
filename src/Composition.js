@@ -47,8 +47,8 @@ export default class Composition {
       for (var k1 in figs) {
         if (!found.includes(k1)) {
           if (figures.overlap(figs[k0], figs[k1])) {
-            found.push(k0);
-            found.push(k1);
+            if (!found.includes(k0)) found.push(k0);
+            if (!found.includes(k1)) found.push(k1);
           }
         }
       }
