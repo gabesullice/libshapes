@@ -79,19 +79,20 @@ test("Can remove figures in a composition by ID", t => {
   });
 });
 
-//test("Can find overlapping figures", t => {
-//  const figureA = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
-//  const figureB = new Figure({shape: new Shape([[0,0], [0,1], [1,0]]), position: [2, 0]});
-//  const figureC = new Figure({shape: new Shape([[0,0], [0,1], [1,0]]), position: [2.5, 0]});
-//  const cases = [
-//    //{input: [], expected: []},
-//    //{input: [figureA], expected: []},
-//    //{input: [figureA, figureB], expected: []},
-//    {input: [figureA, figureB, figureC], expected: ["fig-1", "fig-2"]},
-//  ];
-//  cases.forEach(item => {
-//    const c = new Composition();
-//    item.input.forEach(fig => { c.add(fig) });
-//    t.deepEqual(Object.keys(c.overlapping()), item.expected);
-//  });
-//});
+test("Can find overlapping figures", t => {
+  const rightTriangle = new Shape([[0,0], [0,1], [1,0]]);
+  const figA = new figures.Figure({shape: rightTriangle});
+  const figB = new figures.Figure({shape: rightTriangle, position: [2, 0]});
+  const figC = new figures.Figure({shape: rightTriangle, position: [2.5, 0]});
+  const cases = [
+    {input: [], expected: []},
+    {input: [figA], expected: []},
+    {input: [figA, figB], expected: []},
+    {input: [figA, figB, figC], expected: ["fig-1", "fig-2"]},
+  ];
+  cases.forEach(item => {
+    const c = new Composition();
+    item.input.forEach(fig => { c.add(fig) });
+    t.deepEqual(c.overlapping(), item.expected);
+  });
+});

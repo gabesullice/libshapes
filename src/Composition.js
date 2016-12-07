@@ -1,4 +1,5 @@
 import * as edges from "../lib/Edge";
+import * as figures from "../lib/Figure";
 
 export default class Composition {
 
@@ -40,44 +41,19 @@ export default class Composition {
   }
 
   overlapping() {
-    const pairs = this._findPairs((a, b) => {
-      let same = true;
-      // Check all edge combinations.
-      // @todo: optimize this so that it doesn't run each check twice.
-      a.edges().forEach(ea => {
-        b.edges().forEach(eb => {
-          console.log(ea, eb);
-          if (edges.intersect(ea, eb)) {
-            console.log('intersecting');
-            return true;
-          }
-            //console.log('not intersecting');
-          if (!same && !edges.same(ea, eb)) {
-            same = false;
-          }
-        });
-      });
-      return !same;
-    });
-    return Object.keys(pairs);
-  }
-
-  _findPairs(paired) {
-    const pairs = {};
-    const figures = this.figures();
-    console.log(figures);
-    const figureNames = Object.getOwnPropertyNames(figures);
-    figureNames.forEach(idA => {
-      figureNames.forEach(idB => {
-        if (!pairs.hasOwnProperty(idB) || !pairs[idB].includes(idA)) {
-          const A = figures[idA], B = figures[idB];
-          if (paired(A, B)) {
-            insertPair(pairs, idA, idB);
+    const figs = this.figures();
+    const found = [];
+    for (var k0 in figs) {
+      for (var k1 in figs) {
+        if (!found.includes(k1)) {
+          if (figures.overlap(figs[k0], figs[k1])) {
+            found.push(k0);
+            found.push(k1);
           }
         }
-      })
-    });
-    return pairs;
+      }
+    }
+    return found;
   }
 
   _getID() {
