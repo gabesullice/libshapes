@@ -1,6 +1,6 @@
 import test from "ava";
 import Shape from "../lib/Shape";
-import Figure from "../lib/Figure";
+import * as figures from "../lib/Figure";
 import Composition from "../lib/Composition";
 
 test("Can instantiate a new composition", t => {
@@ -22,7 +22,7 @@ test("Can set the bounds of a composition", t => {
 });
 
 test("Can add multiple figures to a composition", t => {
-  const figure = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figure = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
   const cases = [
     {input: figure, expected: "fig-0"},
     {input: figure, expected: "fig-1"},
@@ -34,7 +34,7 @@ test("Can add multiple figures to a composition", t => {
 });
 
 test("Can get all figures in a composition", t => {
-  const figure = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figure = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
   const cases = [
     {input: [], expected: []},
     {input: [figure], expected: ["fig-0"]},
@@ -48,8 +48,8 @@ test("Can get all figures in a composition", t => {
 });
 
 test("Can get a figure in a composition by ID", t => {
-  const figureA = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
-  const figureB = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figureA = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figureB = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
   const cases = [
     {input: [figureA],          get: "fig-0", expected: figureA},
     {input: [figureA, figureB], get: "fig-0", expected: figureA},
@@ -64,7 +64,7 @@ test("Can get a figure in a composition by ID", t => {
 });
 
 test("Can remove figures in a composition by ID", t => {
-  const figure = new Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figure = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
   const cases = [
     {input: [], remove: [], expected: []},
     {input: [figure], remove: ["fig-0"], expected: []},
