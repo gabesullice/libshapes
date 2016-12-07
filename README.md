@@ -160,6 +160,10 @@ Getter/Setter for the `Figure`'s rotation. Always returns the final rotation of 
 
 Rotates the `Figure`'s by the given angle. Always returns the final rotation angle of the `Figure`.
 
+`function overlap(Figure, Figure)`
+
+Whether the given `Figure`s overlap.
+
 ## `Composition`
 Can represent many figures on a plane and answer questions of the relationships between those figures.
 
@@ -188,3 +192,7 @@ Deletes a `Figure` by its ID.
 `Composition.get(id)`
 
 Retrieves a figure within `Composition` by its ID. Returns `null` if no `Figure` by the given ID exists.
+
+`Composition.overlapping()`
+
+Retrieves a list of `Figure` IDs which are overlapping with another `Figure`.
