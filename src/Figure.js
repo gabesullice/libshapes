@@ -1,4 +1,6 @@
-export default class Figure {
+import * as edges from "../lib/Edge";
+
+export class Figure {
 
   constructor(values) {
     this._shape = values.shape;
@@ -48,4 +50,14 @@ export default class Figure {
       .translate(this._position);
   }
 
+}
+
+export function overlap(f0, f1) {
+  const e0s = f0.edges(), e1s = f1.edges();
+  for (var k0 in e0s) {
+    for (var k1 in e1s) {
+      if (edges.intersect(e0s[k0], e1s[k1])) return true;
+    }
+  }
+  return false;
 }

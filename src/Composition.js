@@ -1,4 +1,5 @@
 import * as edges from "../lib/Edge";
+import * as figures from "../lib/Figure";
 
 export default class Composition {
 
@@ -39,10 +40,39 @@ export default class Composition {
     return (this._figures.hasOwnProperty(id)) ? this._figures[id] : null;
   }
 
+  overlapping() {
+    const figs = this.figures();
+    const found = [];
+    for (var k0 in figs) {
+      for (var k1 in figs) {
+        if (!found.includes(k1)) {
+          if (figures.overlap(figs[k0], figs[k1])) {
+            found.push(k0);
+            found.push(k1);
+          }
+        }
+      }
+    }
+    return found;
+  }
+
   _getID() {
     const id = "fig-" + this._count;
     this._count++;
     return id;
   }
 
+}
+
+function insertPair(pairs, a, b) {
+  if (!pairs[a]) {
+    pairs[a] = [b];
+  } else {
+    pairs[a].push(b);
+  }
+  if (!pairs[b]) {
+    pairs[b] = [a];
+  } else {
+    pairs[b].push(a);
+  }
 }
