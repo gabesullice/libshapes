@@ -75,7 +75,8 @@ export function intersect(e0, e1) {
   // Define a vertex at the point (x,y).
   const intersection = new vertex.Vertex(x, y);
   // Now determine if (x,y) falls within the bounding box of e0.
-  return withinBounds(e0, intersection);
+  const bound = (Math.abs(m0) == Infinity) ? e1 : e0;
+  return withinBounds(bound, intersection);
 }
 
 export function coincident(e0, e1) {

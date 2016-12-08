@@ -58,6 +58,7 @@ test("Can detect the intersection of two Edges", t => {
     {input: [[[-2,2], [0,0]], [[-2,0], [0,2]]], expected: true},
     {input: [[[-1,1], [1,-1]], [[-1,-1], [1,1]]], expected: true},
     {input: [[[2,1], [3,0]], [[2.5,0], [2.5,1]]], expected: true},
+    {input: [[[2.5,0], [2.5,1]], [[2,1], [3,0]]], expected: true},
     {input: [[[2,1], [3,0]], [[2,0.5], [3,0.5]]], expected: true},
   ];
   tests.forEach(test => {
