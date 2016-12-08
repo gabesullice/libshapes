@@ -169,11 +169,12 @@ test("Can detect if two figures are overlapping", t => {
   const figB = new figures.Figure({shape: rightTriangle, position: [2, 0]});
   const figC = new figures.Figure({shape: rightTriangle, position: [2.5, 0]});
   const cases = [
-    {fig0: figA, fig1: figA, expected: false, should: "return false for the same figure"},
-    {fig0: figA, fig1: figB, expected: false, should: "return false for two non-overlapping figures"},
-    {fig0: figB, fig1: figC, expected: true, should: "return true for overlapping figures"},
+    {input: [figA, figA], expected: false, should: "return false for the same figure"},
+    {input: [figA, figB], expected: false, should: "return false for two non-overlapping figures"},
+    {input: [figB, figC], expected: true, should: "return true for overlapping figures"},
+    {input: [figC, figB], expected: true, should: "return true for overlapping figures"},
   ];
   cases.forEach(item => {
-    t.is(figures.overlap(item.fig0, item.fig1), item.expected, item.should)
+    t.is(figures.overlap(item.input[0], item.input[1]), item.expected, item.should)
   });
 });
