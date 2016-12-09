@@ -173,8 +173,11 @@ Can represent many figures on a plane and answer questions of the relationships 
 Constructs a new `Composition`.
 
 **Options:**
+
 `bounds`: sets the bounds of the plane (_see_: `Composition.bounds()`). Default: `[[0,0], [100,100]]`
+
 `snap`: Whether figures should snap to other figures when they are manipulated. Default: `true`
+
 `snapTolerance`: `snapTolerance` is multiplied by distance between the left and right bounds of the composition (_see_: `Composition.snapTolerance()`). Default: `0.001`
 
 `Composition.bounds()`
