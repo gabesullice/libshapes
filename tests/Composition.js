@@ -216,15 +216,33 @@ test("Will snap a moved figure in a composition to another figure", t => {
   });
 });
 
-test("Can snap figures to one another efficiently", t => {
-  const square = new Shape([[0,0], [0,1], [1,1], [1,0]]);
-  const maxAllowedMs = 50;
-  const c = new Composition();
-  for (var i = 0; i < 100; i++) {
-    const start = process.hrtime()[1];
-    const fig = new figures.Figure({shape: square, position: [Math.random() * 100, Math.random() * 100]});
-    c.add(fig);
-    const dur = (process.hrtime()[1] - start) / 1e+6; // nano to milliseconds
-    t.true(dur < maxAllowedMs);
-  }
-});
+//test("Can snap figures to one another efficiently", t => {
+//  const square = new Shape([[0,0], [0,1], [1,1], [1,0]]);
+//  const maxAllowedMs = 50; // milliseconds
+//  const c = new Composition();
+//  for (var i = 0; i < 100; i++) {
+//    const start = process.hrtime()[1];
+//    const fig = new figures.Figure({shape: square, position: [Math.random() * 100, Math.random() * 100]});
+//    c.add(fig);
+//    const dur = (process.hrtime()[1] - start) / 1e+6; // nano to milliseconds
+//    t.true(dur < maxAllowedMs);
+//  }
+//});
+//
+//test("Can find gaps in the composition", t => {
+//  const rightTriangle = new Shape([[0,0], [0,1], [1,0]]);
+//  const figA = new figures.Figure({shape: rightTriangle});
+//  const figB = new figures.Figure({shape: rightTriangle, position: [2,0]});
+//  const cases = [
+//    {input: [figA], expected: ["fig-0"]},
+//    {input: [figA, figA], expected: []},
+//    {input: [figA, figB], expected: ["fig-0", "fig-1"]},
+//  ];
+//  cases.forEach(item => {
+//    const c = new Composition();
+//    item.input.forEach(fig => {
+//      c.add(fig)
+//    })
+//    t.deepEqual(c.gaps(), item.expected);
+//  });
+//});

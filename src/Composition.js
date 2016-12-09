@@ -19,6 +19,7 @@ export default class Composition {
     this._count = 0;
     this._figures = {};
     this._overlapping = [];
+    this._gaps = [];
   }
 
   figures() {
@@ -45,7 +46,7 @@ export default class Composition {
     const id = this._getID();
     this._figures[id] = figure;
     //this._handleSnap(id, options);
-    this._addOverlaps(id);
+    this._iterateFigures(id);
     return id;
   }
 
@@ -68,6 +69,10 @@ export default class Composition {
     return this._overlapping;
   }
 
+  gaps() {
+    return this._gaps;
+  }
+
   _handleSnap(id, options) {
     let doSnap = this._doSnap;
     if (options !== undefined) {
@@ -78,13 +83,49 @@ export default class Composition {
     }
   }
 
-  _addOverlaps(id) {
+  _iterateFigures(id) {
     const figs = this._figures;
+    const iteratorFuncs = this._getIterationFuncs();
     for (var k in figs) {
-      if (figures.overlap(figs[k], figs[id])) {
-        this._overlapping.push({a: k, b: id});
+      iteratorFuncs.overlap({id: k, figure: figs[k]}, {id: id, figure: figs[id]});
+      for (var fid in iteratorFuncs) {
+        //iteratorFuncs[fid]({id: k, figure: figs[k]}, {id: id, figure: figs[id]});
       }
     }
+  }
+
+  _getIterationFuncs() {
+    return {
+      overlap: (a, b) => {
+        if (figures.overlap(a.figure, b.figure)) {
+          this._overlapping.push({a: a.id, b: b.id});
+        }
+      },
+      gaps: (() => {
+        this._gaps = [];
+        return (a, b) => {
+          const edgesA = a.figure.edges(), edgesB = b.figure.edges();
+          for (var i in edgesA) {
+            for (var j in edgesB) {
+              let sections = [];
+              if (edges.coincident(edgesA[i], edgesB[j])) {
+                sections = edges.subsect(edgesA[i], edgesB[j]);
+              } else {
+                sections = [edgesA[i]];
+              }
+              sections.forEach(section => {
+                if (this._solitaryEdge(section)) {
+                  this._gaps.push(this._traceGap(section));
+                }
+              });
+            }
+          }
+        }
+      })()
+    };
+  }
+
+  _addOverlaps(id) {
   }
 
   _removeOverlaps(id) {

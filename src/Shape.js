@@ -1,7 +1,7 @@
 import * as vertex from "./Vertex";
 import { Edge } from "./Edge";
 
-export default class Shape {
+class Shape {
 
   constructor(points) {
     this._vertices = [];
@@ -38,3 +38,5 @@ export default class Shape {
   }
 
 }
+
+export default Shape;
