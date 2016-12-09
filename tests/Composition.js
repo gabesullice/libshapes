@@ -215,3 +215,16 @@ test("Will snap a moved figure in a composition to another figure", t => {
     t.true(vertex.same(actual, expected));
   });
 });
+
+test("Can snap figures to one another efficiently", t => {
+  const square = new Shape([[0,0], [0,1], [1,1], [1,0]]);
+  const maxAllowedMs = 50;
+  const c = new Composition();
+  for (var i = 0; i < 100; i++) {
+    const start = process.hrtime()[1];
+    const fig = new figures.Figure({shape: square, position: [Math.random() * 100, Math.random() * 100]});
+    c.add(fig);
+    const dur = (process.hrtime()[1] - start) / 1e+6; // nano to milliseconds
+    t.true(dur < maxAllowedMs);
+  }
+});
