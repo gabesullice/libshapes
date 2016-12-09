@@ -168,20 +168,29 @@ Whether the given `Figure`s overlap.
 Can represent many figures on a plane and answer questions of the relationships between those figures.
 
 `class Composition()`
-`class Composition({bounds: [boundX, boundY])`
+`class Composition({bounds: [boundX, boundY][, snap: bool[, snapTolerance: Number]]})`
 
-Constructs a new `Composition`. May take an options argument which sets the bounds of the plane (_see_: `Composition.bounds()`).
+Constructs a new `Composition`.
+
+**Options:**
+`bounds`: sets the bounds of the plane (_see_: `Composition.bounds()`). Default: `[[0,0], [100,100]]`
+`snap`: Whether figures should snap to other figures when they are manipulated. Default: `true`
+`snapTolerance`: `snapTolerance` is multiplied by distance between the left and right bounds of the composition (_see_: `Composition.snapTolerance()`). Default: `0.001`
 
 `Composition.bounds()`
 `Composition.bounds([boundX, boundY], [boundX, boundY])`
 
 Getter/Setter for the `Composition`'s position. Bounds are used to determine the allowable placement of a figure. The defualt bounds are the bounding box created by (0,0) and (100,100). Always returns the final bounds of the `Composition`.
 
+`Composition.snapTolerance()`
+
+`snapTolerance` is multiplied by the diagnal distance between the lower and right bounds of the composition. The result is an absolute distance relative to the size of the composition. When the distance between two vertices is less than this value, the figure being manipulated will be slighty adjusted so that these vertices are brought together.
+
 `Composition.figures()`
 
 Returns an object containing all the `Figure`s within the composition. Each figure is assigned a unique key.
 
-`Composition.add(Figure)`
+`Composition.add(Figure[, options])`
 
 Inserts a new `Figure` into the `Composition`. Returns a unique string to be used to identify the `Figure` within the composition.
 
@@ -192,6 +201,10 @@ Deletes a `Figure` by its ID.
 `Composition.get(id)`
 
 Retrieves a figure within `Composition` by its ID. Returns `null` if no `Figure` by the given ID exists.
+
+`Composition.move(id[, options])`
+
+Moves a figure within a `Composition` by its ID. Takes an options options object. Defaults to `{snap: true}`.
 
 `Composition.overlapping()`
 

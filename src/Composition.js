@@ -1,16 +1,24 @@
+import * as vertex from "../lib/Vertex";
 import * as edges from "../lib/Edge";
 import * as figures from "../lib/Figure";
 
 export default class Composition {
 
   constructor(options) {
-    if (options === undefined) {
-      this.bounds([0,0], [100,100]);
-    } else {
-      this.bounds.apply(this, options.bounds);
+    let bounds = [[0,0], [100,100]];
+    let doSnap = true;
+    let snapTolerance = 0.001;
+    if (options !== undefined) {
+      if (options.hasOwnProperty('bounds')) bounds = options.bounds;
+      if (options.hasOwnProperty('snap')) doSnap = options.snap;
+      if (options.hasOwnProperty('snapTolerance')) snapTolerance = options.snapTolerance;
     }
+    this.bounds.apply(this, bounds);
+    this._doSnap = doSnap;
+    this.snapTolerance(snapTolerance);
     this._count = 0;
     this._figures = {};
+    this._overlapping = [];
   }
 
   figures() {
@@ -26,13 +34,23 @@ export default class Composition {
     return ret;
   }
 
-  add(figure) {
+  snapTolerance(tolerance) {
+    if (tolerance !== undefined) {
+      this._tolerance = tolerance;
+    }
+    return this._tolerance;
+  }
+
+  add(figure, options) {
     const id = this._getID();
     this._figures[id] = figure;
+    //this._handleSnap(id, options);
+    this._addOverlaps(id);
     return id;
   }
 
   remove(id) {
+    this._removeOverlaps(id);
     return delete this._figures[id];
   }
 
@@ -40,20 +58,58 @@ export default class Composition {
     return (this._figures.hasOwnProperty(id)) ? this._figures[id] : null;
   }
 
+  move(id, translation, options) {
+    this._figures[id].position(translation);
+    this._handleSnap(id, options);
+    return this._figures[id].position();
+  }
+
   overlapping() {
-    const figs = this.figures();
-    const found = [];
-    for (var k0 in figs) {
-      for (var k1 in figs) {
-        if (!found.includes(k1)) {
-          if (figures.overlap(figs[k0], figs[k1])) {
-            if (!found.includes(k0)) found.push(k0);
-            if (!found.includes(k1)) found.push(k1);
+    return this._overlapping;
+  }
+
+  _handleSnap(id, options) {
+    let doSnap = this._doSnap;
+    if (options !== undefined) {
+      if (options.hasOwnProperty('snap')) doSnap = options.snap;
+    }
+    if (doSnap) {
+      this._figures[id].translate(this._calculateSnap(this._figures[id]));
+    }
+  }
+
+  _addOverlaps(id) {
+    const figs = this._figures;
+    for (var k in figs) {
+      if (figures.overlap(figs[k], figs[id])) {
+        this._overlapping.push({a: k, b: id});
+      }
+    }
+  }
+
+  _removeOverlaps(id) {
+    this._overlapping = this._overlapping.filter(overlap => {
+      return !(overlap.a == id || overlap.b == id);
+    });
+  }
+
+  _calculateSnap(fig) {
+    const figs = this._figures;
+    const tolerance = this._tolerance * (vertex.distance(this._bounds.left(), this._bounds.right()));
+    const verticesA = fig.vertices();
+    for (var i in verticesA) {
+      for (var j in figs) {
+        const verticesB = figs[j].vertices();
+        for (var k in verticesB) {
+          const va = verticesA[i], vb = verticesB[k];
+          const vd = vertex.distance(va, vb);
+          if (vd > vertex.EPSILON && vd < tolerance) {
+            return [vb.x - va.x, vb.y - va.y];
           }
         }
       }
     }
-    return found;
+    return [0, 0];
   }
 
   _getID() {
@@ -62,17 +118,4 @@ export default class Composition {
     return id;
   }
 
-}
-
-function insertPair(pairs, a, b) {
-  if (!pairs[a]) {
-    pairs[a] = [b];
-  } else {
-    pairs[a].push(b);
-  }
-  if (!pairs[b]) {
-    pairs[b] = [a];
-  } else {
-    pairs[b].push(a);
-  }
 }
