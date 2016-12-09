@@ -23,7 +23,7 @@ libshapes
 
 # Documentation
 
-## `Vertex`
+## Vertex
 Building block for all shapes. A `Vertex` is defined by an `x` and a `y` coordinates.
 
 ###`class Vertex([x, y])`
@@ -47,7 +47,7 @@ Returns a new `Vertex` rotated about the origin (0,0). `angle` is given in radia
 Returns a new `Vertex` translated by `Vertex.x + offsetX` and `Vertex.y + offsetY`.
 
 
-## `Edge`
+## Edge
 Composed of two vertices, an `Edge` is the line between to `Vertex`s.
 
 ###`class Edge([[x0, y0], [x1, y1]])`
@@ -106,7 +106,7 @@ Finds a `Vertex`, `iv`, along `Edge` where a line perpendicular to `Edge` also p
 
 Find the shortest distance between any point on `Edge` to `Vertex`.
 
-## `Shape`
+## Shape
 A geometric object composed of three or more `Vertex`s.
 
 ###`class Shape([[x0, y0], [x1, y1], [x2, x2][, ...[xN, yN]]])`
@@ -129,7 +129,7 @@ Returns a new `Shape` rotated about the origin (0,0). `angle` is given in radian
 
 Returns a new `Shape` translated by the given offsets.
 
-## `Figure`
+## Figure
 A representation of a `Shape` combined with positional coordinates and a rotation angle.
 
 ###`class Figure({shape: Shape[, position: [offsetX, offsetY][, rotation: angle]})`
@@ -165,7 +165,7 @@ Rotates the `Figure`'s by the given angle. Always returns the final rotation ang
 
 Whether the given `Figure`s overlap.
 
-## `Composition`
+## Composition
 Can represent many figures on a plane and answer questions of the relationships between those figures.
 
 ###`class Composition()`
@@ -174,12 +174,11 @@ Can represent many figures on a plane and answer questions of the relationships 
 Constructs a new `Composition`.
 
 **Options:**
-
+```
 `bounds`: sets the bounds of the plane (_see_: `Composition.bounds()`). Default: `[[0,0], [100,100]]`
-
 `snap`: Whether figures should snap to other figures when they are manipulated. Default: `true`
-
 `snapTolerance`: `snapTolerance` is multiplied by distance between the left and right bounds of the composition (_see_: `Composition.snapTolerance()`). Default: `0.001`
+```
 
 ###`Composition.bounds()`
 ###`Composition.bounds([boundX, boundY], [boundX, boundY])`
