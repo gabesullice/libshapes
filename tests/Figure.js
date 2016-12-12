@@ -20,6 +20,17 @@ test("Can create a new Figure", t => {
   });
 });
 
+test("Can get the original shape from the figure", t => {
+  const cases = [
+    {shape: new Shape([[0,0], [0,1], [1,0]])},
+    {shape: new Shape([[0,0], [0,1], [1,0]]), position: [10,10]},
+  ];
+  cases.forEach(item => {
+    const f = new figures.Figure(item);
+    t.deepEqual(f.shape(), item.shape);
+  });
+});
+
 test("Can get and set the position of a Figure", t => {
   const testShape = new Shape([[0,0], [0,1], [1,0]]);
   const f = new figures.Figure({shape: testShape});

@@ -136,6 +136,10 @@ A representation of a `Shape` combined with positional coordinates and a rotatio
 
 Constructs a new `Figure`. The only required key is `shape`. Defaults: `{position: [0,0], rotation: 0}`. `rotation` is given in radians.
 
+###`Figure.shape()`
+
+Returns the original `Shape` of the figure, with _no_ mutations for position or rotation taken into account.
+
 ###`Figure.vertices()`
 
 Returns the computed `Vertex`s of the figure, taking into account the shape, position, and rotation of the `Figure`.

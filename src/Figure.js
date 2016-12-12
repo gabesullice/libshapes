@@ -9,6 +9,10 @@ export class Figure {
     this._compute()
   }
 
+  shape() {
+    return this._shape;
+  }
+
   vertices() {
     return this._computed.vertices();
   }
