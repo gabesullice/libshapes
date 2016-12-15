@@ -21,6 +21,10 @@ export class Edge {
     return this._a.y - (this.slope() * this._a.x);
   }
 
+  length() {
+    return vertex.distance(this._a, this._b);
+  }
+
   left() {
     return (this._a.x < this._b.x) ? this._a : this._b;
   }

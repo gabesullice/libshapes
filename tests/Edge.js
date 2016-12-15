@@ -34,6 +34,17 @@ test("Can get vertices of an Edge", t => {
   });
 });
 
+test("Can get the length of an Edge", t => {
+  const tests = [
+    {input: [[0,0], [1,1]], expected: vertex.distance(new vertex.Vertex(0,0), new vertex.Vertex(1,1))},
+    {input: [[1,1], [2,2]], expected: vertex.distance(new vertex.Vertex(1,1), new vertex.Vertex(2,2))},
+  ];
+  tests.forEach(test => {
+    const e = new edges.Edge(test.input);
+    t.deepEqual(e.length(), test.expected);
+  });
+});
+
 test("Can detect that two edges are the same", t => {
   const tests = [
     {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: true},

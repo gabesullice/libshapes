@@ -66,6 +66,10 @@ Returns the `Vertex`s of the `Edge`.
 
 Returns the y-intercept of the line defined by the `Edge`. _Note_: The `Edge` does _not_ need to intersect the y-axis to have a y-intercept.
 
+###`Edge.length()`
+
+Returns the length of an edge.
+
 ###`Edge.left()`
 
 Returns the `Vertex` of the `Edge` with the lesser x coordinate.
