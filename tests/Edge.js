@@ -45,6 +45,21 @@ test("Can get the length of an Edge", t => {
   });
 });
 
+test("Can get the midpoint of an Edge", t => {
+  const tests = [
+    {input: [[0,0], [1,1]], expected: [.5,.5]},
+    {input: [[1,1], [2,2]], expected: [1.5,1.5]},
+    {input: [[-2,-2], [2,2]], expected: [0,0]},
+    {input: [[0,-1], [0,1]], expected: [0,0]},
+    {input: [[-1,0], [1,0]], expected: [0,0]},
+  ];
+  tests.forEach(test => {
+    const e = new edges.Edge(test.input);
+    const mp = e.midpoint();
+    t.deepEqual([mp.x,mp.y], test.expected);
+  });
+});
+
 test("Can detect that two edges are the same", t => {
   const tests = [
     {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: true},

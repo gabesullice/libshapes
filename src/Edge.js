@@ -25,6 +25,13 @@ export class Edge {
     return vertex.distance(this._a, this._b);
   }
 
+  midpoint() {
+    return new vertex.Vertex(
+      (this.right().x + this.left().x)/2,
+      (this.top().y + this.bottom().y)/2
+    );
+  }
+
   left() {
     return (this._a.x < this._b.x) ? this._a : this._b;
   }

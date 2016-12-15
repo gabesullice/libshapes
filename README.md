@@ -70,6 +70,10 @@ Returns the y-intercept of the line defined by the `Edge`. _Note_: The `Edge` do
 
 Returns the length of an edge.
 
+###`Edge.midpoint()`
+
+Returns a new `Vertex` at the midpoint of the edge. 
+
 ###`Edge.left()`
 
 Returns the `Vertex` of the `Edge` with the lesser x coordinate.
