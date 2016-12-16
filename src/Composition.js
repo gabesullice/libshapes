@@ -65,11 +65,15 @@ export default class Composition {
   }
 
   move(id, translation, options) {
+    const start = this._figures[id].position();
+    const target = this._figures[id].position(translation);
+    const final = this._handleSnap(id, options);
     this._removeOverlaps(id);
-    this._figures[id].position(translation);
-    this._handleSnap(id, options);
     this._iterateFigures(id);
-    return this._figures[id].position();
+    return {
+      start, target, final,
+      snapped: (this._doSnap && (target.x != final.x || target.y != final.y)),
+    };
   }
 
   overlapping() {
@@ -88,6 +92,7 @@ export default class Composition {
     if (doSnap) {
       this._figures[id].translate(this._calculateSnap(this._figures[id]));
     }
+    return this._figures[id].position();
   }
 
   _iterateFigures(id) {
