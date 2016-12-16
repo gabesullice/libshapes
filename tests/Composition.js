@@ -136,6 +136,7 @@ test("Can find overlapping figures", t => {
     }
     t.deepEqual(c.overlapping(), item.expected);
   });
+
 });
 
 test("Can find overlapping figures efficiently", t => {

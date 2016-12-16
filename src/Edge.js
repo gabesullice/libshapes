@@ -85,9 +85,8 @@ export function intersect(e0, e1) {
   }
   // Define a vertex at the point (x,y).
   const intersection = new vertex.Vertex(x, y);
-  // Now determine if (x,y) falls within the bounding box of e0.
-  const bound = (Math.abs(m0) == Infinity) ? e1 : e0;
-  return withinBounds(bound, intersection);
+  // Now determine if (x,y) falls within the bounding box of e0 or e1.
+  return withinBounds(e0, intersection) && withinBounds(e1, intersection);
 }
 
 export function coincident(e0, e1) {
@@ -191,10 +190,17 @@ function on(edge, v) {
 }
 
 function withinBounds(edge, v) {
-  return (
-    (edge.left().x < v.x && v.x < edge.right().x)
-    && (edge.bottom().y < v.y && v.y < edge.top().y)
-  );
+  const m = Math.abs(edge.slope());
+  if (m == Infinity) {
+    return (edge.bottom().y < v.y && v.y < edge.top().y);
+  } else if (m < EPSILON) {
+    return (edge.left().x < v.x && v.x < edge.right().x);
+  } else {
+    return (
+      (edge.left().x < v.x && v.x < edge.right().x) &&
+      (edge.bottom().y < v.y && v.y < edge.top().y)
+    );
+  }
 }
 
 function sharedVertices(e0, e1) {
