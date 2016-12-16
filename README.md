@@ -219,7 +219,16 @@ Retrieves a figure within `Composition` by its ID. Returns `null` if no `Figure`
 
 ###`Composition.move(id[, options])`
 
-Moves a figure within a `Composition` by its ID. Takes an options options object. Defaults to `{snap: true}`.
+Moves a figure within a `Composition` by its ID. Takes an options options object. Defaults to `{snap: true}`. Returns an object with information about the move operations:
+
+```
+{
+  start: [x, y],  // starting position
+  target: [x, y], // the given destination position
+  final: [x, y],  // the final position of the figure
+  snapped: bool,  // whether the final position was affected by a snap
+}
+```
 
 ###`Composition.overlapping()`
 
