@@ -60,8 +60,10 @@ export default class Composition {
   }
 
   move(id, translation, options) {
+    this._removeOverlaps(id);
     this._figures[id].position(translation);
     this._handleSnap(id, options);
+    this._iterateFigures(id);
     return this._figures[id].position();
   }
 

@@ -110,46 +110,30 @@ test("Can set the snap tolerance of a Composition", t => {
 
 test("Can find overlapping figures", t => {
   const rightTriangle = new Shape([[0,0], [0,1], [1,0]]);
-  const figA = new figures.Figure({shape: rightTriangle});
-  const figB = new figures.Figure({shape: rightTriangle, position: [2, 0]});
-  const figC = new figures.Figure({shape: rightTriangle, position: [2.5, 0]});
-  const figD = new figures.Figure({shape: rightTriangle, position: [2.75, 0]});
+  const posA = [0,0];
+  const posB = [2, 0];
+  const posC = [2.5, 0];
+  const posD = [2.75, 0];
   const cases = [
     {input: [], expected: []},
-    {input: [figA], expected: []},
-    {input: [figA, figB], expected: []},
-    {input: [figB, figC], expected: [{a: "fig-0", b: "fig-1"}]},
-    {input: [figA, figB, figC], expected: [{a: "fig-1", b: "fig-2"}]},
-    {input: [figA, figB, figC, figD], expected: [{a: "fig-1", b: "fig-2"}, {a: "fig-1", b: "fig-3"}, {a: "fig-2", b: "fig-3"}]},
-    {input: [figA, figB, figC, figD], remove: "fig-2", expected: [{a: "fig-1", b: "fig-3"}]},
+    {input: [posA], expected: []},
+    {input: [posA, posB], expected: []},
+    {input: [posB, posC], expected: [{a: "fig-0", b: "fig-1"}]},
+    {input: [posA, posB, posC], expected: [{a: "fig-1", b: "fig-2"}]},
+    {input: [posA, posB, posC, posD], expected: [{a: "fig-1", b: "fig-2"}, {a: "fig-1", b: "fig-3"}, {a: "fig-2", b: "fig-3"}]},
+    {input: [posA, posB, posC, posD], remove: "fig-2", expected: [{a: "fig-1", b: "fig-3"}]},
+    {input: [posB, posC], move: {fid: "fig-0", pos: [10,0]}, expected: []},
+    {input: [posA, posB], move: {fid: "fig-0", pos: [1.5,0]}, expected: [{a: "fig-1", b: "fig-0"}]},
   ];
   cases.forEach(item => {
     const c = new Composition({snap: false});
-    item.input.forEach(fig => { c.add(fig) });
+    item.input.forEach(pos => {
+      c.add(new figures.Figure({shape: rightTriangle, position: pos}))
+    });
     if (item.remove) c.remove(item.remove);
-    t.deepEqual(c.overlapping(), item.expected);
-  });
-});
-
-test("Can find overlapping figures", t => {
-  const rightTriangle = new Shape([[0,0], [0,1], [1,0]]);
-  const figA = new figures.Figure({shape: rightTriangle});
-  const figB = new figures.Figure({shape: rightTriangle, position: [2, 0]});
-  const figC = new figures.Figure({shape: rightTriangle, position: [2.5, 0]});
-  const figD = new figures.Figure({shape: rightTriangle, position: [2.75, 0]});
-  const cases = [
-    {input: [], expected: []},
-    {input: [figA], expected: []},
-    {input: [figA, figB], expected: []},
-    {input: [figB, figC], expected: [{a: "fig-0", b: "fig-1"}]},
-    {input: [figA, figB, figC], expected: [{a: "fig-1", b: "fig-2"}]},
-    {input: [figA, figB, figC, figD], expected: [{a: "fig-1", b: "fig-2"}, {a: "fig-1", b: "fig-3"}, {a: "fig-2", b: "fig-3"}]},
-    {input: [figA, figB, figC, figD], remove: "fig-2", expected: [{a: "fig-1", b: "fig-3"}]},
-  ];
-  cases.forEach(item => {
-    const c = new Composition({snap: false});
-    item.input.forEach(fig => { c.add(fig) });
-    if (item.remove) c.remove(item.remove);
+    if (item.move) {
+      c.move(item.move.fid, item.move.pos);
+    }
     t.deepEqual(c.overlapping(), item.expected);
   });
 });
