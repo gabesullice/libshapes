@@ -1,6 +1,7 @@
 import * as vertex from "../lib/Vertex";
 import * as edges from "../lib/Edge";
 import * as figures from "../lib/Figure";
+import VertexTree from "vertex-tree";
 
 export default class Composition {
 
@@ -20,6 +21,10 @@ export default class Composition {
     this._figures = {};
     this._overlapping = [];
     this._gaps = [];
+    this._vTree = new VertexTree({
+      leftBound: 0,
+      rightBound: this._bounds.length(),
+    });
   }
 
   figures() {

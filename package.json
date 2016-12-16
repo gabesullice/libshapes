@@ -17,6 +17,6 @@
     "babel-preset-latest": "^6.16.0"
   },
   "dependencies": {
-    "vertex-tree": "0.0.1"
+    "vertex-tree": "0.0.2"
   }
 }
