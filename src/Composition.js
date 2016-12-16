@@ -72,7 +72,7 @@ export default class Composition {
     this._iterateFigures(id);
     return {
       start, target, final,
-      snapped: (this._doSnap && (target.x != final.x || target.y != final.y)),
+      snapped: (this._doSnap && (target[0] != final[0] || target[1] != final[1])),
     };
   }
 

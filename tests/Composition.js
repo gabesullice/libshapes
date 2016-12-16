@@ -99,6 +99,23 @@ test("Can move figures in a composition by ID", t => {
   });
 });
 
+test("Move returns an initial position, target, and final position", t => {
+  const rightTriangle = ShapeMaker.make("right");
+  const cases = [
+    {input: [{shape: rightTriangle}], move: [1,0], expected: {start: [0,0], target: [1,0], final: [1,0], snapped: false}},
+    {input: [{shape: rightTriangle}, {shape: rightTriangle, position: [2,0]}], move: [1,0], expected: {start: [0,0], target: [1,0], final: [1,0], snapped: false}},
+    {input: [{shape: rightTriangle}, {shape: rightTriangle, position: [2,0]}], move: [.99,0], expected: {start: [0,0], target: [.99,0], final: [1,0], snapped: true}},
+  ];
+  cases.forEach(item => {
+    const c = new Composition({snap: true, snapTolerance: 0.002});
+    item.input.forEach(value => {
+      c.add(new figures.Figure(value));
+    });
+    const result = c.move("fig-0", item.move);
+    t.deepEqual(result, item.expected);
+  });
+});
+
 test("Can set the snap tolerance of a Composition", t => {
   const cases = [
     {input: undefined, expected: .001},
