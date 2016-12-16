@@ -2,7 +2,10 @@ import test from "ava";
 import Shape from "../lib/Shape";
 import * as vertex from "../lib/Vertex";
 import * as figures from "../lib/Figure";
+import ShapeFactory from "../../shapelibrary/lib/ShapeFactory.js";
 import Composition from "../lib/Composition";
+
+const ShapeMaker = new ShapeFactory();
 
 test("Can instantiate a new composition", t => {
   const c = new Composition({snap: false});

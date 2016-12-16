@@ -132,9 +132,6 @@ export default class Composition {
     };
   }
 
-  _addOverlaps(id) {
-  }
-
   _removeOverlaps(id) {
     this._overlapping = this._overlapping.filter(overlap => {
       return !(overlap.a == id || overlap.b == id);
