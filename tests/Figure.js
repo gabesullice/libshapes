@@ -1,8 +1,11 @@
 import test from "ava";
+import ShapeFactory from "shape-factory";
 import * as vertex from "../lib/Vertex";
 import * as edges from "../lib/Edge";
 import Shape from "../lib/Shape";
 import * as figures from "../lib/Figure";
+
+const ShapeMaker = new ShapeFactory();
 
 test("Can create a new Figure", t => {
   const tests = [
@@ -175,17 +178,30 @@ test("Get the computed edges of a figure", t => {
 });
 
 test("Can detect if two figures are overlapping", t => {
-  const rightTriangle = new Shape([[0,0], [0,1], [1,0]]);
-  const figA = new figures.Figure({shape: rightTriangle});
-  const figB = new figures.Figure({shape: rightTriangle, position: [2, 0]});
-  const figC = new figures.Figure({shape: rightTriangle, position: [2.5, 0]});
+  const rightTriangle = ShapeMaker.make("right");
+  const equilateral = ShapeMaker.make("equilateral");
+  const hexagon = ShapeMaker.make("hexagon");
+
+  const figA = {shape: rightTriangle};
+  const figB = {shape: rightTriangle, position: [2, 0]};
+  const figC = {shape: rightTriangle, position: [2.5, 0]};
+  const figD = {shape: equilateral, position: [0,0]};
+  const figE = {shape: hexagon, position: [0,0]};
+
   const cases = [
     {input: [figA, figA], expected: false, should: "return false for the same figure"},
     {input: [figA, figB], expected: false, should: "return false for two non-overlapping figures"},
     {input: [figB, figC], expected: true, should: "return true for overlapping figures"},
     {input: [figC, figB], expected: true, should: "return true for overlapping figures"},
+    {input: [figD, figE], expected: true, should: "return true for a figure on top of another figure"},
   ];
   cases.forEach(item => {
-    t.is(figures.overlap(item.input[0], item.input[1]), item.expected, item.should)
+    const first = new figures.Figure(item.input[0]);
+    const second = new figures.Figure(item.input[1]);
+    t.is(
+      figures.overlap(first, second),
+      item.expected,
+      item.should
+    )
   });
 });
