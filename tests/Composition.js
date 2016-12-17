@@ -2,7 +2,7 @@ import test from "ava";
 import Shape from "../lib/Shape";
 import * as vertex from "../lib/Vertex";
 import * as figures from "../lib/Figure";
-import ShapeFactory from "../../shapelibrary/lib/ShapeFactory.js";
+import ShapeFactory from "shape-factory";
 import Composition from "../lib/Composition";
 
 const ShapeMaker = new ShapeFactory();
