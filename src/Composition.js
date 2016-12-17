@@ -99,9 +99,14 @@ export default class Composition {
     const figs = this._figures;
     const iteratorFuncs = this._getIterationFuncs();
     for (var k in figs) {
-      iteratorFuncs.overlap({id: k, figure: figs[k]}, {id: id, figure: figs[id]});
-      for (var fid in iteratorFuncs) {
-        //iteratorFuncs[fid]({id: k, figure: figs[k]}, {id: id, figure: figs[id]});
+      if (id != k) {
+        iteratorFuncs.overlap(
+          {id: k, figure: figs[k]},
+          {id: id, figure: figs[id]}
+        );
+        for (var fid in iteratorFuncs) {
+          //iteratorFuncs[fid]({id: k, figure: figs[k]}, {id: id, figure: figs[id]});
+        }
       }
     }
   }
