@@ -18,6 +18,6 @@
     "shape-factory": "0.0.0"
   },
   "dependencies": {
-    "vertex-tree": "0.0.2"
+    "vertex-tree": "^0.1.0"
   }
 }
