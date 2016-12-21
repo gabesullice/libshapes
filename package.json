@@ -19,6 +19,6 @@
     "shape-factory": "0.0.0"
   },
   "dependencies": {
-    "vertex-tree": "^0.3.0"
+    "vertex-tree": "^0.3.1"
   }
 }
