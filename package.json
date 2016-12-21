@@ -4,6 +4,7 @@
   "description": "Library for manipulating shapes",
   "main": "index.js",
   "scripts": {
+    "babel": "babel",
     "build": "babel src --out-dir lib",
     "test": "ava tests/*.js -v",
     "ava": "ava"
@@ -18,6 +19,6 @@
     "shape-factory": "0.0.0"
   },
   "dependencies": {
-    "vertex-tree": "^0.1.0"
+    "vertex-tree": "^0.3.0"
   }
 }
