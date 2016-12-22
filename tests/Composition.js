@@ -313,28 +313,98 @@ test("Removing a figure from a composition removes subsected edges in a vtree", 
 //    t.true(dur < maxAllowedMs);
 //  }
 //});
-//
+
 //test("Can find gaps in the composition", t => {
 //  const square = ShapeMaker.make("square")
 //  const largeSquare = ShapeMaker.make("square", 3)
 //  const cases = [
 //    {input: [
 //      {shape: largeSquare},
-//      {shape: square, position: [-1,-1]},
 //      {shape: square, position: [-1,0]},
-//      {shape: square, position: [-1,1]},
-//      {shape: square, position: [0,1]},
-//      {shape: square, position: [1,1]},
-//      {shape: square, position: [1,0]},
-//      {shape: square, position: [1,-1]},
-//      {shape: square, position: [0,-1]},
 //    ], expected: [[-0.5,-0.5], [-0.5,0.5], [0.5,0.5], [0.5,-0.5]]},
 //  ];
 //  cases.forEach(item => {
 //    const c = new Composition();
-//    item.input.forEach(options => {
-//      c.add(new figures.Figure(options))
-//    })
-//    t.deepEqual(c.gaps(), [new figures.Figure({shape: square})]);
+//    c.add(new figures.Figure(item.input[0]))
+//    c.doLog = true;
+//    c.add(new figures.Figure(item.input[1]))
+//    //item.input.forEach(options => {
+//    //  c.add(new figures.Figure(options))
+//    //})
+//    //t.deepEqual(c.gaps(), [new figures.Figure({shape: square})]);
 //  });
 //});
+
+test("Can find the next vertex from the previous two vertices", t => {
+  const square = ShapeMaker.make("square")
+  const largeSquare = ShapeMaker.make("square", 3)
+  const cases = [
+    {
+      figures: [{shape: largeSquare}, {shape: square, position: [-1,0]}],
+      subtests: [
+        {input: [[-0.5,0.5], [-1.5,0.5]], expected: [-1.5,1.5]},
+        {input: [[-1.5,0.5], [-1.5,1.5]], expected: [1.5,1.5]},
+        {input: [[-1.5,1.5], [1.5,1.5]], expected: [1.5,-1.5]},
+        {input: [[1.5,1.5], [1.5,-1.5]], expected: [-1.5,-1.5]},
+        {input: [[1.5,-1.5], [-1.5,-1.5]], expected: [-1.5,-0.5]},
+        {input: [[-1.5,-1.5], [-1.5,-0.5]], expected: [-0.5,-0.5]},
+      ],
+    },
+    {
+      figures: [{shape: largeSquare}, {shape: square, position: [-1,1]}],
+      subtests: [
+        {input: [[-0.5, 0.5], [-0.5, 1.5]], expected: [ 1.5, 1.5]},
+        {input: [[-0.5, 1.5], [ 1.5, 1.5]], expected: [ 1.5,-1.5]},
+        {input: [[ 1.5, 1.5], [ 1.5,-1.5]], expected: [-1.5,-1.5]},
+        {input: [[ 1.5,-1.5], [-1.5,-1.5]], expected: [-1.5, 0.5]},
+        {input: [[-1.5,-1.5], [-1.5, 0.5]], expected: [-0.5, 0.5]},
+      ],
+    },
+    {
+      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
+      subtests: [
+        {input: [[ 0.5, 0.5], [ 0.5, 1.5]], expected: [ 1.5, 1.5]},
+        {input: [[ 0.5, 1.5], [ 1.5, 1.5]], expected: [ 1.5,-1.5] },
+        {input: [[ 1.5, 1.5], [ 1.5,-1.5]], expected: [-1.5,-1.5]},
+        {input: [[ 1.5,-1.5], [-1.5,-1.5]], expected: [-1.5, 1.5]},
+        {input: [[-1.5,-1.5], [-1.5, 1.5]], expected: [-0.5, 1.5]},
+        {input: [[-1.5, 1.5], [-0.5, 1.5]], expected: [-0.5, 0.5]},
+        {input: [[-0.5, 1.5], [-0.5, 0.5]], expected: [ 0.5, 0.5]},
+      ],
+    },
+    {
+      figures: [
+        {shape: largeSquare},
+        {shape: square, position: [-1,-1]},
+        {shape: square, position: [-1, 0]},
+        {shape: square, position: [-1, 1]},
+        {shape: square, position: [ 0, 1]},
+        {shape: square, position: [ 1, 1]},
+        {shape: square, position: [ 1, 0]},
+        {shape: square, position: [ 1,-1]},
+        {shape: square, position: [ 0,-1]},
+      ],
+      subtests: [
+        {input: [[ 0.5,-0.5], [-0.5,-0.5]], expected: [-0.5, 0.5]},
+        {input: [[-0.5,-0.5], [-0.5, 0.5]], expected: [0.5, 0.5]},
+        {input: [[-0.5, 0.5], [0.5, 0.5]], expected: [ 0.5,-0.5]},
+        {input: [[0.5, 0.5], [ 0.5,-0.5]], expected: [-0.5,-0.5]},
+      ],
+    }
+  ];
+  cases.forEach(item => {
+    const c = new Composition({snap: false});
+    c.doLog = item.log;
+    item.figures.forEach(figure => {
+      c.add(new figures.Figure(figure));
+    });
+    item.subtests.forEach(sub => {
+      const input = sub.input.map(point => {
+        return new vertex.Vertex(point[0], point[1]);
+      });
+      const next = c._nextVertex(...input);
+      const actual = [next.x, next.y];
+      t.deepEqual(actual, sub.expected);
+    });
+  });
+});

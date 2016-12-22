@@ -54,52 +54,128 @@ export default class Composition {
   add(figure, options) {
     const id = this._getID();
     this._figures[id] = figure;
-    this._processGaps(figure);
+    this._iterateFigures(id, "insert");
+    //this._processGaps(figure);
     this._addToTree(figure);
     this._handleSnap(id, options);
-    this._iterateFigures(id, "insert");
     return id;
   }
 
   _processGaps(figure) {
-    const noncoincident = this._getNonCoincidentEdges(figure.edges());
-  }
-
-  // Returns a list of edges which are not coincident with any other edge.
-  _getNonCoincidentEdges(edges) {
-    const lonely = edges.reduce((lonely, edge) => {
+    const lonely = figure.edges().reduce((lonely, edge) => {
       // Collect all edges around the vertices of edge.
       const possibles = edge.vertices().reduce((possibles, v) => {
-        const regular = this._vTree.at(v);
-        const subsected = this._subsectTree.at(v);
-        // If both have results...
-        if (regular && subsected) {
-          // Add their edges to possibles.
-          return possibles.concat(regular.edges, subsected.edges);
-        } else if (regular ^ subsected) {
-          // If either one has a result, add the appropiate edges onto possibles.
-          return (regular) ? possibles.concat(regular.edges) : possible.concat(subsected.edges);
-        } else {
-          // Just return what we already have.
-          return possibles;
-        }
+        const around = this._getEdgesAround(v);
+        //if (this.doLog) console.log('v', v);
+        //if (this.doLog) console.log('around', around);
+        return possibles.concat(around);
       }, []);
-
-
-      // Curry the edges.coincident function so that it can accept just one
-      // edge to compare against for coincidence against edge.
-      const coincident = (compare) => {
-        edges.coincident(edge, compare);
-      }
 
       // If none of the possibles are coincident then we have a completely
       // non-coincident edge which we know implies a gap.
+      const coincident = (compare) => {
+        return edges.coincident(edge, compare);
+      };
       if (!possibles.some(coincident)) {
         lonely.push(edge);
       }
+      
+      //if (this.doLog) console.log('lonely', lonely);
+      //if (this.doLog) console.log('possible', possibles);
 
       return lonely;
     }, []);
+
+    //if (this.doLog) console.log('lonely', lonely);
+
+    if (lonely.length > 0) {
+      return lonely.reduce((gaps, edge) => {
+        const gap0 = this._walkGap([edge.right(), edge.left()], edge.left(), 0);
+        //if (this.doLog) console.log('gap0', gap0);
+        //gap1 = this._walkGap([edge], edge.right());
+        gaps.push(gap0);
+        return gaps;
+      }, []);
+    } else {
+      return [];
+    }
+  }
+
+  _nextVertex(last, current) {
+    const edge = new edges.Edge([[last.x, last.y], [current.x, current.y]]);
+    const around = this._getPossibleEdges(current);
+    const possibles = around.filter(possible => {
+      return !edges.same(edge, possible);
+    });
+    //if (this.doLog) console.log('current', current);
+    //if (this.doLog) console.log('possibles', possibles);
+
+    const nextEdge = this._nearestEdge(edge, possibles);
+
+    // Derive the next vertex in the gap from the nearest edge.
+    const next = nextEdge.vertices().filter(v => {
+      return !vertex.same(current, v);
+    })[0];
+
+    return next;
+  }
+
+  _getPossibleEdges(v) {
+    const regular = this._vTree.at(v) || {edges: []};
+    const subsected = this._subsectTree.at(v) || {edges: []};
+    const original = regular.edges;
+    const derived = subsected.edges.filter(edge => {
+      const same = (compare) => { return edges.same(edge, compare); };
+      return !original.some(same);
+    });
+    //if (this.doLog) console.log(original);
+    //if (this.doLog) console.log(derived);
+    return this._removeDuplicateEdges(original).concat(derived);
+  }
+
+  _removeDuplicateEdges(bundle) {
+    return bundle.filter((edge, i, all) => {
+      return !all.some((compare, j) => {
+        const same = edges.same(edge, compare) && i != j;
+        return same;
+      });
+    });
+  }
+
+  _nearestEdge(to, bundle) {
+    //if (this.doLog) console.log('to', to);
+    //if (this.doLog) console.log('bundle', bundle);
+    bundle.sort((a, b) => {
+      if (a.angle() < b.angle()) {
+        return -1;
+      } else if (a.angle() == b.angle() && a.angle() == 0) {
+        if (vertex.same(a.right(), b.left())) {
+          return 1;
+        } else if (vertex.same(b.right(), a.left())) {
+          return -1;
+        } else {
+          return (a.length() < b.length()) ? -1 : 1;
+        }
+      } else if (a.angle() == b.angle() && a.angle() == Math.PI/2) {
+        if (vertex.same(a.top(), b.bottom())) {
+          return 1;
+        } else if (vertex.same(b.top(), a.bottom())) {
+          return -1;
+        } else {
+          return (a.length() < b.length()) ? -1 : 1;
+        }
+      } else {
+        return 1;
+      }
+    });
+    let nextIndex = 0;
+    for (let i = 0; i < bundle.length; i++) {
+      if (to.angle() < bundle[i].angle()) {
+        nextIndex = i;
+        break;
+      }
+    }
+    return bundle[nextIndex];
   }
 
   _getFigureSiblings(figure) {
