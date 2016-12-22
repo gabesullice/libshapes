@@ -114,6 +114,10 @@ Finds a `Vertex`, `iv`, along `Edge` where a line perpendicular to `Edge` also p
 
 Find the shortest distance between any point on `Edge` to `Vertex`.
 
+###`function withinBounds(Edge, Vertex)`
+
+Whether the given `Vertex` is within the bounds of the given `Edge`.
+
 ## Shape
 A geometric object composed of three or more `Vertex`s.
 

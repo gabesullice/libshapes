@@ -64,6 +64,9 @@ test("Can detect that two edges are the same", t => {
   const tests = [
     {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: true},
     {input: [[[0,0], [1,1]], [[1,1], [0,0]]], expected: true},
+    {input: [[[0,0], [0,1]], [[0,1], [0,0]]], expected: true},
+    {input: [[[0,0], [1,0]], [[1,0], [0,0]]], expected: true},
+    {input: [[[0,0], [1,0]], [[2,0], [0,0]]], expected: false},
     {input: [[[0,0], [1,1]], [[0,2], [1,1]]], expected: false},
     {input: [[[0,0], [2,2]], [[1,0], [1,2]]], expected: false},
   ];
@@ -106,6 +109,8 @@ test("Can determine if two edges are coincident", t => {
     {input: [[[0,0], [1,1]], [[0,1], [1,0]]], expected: false}, // Intersecting.
     {input: [[[0,0], [1,1]], [[0,1], [1,2]]], expected: false}, // Parallel, but offset.
     {input: [[[0,0], [2,2]], [[1,0], [1,2]]], expected: false},
+    {input: [[[-1.5,-1.5], [-1.5,-0.5]], [[-1.5,-0.5], [-1.5,0.5]]], expected: false}, // Shared vertex, non-coincident.
+    {input: [[[-1.5,-1.5], [-1.5, 1.5]], [[-0.5, 0.5], [-0.5, 1.5]]], expected: false},
   ];
   tests.forEach(test => {
     const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);
@@ -169,5 +174,18 @@ test("Can compute the shortest distance between an edge and a vertex", t => {
   tests.forEach(test => {
     const e = new edges.Edge(test.e), v = new vertex.Vertex(test.v[0], test.v[1]);
     t.is(edges.vertexDistance(e, v), test.expected);
+  });
+});
+
+test("Can detect if a point is within the bounds of an edge", t => {
+  const cases = [
+    {edge: [[-1.5,-1.5], [-1.5, 1.5]], vertex: [-0.5, 1.5], expected: false},
+    {edge: [[0,0], [2,0]], vertex: [1,1], expected: false},
+  ];
+  cases.forEach(item => {
+    const edge = new edges.Edge(item.edge);
+    const v = new vertex.Vertex(item.vertex[0], item.vertex[1]);
+    const actual = edges.withinBounds(edge, v);
+    t.is(actual, item.expected);
   });
 });

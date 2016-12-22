@@ -7,10 +7,16 @@ export class Edge {
   constructor(points) {
     this._a = new vertex.Vertex(points[0][0], points[0][1]);
     this._b = new vertex.Vertex(points[1][0], points[1][1]);
+    this._slope = (this._b.y - this._a.y)/(this._b.x - this._a.x);
+    this._angle = Math.atan(this._slope);
   }
 
   slope() {
-    return (this._b.y - this._a.y)/(this._b.x - this._a.x);
+    return this._slope;
+  }
+
+  angle() {
+    return this._angle;
   }
 
   vertices() {
@@ -50,11 +56,12 @@ export class Edge {
 
 }
 
-export function same(e0, e1) {
-  const v0 = e0.left(), v1 = e0.right(), v2 = e1.left(), v3 = e1.right();
+export function same(a, b) {
+  const a0 = a.left(), a1 = a.right();
+  const b0 = b.left(), b1 = b.right();
   return (
-    vertex.same(v0, v2)
-    && vertex.same(v1, v3)
+    (vertex.same(a0, b0) && vertex.same(a1, b1))
+    || (vertex.same(a0, b1) && vertex.same(a1, b0))
   );
 }
 
@@ -102,8 +109,8 @@ export function coincident(e0, e1) {
   if (Math.abs(b1 - b0) > EPSILON) {
     return false;
   }
-  // If these edges share the same vertices, then they are coincident.
-  if (sharedVertices(e0, e1)) {
+  // If these edges are the same, then they are coincident.
+  if (same(e0, e1)) {
     return true;
   }
   // If any vertex falls within the bounds of an edge, the edges are coincident.
@@ -177,6 +184,22 @@ export function vertexDistance(edge, v) {
   }
 }
 
+export function withinBounds(edge, v) {
+  const m = Math.abs(edge.slope());
+  if (m == Infinity) {
+    const bottom = edge.bottom(), top = edge.top();
+    return (bottom.x == v.x && bottom.y < v.y && v.y < top.y);
+  } else if (m < EPSILON) {
+    const left = edge.left(), right = edge.right();
+    return (left.y == v.y && left.x < v.x && v.x < right.x);
+  } else {
+    return (
+      (edge.left().x < v.x && v.x < edge.right().x) &&
+      (edge.bottom().y < v.y && v.y < edge.top().y)
+    );
+  }
+}
+
 function on(edge, v) {
   // Find the line defined by e.
   const m = edge.slope(), b = edge.yIntercept();
@@ -189,28 +212,13 @@ function on(edge, v) {
   }
 }
 
-function withinBounds(edge, v) {
-  const m = Math.abs(edge.slope());
-  if (m == Infinity) {
-    return (edge.bottom().y < v.y && v.y < edge.top().y);
-  } else if (m < EPSILON) {
-    return (edge.left().x < v.x && v.x < edge.right().x);
-  } else {
-    return (
-      (edge.left().x < v.x && v.x < edge.right().x) &&
-      (edge.bottom().y < v.y && v.y < edge.top().y)
-    );
-  }
-}
-
-function sharedVertices(e0, e1) {
-  const v0 = e0.left(), v1 = e0.right(), v2 = e1.left(), v3 = e1.right();
+function sharedVertices(a, b) {
+  const a0 = a.left(), a1 = a.right();
+  const b0 = b.left(), b1 = b.right();
   return (
-    vertex.same(v0, v1)
-    || vertex.same(v0, v2)
-    || vertex.same(v0, v3)
-    || vertex.same(v1, v2)
-    || vertex.same(v1, v3)
-    || vertex.same(v2, v3)
+    vertex.same(a0, b0)
+    || vertex.same(a0, b1)
+    || vertex.same(a1, b0)
+    || vertex.same(a1, b1)
   );
 }
