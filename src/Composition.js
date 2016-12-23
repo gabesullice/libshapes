@@ -55,50 +55,70 @@ export default class Composition {
     const id = this._getID();
     this._figures[id] = figure;
     this._iterateFigures(id, "insert");
-    //this._processGaps(figure);
     this._addToTree(figure);
+    this._processGaps(figure);
     this._handleSnap(id, options);
     return id;
   }
 
   _processGaps(figure) {
-    const lonely = figure.edges().reduce((lonely, edge) => {
-      // Collect all edges around the vertices of edge.
-      const possibles = edge.vertices().reduce((possibles, v) => {
-        const around = this._getEdgesAround(v);
-        //if (this.doLog) console.log('v', v);
-        //if (this.doLog) console.log('around', around);
-        return possibles.concat(around);
+    const figureEdges = figure.edges();
+    const lonely = figureEdges.filter(edge => {
+      const subsected = edge.vertices().reduce((subsected, v) => {
+        const at = this._subsectTree.at(v) || {edges: []};
+        return subsected.concat(at.edges);
       }, []);
 
-      // If none of the possibles are coincident then we have a completely
-      // non-coincident edge which we know implies a gap.
-      const coincident = (compare) => {
-        return edges.coincident(edge, compare);
-      };
-      if (!possibles.some(coincident)) {
-        lonely.push(edge);
-      }
-      
-      //if (this.doLog) console.log('lonely', lonely);
-      //if (this.doLog) console.log('possible', possibles);
+      const coincident = (compare) => { return edges.coincident(edge, compare); };
+      return !subsected.some(coincident);
+    });
 
-      return lonely;
-    }, []);
-
+    //if (this.doLog) console.log('figureEdges', figureEdges);
     //if (this.doLog) console.log('lonely', lonely);
 
     if (lonely.length > 0) {
-      return lonely.reduce((gaps, edge) => {
-        const gap0 = this._walkGap([edge.right(), edge.left()], edge.left(), 0);
+      return lonely.reduce((gaps, edge, i) => {
+        if (i == 1) {
+          const gap = this._findGap(edge);
+        }
         //if (this.doLog) console.log('gap0', gap0);
+        //const gap0 = this._walkGap([edge.right(), edge.left()], edge.left(), 0);
         //gap1 = this._walkGap([edge], edge.right());
-        gaps.push(gap0);
+        //gaps.push(gap0);
         return gaps;
       }, []);
     } else {
       return [];
     }
+  }
+
+  _findGap(fromEdge) {
+    const v0 = fromEdge.left(), v1 = fromEdge.right();
+    //if (this.doLog) console.log('fromEdge', fromEdge);
+    const gap0 = this._walkGap([v0, v1], 0);
+    if (this.doLog) console.log('gap0', gap0);
+  }
+
+  _walkGap(gap, count) {
+    if (count > 10) return false;
+
+    //if (this.doLog) console.log('gap', gap);
+
+    const prev = gap[gap.length - 2];
+    const curr = gap[gap.length - 1];
+    const next = this._nextVertex(prev, curr);
+
+    if (vertex.same(next, prev)) {
+      return false;
+    }
+    
+    if (vertex.same(next, gap[0])) {
+      return gap;
+    }
+
+    gap.push(next);
+
+    return this._walkGap(gap, count + 1);
   }
 
   _nextVertex(last, current) {
@@ -108,6 +128,7 @@ export default class Composition {
       return !edges.same(edge, possible);
     });
     //if (this.doLog) console.log('current', current);
+    //if (this.doLog) console.log('around', around);
     //if (this.doLog) console.log('possibles', possibles);
 
     const nextEdge = this._nearestEdge(edge, possibles);
@@ -128,8 +149,10 @@ export default class Composition {
       const same = (compare) => { return edges.same(edge, compare); };
       return !original.some(same);
     });
-    //if (this.doLog) console.log(original);
-    //if (this.doLog) console.log(derived);
+    //if (this.doLog) console.log('v', v);
+    //if (this.doLog) console.log('original', original);
+    //if (this.doLog) console.log('subsected', subsected.edges);
+    //if (this.doLog) console.log('derived', derived);
     return this._removeDuplicateEdges(original).concat(derived);
   }
 
