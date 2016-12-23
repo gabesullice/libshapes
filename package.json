@@ -1,6 +1,6 @@
 {
   "name": "libshapes",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "Library for manipulating shapes",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,6 @@
     "shape-factory": "0.0.1"
   },
   "dependencies": {
-    "vertex-tree": "^0.3.1"
+    "vertex-tree": "^0.3.2"
   }
 }
