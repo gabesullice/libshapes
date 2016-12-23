@@ -1,6 +1,7 @@
 import * as vertex from "../lib/Vertex";
 import * as edges from "../lib/Edge";
 import * as figures from "../lib/Figure";
+import Shape from "../lib/Shape";
 import {VertexTree} from "vertex-tree";
 
 export default class Composition {
@@ -9,13 +10,16 @@ export default class Composition {
     let bounds = [[0,0], [100,100]];
     let doSnap = true;
     let snapTolerance = 0.001;
+    let processGaps = false;
     if (options !== undefined) {
       if (options.hasOwnProperty('bounds')) bounds = options.bounds;
       if (options.hasOwnProperty('snap')) doSnap = options.snap;
       if (options.hasOwnProperty('snapTolerance')) snapTolerance = options.snapTolerance;
+      if (options.hasOwnProperty('processGaps')) processGaps = options.processGaps;
     }
     this.bounds.apply(this, bounds);
     this._doSnap = doSnap;
+    this._doProcessGaps = processGaps;
     this.snapTolerance(snapTolerance);
     this._count = 0;
     this._figures = {};
@@ -56,7 +60,9 @@ export default class Composition {
     this._figures[id] = figure;
     this._iterateFigures(id, "insert");
     this._addToTree(figure);
-    this._processGaps(figure);
+    if (this._doProcessGaps) {
+      this._processGaps(figure);
+    }
     this._handleSnap(id, options);
     return id;
   }
@@ -101,7 +107,7 @@ export default class Composition {
         return gaps;
       }, []);
 
-      this._gaps.concat(gaps);
+      this._gaps = this._gaps.concat(gaps);
     }
   }
 
@@ -112,7 +118,6 @@ export default class Composition {
     const gap1 = this._walkGap([v1, v0], 0);
 
     const sameAsFig = (gap) => {
-      //if (this.doLog) console.log(gap);
       return gap.every(v0 => {
         const res = figure.vertices().some(v1 => {
           return vertex.same(v0, v1);
@@ -124,7 +129,13 @@ export default class Composition {
     //if (this.doLog) console.log('gap0', gap0);
     //if (this.doLog) console.log('gap1', gap1);
 
-    return (!gap1 || sameAsFig(gap1)) ? gap0 : gap1;
+    if (gap0 && !sameAsFig(gap0)) {
+      return gap0;
+    } else if (gap1 && !sameAsFig(gap1)) {
+      return gap1;
+    } else {
+      return false;
+    }
   }
 
   _walkGap(gap, count) {
@@ -282,7 +293,12 @@ export default class Composition {
   }
 
   gaps() {
-    return this._gaps;
+    return this._gaps.map(gap => {
+      const points = gap.map(v => {
+        return [v.x, v.y];
+      });
+      return new figures.Figure({shape: new Shape(points)});
+    });
   }
 
   _handleSnap(id, options) {

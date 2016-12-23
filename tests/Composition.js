@@ -314,37 +314,51 @@ test("Removing a figure from a composition removes subsected edges in a vtree", 
 //  }
 //});
 
-test("Can find gaps in the composition", t => {
-  const square = ShapeMaker.make("square")
-  const largeSquare = ShapeMaker.make("square", 3)
-  const cases = [
-    {
-      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
-      subtests: [
-        {
-          edges: [
-            [[-0.5, 1.5], [-0.5, 0.5]],
-            [[-0.5, 0.5], [ 0.5, 0.5]],
-            [[ 0.5, 0.5], [ 0.5, 1.5]],
-            [[ 0.5, 1.5], [ 1.5, 1.5]],
-            [[ 1.5, 1.5], [ 1.5,-1.5]],
-            [[ 1.5,-1.5], [-1.5,-1.5]],
-            [[-1.5,-1.5], [-1.5, 1.5]],
-            [[-1.5, 1.5], [-0.5, 1.5]],
-          ],
-        },
-      ],
-    },
-  ];
-  cases.forEach(item => {
-    const c = new Composition();
-    item.figures.forEach((options, i) => {
-      c.doLog = i == 1;
-      c.add(new figures.Figure(options))
-    })
-    //t.deepEqual(c.gaps(), [new figures.Figure({shape: square})]);
-  });
-});
+//test("Can find gaps in the composition", t => {
+//  const square = ShapeMaker.make("square")
+//  const largeSquare = ShapeMaker.make("square", 3)
+//  const cases = [
+//    {
+//      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
+//      subtests: [
+//        {
+//          edges: [
+//            [[-0.5, 1.5], [-0.5, 0.5]],
+//            [[-0.5, 0.5], [ 0.5, 0.5]],
+//            [[ 0.5, 0.5], [ 0.5, 1.5]],
+//            [[ 0.5, 1.5], [ 1.5, 1.5]],
+//            [[ 1.5, 1.5], [ 1.5,-1.5]],
+//            [[ 1.5,-1.5], [-1.5,-1.5]],
+//            [[-1.5,-1.5], [-1.5, 1.5]],
+//            [[-1.5, 1.5], [-0.5, 1.5]],
+//          ],
+//        },
+//      ],
+//    },
+//  ];
+//  cases.forEach(item => {
+//    const c = new Composition({processGaps: true});
+//    c.doLog = true;
+//    item.figures.forEach((options, i) => {
+//      c.add(new figures.Figure(options))
+//    })
+//
+//    const toPoints = function (figureList) {
+//      return figureList.map(gap => {
+//        return gap.vertices().map(v => {
+//          return [v.x, v.y];
+//        });
+//      });
+//    };
+//
+//    const actual = toPoints(c.gaps());
+//    //console.log(c.gaps()[0]._shape);
+//    const expected = toPoints([new figures.Figure({
+//      shape: item.subtests[0].edges
+//    })]);
+//    t.deepEqual(actual, expected);
+//  });
+//});
 
 test("Can find the next vertex from the previous two vertices", t => {
   const square = ShapeMaker.make("square")
