@@ -282,6 +282,11 @@ export default class Composition {
     this._removeOverlaps(id);
     this._addToTree(this._figures[id]);
     this._iterateFigures(id, "insert");
+    if (this._doProcessGaps) {
+      // @todo: REMOVE NEXT LINE
+      this._gaps = [];
+      this._processGaps(figure);
+    }
     return {
       start, target, final,
       snapped: (this._doSnap && (target[0] != final[0] || target[1] != final[1])),
