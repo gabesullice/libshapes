@@ -77,30 +77,59 @@ export default class Composition {
     //if (this.doLog) console.log('lonely', lonely);
 
     if (lonely.length > 0) {
-      return lonely.reduce((gaps, edge, i) => {
-        if (i == 1) {
-          const gap = this._findGap(edge);
+      const gaps = lonely.reduce((gaps, edge, i) => {
+        const found = this._findGap(edge, figure);
+
+        //if (this.doLog) console.log(gaps);
+
+        // If we found a gap...
+        if (found) {
+          // and it's not one that we've already found...
+          const duplicate = gaps.concat(this._gaps).some(gap => {
+            return gap.every(v0 => {
+              return found.some(v1 => {
+                return vertex.same(v0, v1);
+              });
+            });
+          });
+
+          if (!duplicate) {
+            gaps.push(found);
+          }
         }
-        //if (this.doLog) console.log('gap0', gap0);
-        //const gap0 = this._walkGap([edge.right(), edge.left()], edge.left(), 0);
-        //gap1 = this._walkGap([edge], edge.right());
-        //gaps.push(gap0);
+
         return gaps;
       }, []);
-    } else {
-      return [];
+
+      this._gaps.concat(gaps);
     }
   }
 
-  _findGap(fromEdge) {
+  _findGap(fromEdge, figure) {
     const v0 = fromEdge.left(), v1 = fromEdge.right();
     //if (this.doLog) console.log('fromEdge', fromEdge);
     const gap0 = this._walkGap([v0, v1], 0);
-    if (this.doLog) console.log('gap0', gap0);
+    const gap1 = this._walkGap([v1, v0], 0);
+
+    const sameAsFig = (gap) => {
+      //if (this.doLog) console.log(gap);
+      return gap.every(v0 => {
+        const res = figure.vertices().some(v1 => {
+          return vertex.same(v0, v1);
+        });
+        return res;
+      });
+    };
+
+    //if (this.doLog) console.log('gap0', gap0);
+    //if (this.doLog) console.log('gap1', gap1);
+
+    return (!gap1 || sameAsFig(gap1)) ? gap0 : gap1;
   }
 
   _walkGap(gap, count) {
-    if (count > 10) return false;
+    // Prevents getting into an infinite loop.
+    if (count > 75) return false;
 
     //if (this.doLog) console.log('gap', gap);
 
