@@ -106,7 +106,6 @@ test("Removing a figure from a composition removes its vertices from the vertex 
   fig.vertices().forEach(point => {
     t.truthy(c._vTree.at(point), "The vertices of the figure are added.");
   });
-  c.doLog = true;
   c.remove(fid);
   fig.vertices().forEach(point => {
     t.falsy(c._vTree.at(point), "The vertices of the figure are removed.");
@@ -189,10 +188,10 @@ test("Can find overlapping figures", t => {
     {input: [], expected: []},
     {input: [posA], expected: []},
     {input: [posA, posB], expected: []},
-    {input: [posB, posC], expected: [{a: "fig-0", b: "fig-1"}]},
-    {input: [posA, posB, posC], expected: [{a: "fig-1", b: "fig-2"}]},
-    {input: [posA, posB, posC, posD], expected: [{a: "fig-1", b: "fig-2"}, {a: "fig-1", b: "fig-3"}, {a: "fig-2", b: "fig-3"}]},
-    {input: [posA, posB, posC, posD], remove: "fig-2", expected: [{a: "fig-1", b: "fig-3"}]},
+    {input: [posB, posC], expected: [{a: "fig-1", b: "fig-0"}]},
+    {input: [posA, posB, posC], expected: [{a: "fig-2", b: "fig-1"}]},
+    {input: [posA, posB, posC, posD], expected: [{a: "fig-2", b: "fig-1"}, {a: "fig-3", b: "fig-1"}, {a: "fig-3", b: "fig-2"}]},
+    {input: [posA, posB, posC, posD], remove: "fig-2", expected: [{a: "fig-3", b: "fig-1"}]},
     {input: [posB, posC], move: {fid: "fig-0", pos: [10,0]}, expected: []},
     {input: [posA, posB], move: {fid: "fig-0", pos: [1.5,0]}, expected: [{a: "fig-1", b: "fig-0"}]},
   ];
@@ -314,51 +313,75 @@ test("Removing a figure from a composition removes subsected edges in a vtree", 
 //  }
 //});
 
-//test("Can find gaps in the composition", t => {
-//  const square = ShapeMaker.make("square")
-//  const largeSquare = ShapeMaker.make("square", 3)
-//  const cases = [
-//    {
-//      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
-//      subtests: [
-//        {
-//          edges: [
-//            [[-0.5, 1.5], [-0.5, 0.5]],
-//            [[-0.5, 0.5], [ 0.5, 0.5]],
-//            [[ 0.5, 0.5], [ 0.5, 1.5]],
-//            [[ 0.5, 1.5], [ 1.5, 1.5]],
-//            [[ 1.5, 1.5], [ 1.5,-1.5]],
-//            [[ 1.5,-1.5], [-1.5,-1.5]],
-//            [[-1.5,-1.5], [-1.5, 1.5]],
-//            [[-1.5, 1.5], [-0.5, 1.5]],
-//          ],
-//        },
-//      ],
-//    },
-//  ];
-//  cases.forEach(item => {
-//    const c = new Composition({processGaps: true});
-//    c.doLog = true;
-//    item.figures.forEach((options, i) => {
-//      c.add(new figures.Figure(options))
-//    })
-//
-//    const toPoints = function (figureList) {
-//      return figureList.map(gap => {
-//        return gap.vertices().map(v => {
-//          return [v.x, v.y];
-//        });
-//      });
-//    };
-//
-//    const actual = toPoints(c.gaps());
-//    //console.log(c.gaps()[0]._shape);
-//    const expected = toPoints([new figures.Figure({
-//      shape: item.subtests[0].edges
-//    })]);
-//    t.deepEqual(actual, expected);
-//  });
-//});
+test("Can find gaps in the composition", t => {
+  const square = ShapeMaker.make("square")
+  const right = ShapeMaker.make("right")
+  const parallelogram = ShapeMaker.make("parallelogram")
+  const largeSquare = ShapeMaker.make("square", 3)
+  const cases = [
+    {
+      figures: [
+        {shape: ShapeMaker.make("square")},
+        {
+          shape: right,
+          position: [
+            -1 * right.vertices()[0].x - 0.5,
+            -1 * right.vertices()[0].y - 0.75,
+          ],
+        },
+      ],
+      doLog: true,
+      subtests: [],
+      description: "Ignores intersecting figures",
+    },
+    {
+      figures: [{shape: largeSquare}, {shape: square, position: [5,0]}],
+      subtests: [],
+      description: "Finds no gaps when no figures overlap",
+    },
+    {
+      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
+      subtests: [
+        {
+          vertices: [
+            [-0.5, 1.5],
+            [-0.5, 0.5],
+            [ 0.5, 0.5],
+            [ 0.5, 1.5],
+            [ 1.5, 1.5],
+            [ 1.5,-1.5],
+            [-1.5,-1.5],
+            [-1.5, 1.5],
+          ],
+        },
+      ],
+      description: "Small square within a large square",
+    },
+  ];
+
+  cases.forEach(item => {
+    const c = new Composition({processGaps: true, snap: false});
+    c.doLog = item.doLog;
+    item.figures.forEach((options, i) => {
+      c.add(new figures.Figure(options))
+    })
+
+    const toPoints = function (figureList) {
+      return figureList.map(gap => {
+        return gap.vertices().map(v => {
+          return [v.x, v.y];
+        });
+      });
+    };
+
+    const actual = toPoints(c.gaps());
+    const figs = item.subtests.map(sub => {
+      return new figures.Figure({shape: new Shape(sub.vertices)});
+    });
+    const expected = toPoints(figs);
+    t.deepEqual(actual, expected, item.description);
+  });
+});
 
 test("Can find the next vertex from the previous two vertices", t => {
   const square = ShapeMaker.make("square")
@@ -433,3 +456,52 @@ test("Can find the next vertex from the previous two vertices", t => {
     });
   });
 });
+
+//test("Gaps are reprocessed when a figure coincident to a gap is (re)moved", t => {
+//  const square = ShapeMaker.make("square")
+//  const largeSquare = ShapeMaker.make("square", 3)
+//  const cases = [
+//    {
+//      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
+//      subtests: [
+//        {
+//          move: {
+//            id: "fig-1",
+//            position: [0, 2],
+//          },
+//          vertices: [
+//            [ 1.5, 1.5],
+//            [ 1.5,-1.5],
+//            [-1.5,-1.5],
+//            [-1.5, 1.5],
+//          ],
+//        },
+//      ],
+//    },
+//  ];
+//
+//  cases.forEach(item => {
+//    const c = new Composition({processGaps: true, snap: false});
+//    item.figures.forEach((options, i) => {
+//      c.add(new figures.Figure(options))
+//    })
+//
+//    const toPoints = function (figureList) {
+//      return figureList.map(gap => {
+//        return gap.vertices().map(v => {
+//          return [v.x, v.y];
+//        });
+//      });
+//    };
+//
+//    item.subtests.forEach(sub => {
+//      c.doLog = true;
+//      c.move(sub.move.id, sub.move.position);
+//      c.doLog = false;
+//      const gap = new figures.Figure({shape: new Shape(sub.vertices)});
+//      const expected = toPoints([gap]);
+//      const actual = toPoints(c.gaps());
+//      t.deepEqual(actual, expected);
+//    });
+//  });
+//});

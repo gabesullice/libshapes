@@ -205,3 +205,36 @@ test("Can detect if two figures are overlapping", t => {
     )
   });
 });
+
+test("Can detect if two figures have intersecting edges", t => {
+  const square = ShapeMaker.make("square");
+  const right = ShapeMaker.make("right");
+
+  const cases = [
+    {
+      figures: [
+        {shape: square},
+        {shape: square},
+      ],
+      expected: false,
+      should: "return false for a figure within another figure"
+    },
+    {
+      figures: [
+        {shape: square},
+        {shape: square, rotation: Math.PI/4},
+      ],
+      expected: true,
+      should: "return trur for two figures with an intersecting edges"
+    },
+  ];
+  cases.forEach(item => {
+    const first = new figures.Figure(item.figures[0]);
+    const second = new figures.Figure(item.figures[1]);
+    t.is(
+      figures.intersect(first, second),
+      item.expected,
+      item.should
+    )
+  });
+});

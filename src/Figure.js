@@ -69,12 +69,20 @@ export class Figure {
 }
 
 export function overlap(f0, f1) {
-  const e0s = f0.edges().concat(f0.innerEdges());
-  const e1s = f1.edges().concat(f1.innerEdges());
-  for (var k0 in e0s) {
-    for (var k1 in e1s) {
-      if (edges.intersect(e0s[k0], e1s[k1])) return true;
-    }
-  }
-  return false;
+  return intersectAny(
+    f0.edges().concat(f0.innerEdges()),
+    f1.edges().concat(f1.innerEdges()),
+  );
+}
+
+export function intersect(f0, f1) {
+  return intersectAny(f0.edges(), f1.edges());
+}
+
+function intersectAny(e0s, e1s) {
+  return e0s.some(e0 => {
+    return e1s.some(e1 => {
+      return edges.intersect(e0, e1);
+    });
+  });
 }
