@@ -68,6 +68,19 @@ export class Figure {
 
 }
 
+export function subsect(f0, f1) {
+  const e0s = f0.edges(), e1s = f1.edges();
+  let subsections = [];
+  e0s.forEach(e0 => {
+    e1s.forEach(e1 => {
+      if (edges.coincident(e0, e1)) {
+        subsections = subsections.concat(edges.subsect(e0, e1));
+      }
+    });
+  });
+  return subsections;
+}
+
 export function overlap(f0, f1) {
   return intersectAny(
     f0.edges().concat(f0.innerEdges()),

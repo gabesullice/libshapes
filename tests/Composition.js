@@ -1,5 +1,4 @@
 import test from "ava";
-import Shape from "../lib/Shape";
 import {Edge} from "../lib/Edge";
 import * as vertex from "../lib/Vertex";
 import * as figures from "../lib/Figure";
@@ -27,7 +26,7 @@ test("Can set the bounds of a composition", t => {
 });
 
 test("Can add multiple figures to a composition", t => {
-  const figure = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figure = new figures.Figure({shape: ShapeMaker.make("right")});
   const cases = [
     {input: figure, expected: "fig-0"},
     {input: figure, expected: "fig-1"},
@@ -51,7 +50,7 @@ test("Adding a figure to a composition adds its vertices to a vertex tree", t =>
 });
 
 test("Can get all figures in a composition", t => {
-  const figure = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figure = new figures.Figure({shape: ShapeMaker.make("right")});
   const cases = [
     {input: [], expected: []},
     {input: [figure], expected: ["fig-0"]},
@@ -65,8 +64,9 @@ test("Can get all figures in a composition", t => {
 });
 
 test("Can get a figure in a composition by ID", t => {
-  const figureA = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
-  const figureB = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const right = ShapeMaker.make("right");
+  const figureA = new figures.Figure({shape: right});
+  const figureB = new figures.Figure({shape: right});
   const cases = [
     {input: [figureA],          get: "fig-0", expected: figureA},
     {input: [figureA, figureB], get: "fig-0", expected: figureA},
@@ -81,7 +81,7 @@ test("Can get a figure in a composition by ID", t => {
 });
 
 test("Can remove figures in a composition by ID", t => {
-  const figure = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figure = new figures.Figure({shape: ShapeMaker.make("right")});
   const cases = [
     {input: [], remove: [], expected: []},
     {input: [figure], remove: ["fig-0"], expected: []},
@@ -113,8 +113,8 @@ test("Removing a figure from a composition removes its vertices from the vertex 
 });
 
 test("Can move figures in a composition by ID", t => {
-  const figureA = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
-  const figureB = new figures.Figure({shape: new Shape([[0,0], [0,1], [1,0]])});
+  const figureA = new figures.Figure({shape: ShapeMaker.make("right")});
+  const figureB = new figures.Figure({shape: ShapeMaker.make("right")});
   const cases = [
     {input: [figureA], translation: [0,0], expected: [0,0]},
     {input: [figureA], translation: [1,1], expected: [1,1]},
@@ -129,11 +129,11 @@ test("Can move figures in a composition by ID", t => {
 });
 
 test("Move returns an initial position, target, and final position", t => {
-  const rightTriangle = ShapeMaker.make("right");
+  const right = ShapeMaker.make("right");
   const cases = [
-    {input: [{shape: rightTriangle}], move: [1,0], expected: {start: [0,0], target: [1,0], final: [1,0], snapped: false}},
-    {input: [{shape: rightTriangle}, {shape: rightTriangle, position: [2,0]}], move: [1,0], expected: {start: [0,0], target: [1,0], final: [1,0], snapped: false}},
-    {input: [{shape: rightTriangle}, {shape: rightTriangle, position: [2,0]}], move: [.99,0], expected: {start: [0,0], target: [.99,0], final: [1,0], snapped: true}},
+    {input: [{shape: right}], move: [1,0], expected: {start: [0,0], target: [1,0], final: [1,0], snapped: false}},
+    {input: [{shape: right}, {shape: right, position: [2,0]}], move: [1,0], expected: {start: [0,0], target: [1,0], final: [1,0], snapped: false}},
+    {input: [{shape: right}, {shape: right, position: [2,0]}], move: [.99,0], expected: {start: [0,0], target: [.99,0], final: [1,0], snapped: true}},
   ];
   cases.forEach(item => {
     const c = new Composition({snap: true, snapTolerance: 0.002});
@@ -179,7 +179,7 @@ test("Can set the snap tolerance of a Composition", t => {
 });
 
 test("Can find overlapping figures", t => {
-  const rightTriangle = new Shape([[0,0], [0,1], [1,0]]);
+  const right = ShapeMaker.make("right");
   const posA = [0,0];
   const posB = [2, 0];
   const posC = [2.5, 0];
@@ -198,7 +198,7 @@ test("Can find overlapping figures", t => {
   cases.forEach(item => {
     const c = new Composition({snap: false});
     item.input.forEach(pos => {
-      c.add(new figures.Figure({shape: rightTriangle, position: pos}))
+      c.add(new figures.Figure({shape: right, position: pos}))
     });
     if (item.remove) c.remove(item.remove);
     if (item.move) {
@@ -210,8 +210,8 @@ test("Can find overlapping figures", t => {
 });
 
 //test("Can find overlapping figures efficiently", t => {
-//  const rightTriangle = new Shape([[0,0], [0,1], [1,0]]);
-//  const fig = new figures.Figure({shape: rightTriangle});
+//  const right = new Shape([[0,0], [0,1], [1,0]]);
+//  const fig = new figures.Figure({shape: right});
 //  const cases = [
 //    {shape: fig, copies: 10, allowed: 100},
 //    {shape: fig, copies: 20, allowed: 100},
@@ -233,8 +233,10 @@ test("Can find overlapping figures", t => {
 //});
 
 test("Will snap a moved figure in a composition to another figure", t => {
-  const rightTriangle = new Shape([[0,0], [0,1], [1,0]]);
-  const square = new Shape([[0,0], [0,1], [1,1], [1,0]]);
+  let right = ShapeMaker.make("right");
+  right = right.translate([right.vertices()[0].x * -1, right.vertices()[0].x * -1]);
+  let square = ShapeMaker.make("square");
+  square = square.translate([square.vertices()[0].x * -1, square.vertices()[0].x * -1]);
   const figureA = new figures.Figure({shape: square, position: [0,0]});
   const figureB = new figures.Figure({shape: square, position: [2,2]});
   const bound = 100, toleranceSetting = .001, tolerance = bound * toleranceSetting;
@@ -376,84 +378,10 @@ test("Can find gaps in the composition", t => {
 
     const actual = toPoints(c.gaps());
     const figs = item.subtests.map(sub => {
-      return new figures.Figure({shape: new Shape(sub.vertices)});
+      return new figures.Figure({shape: ShapeMaker.arbitrary(sub.vertices)});
     });
     const expected = toPoints(figs);
     t.deepEqual(actual, expected, item.description);
-  });
-});
-
-test("Can find the next vertex from the previous two vertices", t => {
-  const square = ShapeMaker.make("square")
-  const largeSquare = ShapeMaker.make("square", 3)
-  const cases = [
-    {
-      figures: [{shape: largeSquare}, {shape: square, position: [-1,0]}],
-      subtests: [
-        {input: [[-0.5,0.5], [-1.5,0.5]], expected: [-1.5,1.5]},
-        {input: [[-1.5,0.5], [-1.5,1.5]], expected: [1.5,1.5]},
-        {input: [[-1.5,1.5], [1.5,1.5]], expected: [1.5,-1.5]},
-        {input: [[1.5,1.5], [1.5,-1.5]], expected: [-1.5,-1.5]},
-        {input: [[1.5,-1.5], [-1.5,-1.5]], expected: [-1.5,-0.5]},
-        {input: [[-1.5,-1.5], [-1.5,-0.5]], expected: [-0.5,-0.5]},
-      ],
-    },
-    {
-      figures: [{shape: largeSquare}, {shape: square, position: [-1,1]}],
-      subtests: [
-        {input: [[-0.5, 0.5], [-0.5, 1.5]], expected: [ 1.5, 1.5]},
-        {input: [[-0.5, 1.5], [ 1.5, 1.5]], expected: [ 1.5,-1.5]},
-        {input: [[ 1.5, 1.5], [ 1.5,-1.5]], expected: [-1.5,-1.5]},
-        {input: [[ 1.5,-1.5], [-1.5,-1.5]], expected: [-1.5, 0.5]},
-        {input: [[-1.5,-1.5], [-1.5, 0.5]], expected: [-0.5, 0.5]},
-      ],
-    },
-    {
-      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
-      subtests: [
-        {input: [[ 0.5, 0.5], [ 0.5, 1.5]], expected: [ 1.5, 1.5]},
-        {input: [[ 0.5, 1.5], [ 1.5, 1.5]], expected: [ 1.5,-1.5] },
-        {input: [[ 1.5, 1.5], [ 1.5,-1.5]], expected: [-1.5,-1.5]},
-        {input: [[ 1.5,-1.5], [-1.5,-1.5]], expected: [-1.5, 1.5]},
-        {input: [[-1.5,-1.5], [-1.5, 1.5]], expected: [-0.5, 1.5]},
-        {input: [[-1.5, 1.5], [-0.5, 1.5]], expected: [-0.5, 0.5]},
-        {input: [[-0.5, 1.5], [-0.5, 0.5]], expected: [ 0.5, 0.5]},
-      ],
-    },
-    {
-      figures: [
-        {shape: largeSquare},
-        {shape: square, position: [-1,-1]},
-        {shape: square, position: [-1, 0]},
-        {shape: square, position: [-1, 1]},
-        {shape: square, position: [ 0, 1]},
-        {shape: square, position: [ 1, 1]},
-        {shape: square, position: [ 1, 0]},
-        {shape: square, position: [ 1,-1]},
-        {shape: square, position: [ 0,-1]},
-      ],
-      subtests: [
-        {input: [[ 0.5,-0.5], [-0.5,-0.5]], expected: [-0.5, 0.5]},
-        {input: [[-0.5,-0.5], [-0.5, 0.5]], expected: [0.5, 0.5]},
-        {input: [[-0.5, 0.5], [0.5, 0.5]], expected: [ 0.5,-0.5]},
-        {input: [[0.5, 0.5], [ 0.5,-0.5]], expected: [-0.5,-0.5]},
-      ],
-    }
-  ];
-  cases.forEach(item => {
-    const c = new Composition({snap: false});
-    c.doLog = item.log;
-    item.figures.forEach(figure => {
-      c.add(new figures.Figure(figure));
-    });
-    item.subtests.forEach(sub => {
-      const input = sub.input.map(point => {
-        return new vertex.Vertex(point[0], point[1]);
-      });
-      const next = c._nextVertex(...input);
-      const actual = [next.x, next.y];
-      t.deepEqual(actual, sub.expected);
-    });
   });
 });
 
