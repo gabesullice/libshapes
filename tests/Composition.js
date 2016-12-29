@@ -193,7 +193,7 @@ test("Can find overlapping figures", t => {
     {input: [posA, posB, posC, posD], expected: [{a: "fig-2", b: "fig-1"}, {a: "fig-3", b: "fig-1"}, {a: "fig-3", b: "fig-2"}]},
     {input: [posA, posB, posC, posD], remove: "fig-2", expected: [{a: "fig-3", b: "fig-1"}]},
     {input: [posB, posC], move: {fid: "fig-0", pos: [10,0]}, expected: []},
-    {input: [posA, posB], move: {fid: "fig-0", pos: [1.5,0]}, expected: [{a: "fig-1", b: "fig-0"}]},
+    {input: [posA, posB], move: {fid: "fig-0", pos: [1.5,0]}, expected: [{a: "fig-0", b: "fig-1"}]},
   ];
   cases.forEach(item => {
     const c = new Composition({snap: false});
@@ -209,28 +209,31 @@ test("Can find overlapping figures", t => {
 
 });
 
-//test("Can find overlapping figures efficiently", t => {
-//  const right = new Shape([[0,0], [0,1], [1,0]]);
-//  const fig = new figures.Figure({shape: right});
-//  const cases = [
-//    {shape: fig, copies: 10, allowed: 100},
-//    {shape: fig, copies: 20, allowed: 100},
-//    {shape: fig, copies: 40, allowed: 100},
-//    {shape: fig, copies: 100, allowed: 300},
-//    {shape: fig, copies: 500, allowed: 750},
-//  ];
-//  cases.forEach(item => {
-//    const start = process.hrtime()[1];
-//    const c = new Composition();
-//    for (var i = 0; i < item.copies; i++) {
-//      item.shape.position([Math.random(), Math.random()]);
-//      c.add(item.shape);
-//    }
-//    c.overlapping();
-//    const dur = (process.hrtime()[1] - start) / 1e+6; // nano to milliseconds
-//    t.true(dur < item.allowed);
-//  });
-//});
+test.skip("Can find overlapping figures efficiently", t => {
+  const right = ShapeMaker.make("right");
+  const fig = new figures.Figure({shape: right});
+  const randomPosition = function () {
+    return [Math.random() * 100, Math.random() * 100];
+  };
+  const cases = [
+    {shape: fig, copies: 10, allowed: 100},
+    {shape: fig, copies: 20, allowed: 100},
+    {shape: fig, copies: 40, allowed: 100},
+    {shape: fig, copies: 100, allowed: 300},
+    {shape: fig, copies: 500, allowed: 750},
+  ];
+  cases.forEach(item => {
+    const start = process.hrtime();
+    const c = new Composition();
+    for (var i = 0; i < item.copies; i++) {
+      item.shape.position(randomPosition());
+      c.add(item.shape);
+    }
+    c.overlapping();
+    const dur = process.hrtime(start)[1] / 1e+6; // nano to milliseconds
+    t.true(dur < item.allowed);
+  });
+});
 
 test("Will snap a moved figure in a composition to another figure", t => {
   let right = ShapeMaker.make("right");
@@ -302,18 +305,28 @@ test("Removing a figure from a composition removes subsected edges in a vtree", 
   t.falsy(c._subsectTree.at(new vertex.Vertex(-1.5, 0.5)), "Should NOT find an item at (-1.5, 0.5)");
 });
 
-//test("Can snap figures to one another efficiently", t => {
-//  const square = new Shape([[0,0], [0,1], [1,1], [1,0]]);
-//  const maxAllowedMs = 50; // milliseconds
-//  const c = new Composition();
-//  for (var i = 0; i < 100; i++) {
-//    const start = process.hrtime()[1];
-//    const fig = new figures.Figure({shape: square, position: [Math.random() * 100, Math.random() * 100]});
-//    c.add(fig);
-//    const dur = (process.hrtime()[1] - start) / 1e+6; // nano to milliseconds
-//    t.true(dur < maxAllowedMs);
-//  }
-//});
+test.skip("Can snap figures to one another efficiently", t => {
+  const square = ShapeMaker.make("square");
+  const maxAllowedMs = 50; // milliseconds
+  const randomFigure = function () {
+    return new figures.Figure({
+      shape: square,
+      position: [Math.random() * 100, Math.random() * 100]
+    });
+  };
+
+  const c = new Composition();
+  c.add(randomFigure());
+
+  for (var i = 0; i < 1000; i++) {
+    const fig = randomFigure();
+    const start = process.hrtime();
+    c._calculateSnap(fig);
+    const dur = process.hrtime(start)[1] / 1e+6; // nano to milliseconds
+    c.add(fig);
+    t.true(dur < maxAllowedMs);
+  }
+});
 
 test("Can find gaps in the composition", t => {
   const square = ShapeMaker.make("square")
@@ -385,51 +398,51 @@ test("Can find gaps in the composition", t => {
   });
 });
 
-//test("Gaps are reprocessed when a figure coincident to a gap is (re)moved", t => {
-//  const square = ShapeMaker.make("square")
-//  const largeSquare = ShapeMaker.make("square", 3)
-//  const cases = [
-//    {
-//      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
-//      subtests: [
-//        {
-//          move: {
-//            id: "fig-1",
-//            position: [0, 2],
-//          },
-//          vertices: [
-//            [ 1.5, 1.5],
-//            [ 1.5,-1.5],
-//            [-1.5,-1.5],
-//            [-1.5, 1.5],
-//          ],
-//        },
-//      ],
-//    },
-//  ];
-//
-//  cases.forEach(item => {
-//    const c = new Composition({processGaps: true, snap: false});
-//    item.figures.forEach((options, i) => {
-//      c.add(new figures.Figure(options))
-//    })
-//
-//    const toPoints = function (figureList) {
-//      return figureList.map(gap => {
-//        return gap.vertices().map(v => {
-//          return [v.x, v.y];
-//        });
-//      });
-//    };
-//
-//    item.subtests.forEach(sub => {
-//      c.doLog = true;
-//      c.move(sub.move.id, sub.move.position);
-//      c.doLog = false;
-//      const gap = new figures.Figure({shape: new Shape(sub.vertices)});
-//      const expected = toPoints([gap]);
-//      const actual = toPoints(c.gaps());
-//      t.deepEqual(actual, expected);
-//    });
-//  });
-//});
+test.failing("Gaps are reprocessed when a figure coincident to a gap is (re)moved", t => {
+  const square = ShapeMaker.make("square")
+  const largeSquare = ShapeMaker.make("square", 3)
+  const cases = [
+    {
+      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
+      subtests: [
+        {
+          move: {
+            id: "fig-1",
+            position: [0, 2],
+          },
+          vertices: [
+            [ 1.5, 1.5],
+            [ 1.5,-1.5],
+            [-1.5,-1.5],
+            [-1.5, 1.5],
+          ],
+        },
+      ],
+    },
+  ];
+
+  cases.forEach(item => {
+    const c = new Composition({processGaps: true, snap: false});
+    item.figures.forEach((options, i) => {
+      c.add(new figures.Figure(options))
+    })
+
+    const toPoints = function (figureList) {
+      return figureList.map(gap => {
+        return gap.vertices().map(v => {
+          return [v.x, v.y];
+        });
+      });
+    };
+
+    item.subtests.forEach(sub => {
+      c.doLog = true;
+      c.move(sub.move.id, sub.move.position);
+      c.doLog = false;
+      const gap = new figures.Figure({shape: new Shape(sub.vertices)});
+      const expected = toPoints([gap]);
+      const actual = toPoints(c.gaps());
+      t.deepEqual(actual, expected);
+    });
+  });
+});

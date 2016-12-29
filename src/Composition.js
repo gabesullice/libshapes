@@ -1,7 +1,7 @@
 import * as vertex from "../lib/Vertex";
 import * as edges from "../lib/Edge";
 import * as figures from "../lib/Figure";
-import GapFinder from "./GapFinder.js";
+import GapFinder from "./utils/GapFinder.js";
 import {VertexTree} from "vertex-tree";
 
 export default class Composition {
@@ -34,6 +34,7 @@ export default class Composition {
       leftBound: 0,
       rightBound: this._bounds.length(),
     });
+
     this._gapFinder = new GapFinder({
       vertexTree: this._vTree,
       subsectTree: this._subsectTree,
@@ -86,19 +87,41 @@ export default class Composition {
     return false;
   }
 
-  move(id, position, options) {
-    this._removeFromTree(this._figures[id]);
-    const start = this._figures[id].position();
-    const target = this._figures[id].position(position);
-    const final = this._handleSnap(id, options);
-    this._removeOverlaps(id);
-    this._removeIntersections(id);
-    this._addToTree(this._figures[id]);
-    this._iterateFigures(id, this._getIteratorFuncs("insert"));
-    //this._removeGaps(id);
-    this._processGaps(id, this._figures[id]);
+  move(id, target, options) {
+    let start, final;
+
+    const moveOps = this._getOperations("move").concat([
+      {
+        description: "Records the initial position of the figure",
+        action: "move",
+        type: "singular",
+        weight: -3,
+        func: (id) => start = this._figures[id].position(),
+      },
+      {
+        description: "Moves a figure to a specified position",
+        action: "move",
+        type: "singular",
+        weight: -1,
+        func: (_, figure) => figure.position(target),
+      },
+      {
+        description: "Handles snap for a moved figure",
+        action: "move",
+        type: "singular",
+        weight: -1,
+        func: (id => {
+          final = this._handleSnap(id, options);
+        }),
+      },
+    ]);
+
+    this._doOperations(id, this._figures[id], moveOps);
+
     return {
-      start, target, final,
+      start,
+      target,
+      final,
       snapped: (this._doSnap && (target[0] != final[0] || target[1] != final[1])),
     };
   }
@@ -270,6 +293,81 @@ export default class Composition {
         weight: 1,
         func: ((_, figure) => this._removeFromTree(figure)),
       },
+      {
+        description: "Removes any overlap records for a removed figure",
+        action: "move",
+        type: "singular",
+        weight: 1,
+        func: (id => this._removeOverlaps(id)),
+      },
+      {
+        description: "Removes any intersection records for a removed figure",
+        action: "move",
+        type: "singular",
+        weight: 1,
+        func: (id => this._removeIntersections(id)),
+      },
+      {
+        description: "Removes any intersection records for a removed figure",
+        action: "move",
+        type: "singular",
+        weight: 1,
+        func: (id => this._removeIntersections(id)),
+      },
+      {
+        description: "Adds a moved figure's edges back into the vertex tree",
+        action: "move",
+        type: "singular",
+        weight: 1,
+        func: ((_, figure) => this._addToTree(figure)),
+      },
+      {
+        description: "Adds a moved figure's edges back into the vertex tree",
+        action: "move",
+        type: "singular",
+        weight: 0,
+        func: ((_, figure) => this._addToTree(figure)),
+      },
+      {
+        description: "Finds and stores instersecting figures",
+        action: "move",
+        type: "iterator",
+        weight: 1,
+        func: ((a, b) => {
+          if (figures.intersect(a.figure, b.figure)) {
+            this._intersecting.push({a: a.id, b: b.id});
+          }
+        }),
+      },
+      {
+        description: "Finds and stores overlapping figures",
+        action: "move",
+        type: "iterator",
+        weight: 1,
+        func: ((a, b) => {
+          if (figures.overlap(a.figure, b.figure)) {
+            this._overlapping.push({a: a.id, b: b.id});
+          }
+        }),
+      },
+      {
+        description: "Finds and stores subsected edges created by coincident figures",
+        action: "move",
+        type: "iterator",
+        weight: 1,
+        func: ((a, b) => {
+          figures.subsect(a.figure, b.figure).forEach(section => {
+            this._subsectTree.insertEdge(section, [a.id, b.id]);
+          });
+        }),
+      },
+      {
+        description: "Removes the unmoved figures edges from the vertex tree",
+        action: "move",
+        type: "singular",
+        weight: -2,
+        func: (id) => this._removeFromTree(this._figures[id]),
+      },
     ].filter(elem => elem.action === action);
   }
 
@@ -277,31 +375,11 @@ export default class Composition {
     if (!this._doProcessGaps) return;
 
     // If this figure intersects with another figure, do not find its gaps.
-    //if (this.doLog) console.log(id, this._intersecting);
     if (this._intersecting.some(i => (i.a == id || i.b == id))) {
       return;
     }
 
     this._gaps = this._gaps.concat(this._gapFinder.gapsFrom(figure, this._gaps));
-  }
-
-  _getFigureSiblings(figure) {
-    // walk around the figure, find sibling figures.
-    return figure.vertices().reduce((siblings, v) => {
-      const items = this._vTree.at(v);
-      if (items) {
-        siblings = items.tags
-          .filter(tag => { return tag != figure.id; }) // no the current figure
-          .map(fid => { return this.get(fid); }) // map ids to real objects
-          .reduce((siblings, fig) => {
-            // put them in our collection of figures unless it's already there.
-            if (!siblings.find(item => { item.id == fig.id })) {
-              siblings.push(fig);
-            }
-          }, siblings);
-      }
-      return siblings;
-    }, []);
   }
 
   _removeGaps(removedId) {
@@ -333,77 +411,45 @@ export default class Composition {
   }
 
   _calculateSnap(fig) {
-    const figs = this._figures;
-    const tolerance = this._tolerance * (vertex.distance(this._bounds.left(), this._bounds.right()));
-    const verticesA = fig.vertices();
-    for (var i in verticesA) {
-      for (var j in figs) {
-        const verticesB = figs[j].vertices();
-        for (var k in verticesB) {
-          const va = verticesA[i], vb = verticesB[k];
-          const vd = vertex.distance(va, vb);
-          if (vd > vertex.EPSILON && vd < tolerance) {
-            return [vb.x - va.x, vb.y - va.y];
+    let solution;
+
+    fig.vertices().forEach(v0 => {
+      const query = {
+        origin: v0,
+        radius: this._tolerance * this._bounds.length(),
+      };
+
+      const result = this._vTree.find(query).map(item => item.vertex);
+      if (!result) return;
+
+      solution = result
+        .map(v1 => {
+          return {
+            distance: vertex.distance(v0, v1),
+            translation: [v1.x - v0.x, v1.y - v0.y],
           }
-        }
-      }
+        })
+        .reduce((solution, current) => {
+          return (
+            solution !== undefined
+            && solution.distance < current.distance
+          ) ? solution : current;
+        }, solution);
+    });
+
+    if (solution && solution.distance > vertex.EPSILON) {
+      return solution.translation;
+    } else {
+      return [0, 0];
     }
-    return [0, 0];
-  }
-
-  _iterateFigures(id, iteratorFuncs) {
-    const figs = this._figures;
-    for (var k in figs) {
-      if (id != k) {
-        const figA = figs[k], figB = figs[id];
-        for (var funcName in iteratorFuncs) {
-          iteratorFuncs[funcName](
-            {id: k, figure: figA},
-            {id: id, figure: figB}
-          );
-        }
-      }
-    }
-  }
-
-  _getIteratorFuncs(operation) {
-    const funcs = {
-      insert: {
-        intersect: (a, b) => {
-          if (figures.intersect(a.figure, b.figure)) {
-            this._intersecting.push({a: a.id, b: b.id});
-          }
-        },
-        overlap: (a, b) => {
-          if (figures.overlap(a.figure, b.figure)) {
-            this._overlapping.push({a: a.id, b: b.id});
-          }
-        },
-        subsections: (a, b) => {
-          figures.subsect(a.figure, b.figure).forEach(section => {
-            this._subsectTree.insertEdge(section, [a.id, b.id]);
-          });
-        },
-      },
-      remove: {
-      },
-      move: {
-      },
-    };
-
-    return funcs[operation];
   }
 
   _removeOverlaps(id) {
-    this._overlapping = this._overlapping.filter(overlap => {
-      return !(overlap.a == id || overlap.b == id);
-    });
+    this._overlapping = this._overlapping.filter(o => !(o.a == id || o.b == id));
   }
 
   _removeIntersections(id) {
-    this._intersecting = this._intersecting.filter(intersect => {
-      return !(intersect.a == id || intersect.b == id);
-    });
+    this._intersecting = this._intersecting.filter(i => !(i.a == id || i.b == id));
   }
 
   _getID() {
@@ -413,23 +459,15 @@ export default class Composition {
   }
 
   _addToTree(figure) {
-    figure.edges().forEach(edge => {
-      this._vTree.insertEdge(edge, [ figure.id ]);
-    });
+    figure.edges().forEach(e => this._vTree.insertEdge(e, [ figure.id ]));
   }
 
   _removeFromTree(figure) {
     figure.edges().forEach(edge => {
+      this._vTree.removeEdge(edge);
       edge.vertices().forEach(v => {
-        const found = this._vTree.at(v);
-        if (found) {
-          this._vTree.removeEdge(edge);
-          if (found.edges.length == 0) {
-            this._vTree.remove(v);
-          } else {
-            found.removeTag(figure.id);
-          }
-        }
+        const result = this._vTree.at(v);
+        if (result) result.removeTag(figure.id);
       });
     });
   }

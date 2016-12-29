@@ -1,7 +1,7 @@
-import * as edges from "../lib/Edge";
-import * as vertex from "../lib/Vertex";
-import * as figures from "../lib/Figure";
-import Shape from "../lib/Shape";
+import * as edges from "../../lib/Edge";
+import * as vertex from "../../lib/Vertex";
+import * as figures from "../../lib/Figure";
+import Shape from "../../lib/Shape";
 
 export default class GapFinder {
 

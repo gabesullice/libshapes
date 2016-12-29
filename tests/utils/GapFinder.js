@@ -3,7 +3,7 @@ import * as figures from "../lib/Figure";
 import * as vertex from "../lib/Vertex";
 import ShapeFactory from "shape-factory";
 import {VertexTree} from "vertex-tree";
-import GapFinder from "../lib/GapFinder";
+import GapFinder from "../lib/utils/GapFinder";
 
 const ShapeMaker = new ShapeFactory();
 
