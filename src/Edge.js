@@ -7,15 +7,19 @@ export class Edge {
   constructor(points) {
     this._a = new vertex.Vertex(points[0][0], points[0][1]);
     this._b = new vertex.Vertex(points[1][0], points[1][1]);
-    this._slope = (this._b.y - this._a.y)/(this._b.x - this._a.x);
-    this._angle = Math.atan(this._slope);
+    this._slope = slope(this._a, this._b);
+    this._angle = angle(this._a, this._b);
   }
 
   slope() {
     return this._slope;
   }
 
-  angle() {
+  angle(from) {
+    if (from !== undefined) {
+      const to = (vertex.same(from, this._a)) ? this._b : this._a;
+      return vertex.angleBetween(from, to);
+    }
     return this._angle;
   }
 
@@ -221,4 +225,12 @@ function sharedVertices(a, b) {
     || vertex.same(a1, b0)
     || vertex.same(a1, b1)
   );
+}
+
+function angle(v0, v1) {
+  return Math.atan(slope(v0, v1));
+}
+
+function slope(v0, v1) {
+  return (v1.y - v0.y)/(v1.x - v0.x);
 }

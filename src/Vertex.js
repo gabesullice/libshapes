@@ -29,3 +29,8 @@ export function rotate(v, angle) {
 export function translate(v, translation) {
   return new Vertex(v.x + translation[0], v.y + translation[1]);
 }
+
+export function angleBetween(v0, v1) {
+  const t = Math.atan2((v1.y - v0.y), (v1.x - v0.x));
+  return (t < 0) ? (Math.PI * 2) + t : t;
+}

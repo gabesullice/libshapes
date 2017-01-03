@@ -81,6 +81,14 @@ export function subsect(f0, f1) {
   return subsections;
 }
 
+export function same(f0, f1) {
+  return f0.edges().every(e0 => {
+    return f1.edges().some(e1 => {
+      return edges.same(e0, e1);
+    });
+  });
+}
+
 export function overlap(f0, f1) {
   return intersectAny(
     f0.edges().concat(f0.innerEdges()),
