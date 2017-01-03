@@ -375,8 +375,7 @@ test("Can find gaps in the composition", t => {
   ];
 
   cases.forEach(item => {
-    const c = new Composition({processGaps: true, snap: false});
-    c.doLog = item.doLog;
+    const c = new Composition({processGaps: true, snap: false, debug: false});
     item.figures.forEach((options, i) => {
       c.add(new figures.Figure(options))
     })
@@ -398,51 +397,95 @@ test("Can find gaps in the composition", t => {
   });
 });
 
-test.failing("Gaps are reprocessed when a figure coincident to a gap is (re)moved", t => {
-  const square = ShapeMaker.make("square")
+test.failing("A gap is created when a figure is removed and totally coincident", t => {
+  const square = ShapeMaker.make("square");
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
     {
-      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
+      figures: [
+        {shape: largeSquare},
+        {shape: square, position: [ 0, 0]},
+        {shape: square, position: [ 1, 1]},
+        {shape: square, position: [ 1, 0]},
+        {shape: square, position: [ 1,-1]},
+        {shape: square, position: [ 0,-1]},
+        {shape: square, position: [-1,-1]},
+        {shape: square, position: [-1, 0]},
+        {shape: square, position: [-1, 1]},
+        {shape: square, position: [ 0, 1]},
+      ],
       subtests: [
-        {
-          move: {
-            id: "fig-1",
-            position: [0, 2],
-          },
-          vertices: [
-            [ 1.5, 1.5],
-            [ 1.5,-1.5],
-            [-1.5,-1.5],
-            [-1.5, 1.5],
-          ],
-        },
+        {remove: "fig-1", expected: {shape: square, position: [ 0, 0]}},
+        {remove: "fig-2", expected: {shape: square, position: [ 1, 1]}},
       ],
     },
   ];
 
   cases.forEach(item => {
-    const c = new Composition({processGaps: true, snap: false});
-    item.figures.forEach((options, i) => {
-      c.add(new figures.Figure(options))
-    })
-
-    const toPoints = function (figureList) {
-      return figureList.map(gap => {
-        return gap.vertices().map(v => {
-          return [v.x, v.y];
-        });
-      });
-    };
-
     item.subtests.forEach(sub => {
-      c.doLog = true;
-      c.move(sub.move.id, sub.move.position);
-      c.doLog = false;
-      const gap = new figures.Figure({shape: new Shape(sub.vertices)});
-      const expected = toPoints([gap]);
-      const actual = toPoints(c.gaps());
-      t.deepEqual(actual, expected);
+      const c = new Composition({processGaps: true, debug: false});
+      item.figures.map(settings => new figures.Figure(settings)).forEach((fig, i) => {
+        //c._gapFinder.debug(i == 8);
+        const fid = c.add(fig);
+      });
+
+      c.remove(sub.remove);
+
+      const expected = new figures.Figure(sub.expected);
+      const gaps = c.gaps();
+
+      if (gaps.length) {
+        t.true(figures.same(expected, gaps[0]));
+      }
     });
   });
 });
+
+//test.failing("Gaps are reprocessed when a figure coincident to a gap is (re)moved", t => {
+//  const square = ShapeMaker.make("square")
+//  const largeSquare = ShapeMaker.make("square", 3)
+//  const cases = [
+//    {
+//      figures: [{shape: largeSquare}, {shape: square, position: [0,1]}],
+//      subtests: [
+//        {
+//          move: {
+//            id: "fig-1",
+//            position: [0, 2],
+//          },
+//          vertices: [
+//            [ 1.5, 1.5],
+//            [ 1.5,-1.5],
+//            [-1.5,-1.5],
+//            [-1.5, 1.5],
+//          ],
+//        },
+//      ],
+//    },
+//  ];
+//
+//  cases.forEach(item => {
+//    const c = new Composition({processGaps: true, snap: false});
+//    item.figures.forEach((options, i) => {
+//      c.add(new figures.Figure(options))
+//    })
+//
+//    const toPoints = function (figureList) {
+//      return figureList.map(gap => {
+//        return gap.vertices().map(v => {
+//          return [v.x, v.y];
+//        });
+//      });
+//    };
+//
+//    item.subtests.forEach(sub => {
+//      c.doLog = true;
+//      c.move(sub.move.id, sub.move.position);
+//      c.doLog = false;
+//      const gap = new figures.Figure({shape: new Shape(sub.vertices)});
+//      const expected = toPoints([gap]);
+//      const actual = toPoints(c.gaps());
+//      t.deepEqual(actual, expected);
+//    });
+//  });
+//});

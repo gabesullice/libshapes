@@ -7,16 +7,19 @@ import {VertexTree} from "vertex-tree";
 export default class Composition {
 
   constructor(options) {
+    let debug = false;
     let bounds = [[0,0], [100,100]];
     let doSnap = true;
     let snapTolerance = 0.001;
     let processGaps = false;
     if (options !== undefined) {
+      if (options.hasOwnProperty('debug')) debug = options.debug;
       if (options.hasOwnProperty('bounds')) bounds = options.bounds;
       if (options.hasOwnProperty('snap')) doSnap = options.snap;
       if (options.hasOwnProperty('snapTolerance')) snapTolerance = options.snapTolerance;
       if (options.hasOwnProperty('processGaps')) processGaps = options.processGaps;
     }
+    this._debug = debug;
     this.bounds.apply(this, bounds);
     this._doSnap = doSnap;
     this._doProcessGaps = processGaps;
@@ -38,6 +41,7 @@ export default class Composition {
     this._gapFinder = new GapFinder({
       vertexTree: this._vTree,
       subsectTree: this._subsectTree,
+      debug,
     });
   }
 
@@ -133,7 +137,11 @@ export default class Composition {
           try {
             operation.func(id, figure);
           } catch (e) {
-            console.log(`"${operation.description}" failed with exception:`, e);
+            console.log(
+              `"${operation.description}" failed with exception:`,
+              e.message
+            );
+            throw e;
           }
         });
       }
@@ -149,7 +157,11 @@ export default class Composition {
                   {id: fid, figure: curr},
                 );
               } catch (e) {
-                console.log(`"${operation.description}" failed with exception:`, e);
+                console.log(
+                  `"${operation.description}" failed with exception:`,
+                  e.message
+                );
+                throw e;
               }
             });
           }
