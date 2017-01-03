@@ -6,7 +6,7 @@
   "scripts": {
     "babel": "babel",
     "build": "babel src --out-dir lib",
-    "test": "ava tests/*.js -v",
+    "test": "ava tests/*.js tests/utils/*.js -v",
     "ava": "ava"
   },
   "repository": "git@github.com:gabesullice/shapes.git",
