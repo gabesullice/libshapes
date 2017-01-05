@@ -34,6 +34,17 @@ test("Can get vertices of an Edge", t => {
   });
 });
 
+test("Can get specific vertices of an edge", t => {
+  const v0 = new vertex.Vertex(0, 0), v1 = new vertex.Vertex(1,1);
+  const edge = new edges.Edge([[v0.x, v0.y], [v1.x, v1.y]]);
+  t.true(vertex.same(v0, edge.left()), "Can get the left vertex of an edge");
+  t.true(vertex.same(v1, edge.right()), "Can get the right vertex of an edge");
+  t.true(vertex.same(v0, edge.bottom()), "Can get the bottom vertex of an edge");
+  t.true(vertex.same(v1, edge.top()), "Can get the top vertex of an edge");
+  t.true(vertex.same(v0, edge.opposite(v1)), "Can get the opposite vertex of an edge");
+  t.true(vertex.same(v1, edge.opposite(v0)), "Can get the opposite vertex of an edge");
+});
+
 test("Can get the length of an Edge", t => {
   const tests = [
     {input: [[0,0], [1,1]], expected: vertex.distance(new vertex.Vertex(0,0), new vertex.Vertex(1,1))},

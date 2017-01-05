@@ -58,6 +58,10 @@ export class Edge {
     return (this._a.y < this._b.y) ? this._a : this._b;
   }
 
+  opposite(v) {
+    return (vertex.same(v, this.left())) ? this.right() : this.left();
+  }
+
 }
 
 export function same(a, b) {
