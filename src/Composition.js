@@ -92,26 +92,34 @@ export default class Composition {
   }
 
   move(id, target, options) {
+    return this.transform(id, {position: target}, options);
+  }
+
+  transform(id, transform, options) {
     let start, final;
 
-    const moveOps = this._getOperations("move").concat([
+    const {position} = transform;
+
+    const transformOps = this._getOperations("transform").concat([
       {
         description: "Records the initial position of the figure",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: -3,
         func: (id) => start = this._figures[id].position(),
       },
       {
         description: "Moves a figure to a specified position",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: -1,
-        func: (_, figure) => figure.position(target),
+        func: (_, figure) => {
+          if (position !== undefined) figure.position(position);
+        },
       },
       {
         description: "Handles snap for a moved figure",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: -1,
         func: (id => {
@@ -120,13 +128,19 @@ export default class Composition {
       },
     ]);
 
-    this._doOperations(id, this._figures[id], moveOps);
+    this._doOperations(id, this._figures[id], transformOps);
+
+    const didSnap = (
+      this._doSnap
+      && position !== undefined
+      && (position[0] != final[0] || position[1] != final[1])
+    );
 
     return {
       start,
-      target,
+      target: position,
       final,
-      snapped: (this._doSnap && (target[0] != final[0] || target[1] != final[1])),
+      snapped: didSnap,
     };
   }
 
@@ -307,42 +321,42 @@ export default class Composition {
       },
       {
         description: "Removes any overlap records for a removed figure",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: 1,
         func: (id => this._removeOverlaps(id)),
       },
       {
         description: "Removes any intersection records for a removed figure",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: 1,
         func: (id => this._removeIntersections(id)),
       },
       {
         description: "Removes any intersection records for a removed figure",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: 1,
         func: (id => this._removeIntersections(id)),
       },
       {
         description: "Adds a moved figure's edges back into the vertex tree",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: 1,
         func: ((_, figure) => this._addToTree(figure)),
       },
       {
         description: "Adds a moved figure's edges back into the vertex tree",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: 0,
         func: ((_, figure) => this._addToTree(figure)),
       },
       {
         description: "Finds and stores instersecting figures",
-        action: "move",
+        action: "transform",
         type: "iterator",
         weight: 1,
         func: ((a, b) => {
@@ -353,7 +367,7 @@ export default class Composition {
       },
       {
         description: "Finds and stores overlapping figures",
-        action: "move",
+        action: "transform",
         type: "iterator",
         weight: 1,
         func: ((a, b) => {
@@ -364,7 +378,7 @@ export default class Composition {
       },
       {
         description: "Finds and stores subsected edges created by coincident figures",
-        action: "move",
+        action: "transform",
         type: "iterator",
         weight: 1,
         func: ((a, b) => {
@@ -375,7 +389,7 @@ export default class Composition {
       },
       {
         description: "Removes the unmoved figures edges from the vertex tree",
-        action: "move",
+        action: "transform",
         type: "singular",
         weight: -2,
         func: (id) => this._removeFromTree(this._figures[id]),
