@@ -128,6 +128,22 @@ test("Can move figures in a composition by ID", t => {
   });
 });
 
+test("Can set the rotation figures in a composition by ID", t => {
+  const figureA = new figures.Figure({shape: ShapeMaker.make("right")});
+  const figureB = new figures.Figure({shape: ShapeMaker.make("right")});
+  const cases = [
+    {input: [figureA], rotation: Math.PI/2, expected: Math.PI/2},
+    {input: [figureA], rotation: Math.PI/4, expected: Math.PI/4},
+    {input: [figureA, figureB], rotation: Math.PI, expected: Math.PI},
+  ];
+  cases.forEach(item => {
+    const c = new Composition({snap: false});
+    item.input.forEach(fig => { c.add(fig) });
+    c.rotateTo("fig-0", item.rotation);
+    t.deepEqual(c.get("fig-0").rotation(), item.expected);
+  });
+});
+
 test("Move returns an initial position, target, and final position", t => {
   const right = ShapeMaker.make("right");
   const cases = [

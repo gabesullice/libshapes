@@ -91,14 +91,23 @@ export default class Composition {
     return false;
   }
 
+  // Deprecated. Please use `Composition.moveTo()`.
   move(id, target, options) {
+    return this.moveTo(...arguments);
+  }
+
+  moveTo(id, target, options) {
     return this.transform(id, {position: target}, options);
+  }
+
+  rotateTo(id, target, options) {
+    return this.transform(id, {rotation: target}, options);
   }
 
   transform(id, transform, options) {
     let start, final;
 
-    const {position} = transform;
+    const {position, rotation} = transform;
 
     const transformOps = this._getOperations("transform").concat([
       {
@@ -115,6 +124,15 @@ export default class Composition {
         weight: -1,
         func: (_, figure) => {
           if (position !== undefined) figure.position(position);
+        },
+      },
+      {
+        description: "Rotates the figure to a specified position",
+        action: "transform",
+        type: "singular",
+        weight: -1,
+        func: (_, figure) => {
+          if (rotation !== undefined) figure.rotation(rotation);
         },
       },
       {
