@@ -221,9 +221,32 @@ Deletes a `Figure` by its ID.
 
 Retrieves a figure within `Composition` by its ID. Returns `null` if no `Figure` by the given ID exists.
 
-###`Composition.move(id[, options])`
+###`Composition.move(id, target[, options])`
 
-Moves a figure within a `Composition` by its ID. Takes an options options object. Defaults to `{snap: true}`. Returns an object with information about the move operations:
+**Deprecated**: Please use `Composition.moveTo()`.
+
+###`Composition.moveTo(id, target[, options])`
+
+Utility wrapper around `Composition.transform()`.
+
+###`Composition.rotateTo(id, target[, options])`
+
+Utility wrapper around `Composition.transform()`.
+
+###`Composition.transform(id, transform[, options])`
+
+Sets the transform of a figure within a `Composition` by its ID. `transform` is an object which defaults to:
+
+```
+{
+  position: [x, y],   // A target position to where the figure should be moved. Defaults to the starting position of the figure.
+  rotation: <angle>,  // A target angle of rotation for the figure. Defaults to the starting rotation of the figure.
+}
+```
+
+`tranform()` also takes an optional options object which defaults to `{snap: true}`.
+
+Returns an object with information about the outcome of the operation:
 
 ```
 {
