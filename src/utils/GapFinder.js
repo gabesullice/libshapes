@@ -150,8 +150,6 @@ export default class GapFinder {
       return !edges.same(edge, possible);
     });
 
-    this.log('possibles', possibles);
-
     const nextEdge = this._nearestEdge(edge, current, possibles);
 
     // Derive the next vertex in the gap from the nearest edge.
@@ -199,6 +197,7 @@ export default class GapFinder {
     // Look for any edges that may be hiding along the shortest edge.
     all = all.map(group => {
       const shortest = group[0];
+      const closest = shortest.opposite(v);
       const query = {origin: shortest.midpoint(), radius: shortest.length()/2};
       const result = this._subsectTree.find(query);
       if (result && result.length > 0) {
@@ -217,9 +216,8 @@ export default class GapFinder {
             return {vertex: vFound, distance: vertex.distance(v, vFound)};
           })
           .reduce((nearest, current) => {
-            if (nearest === undefined) return current;
             return (nearest.distance < current.distance) ? nearest : current;
-          }).vertex;
+          }, {vertex: closest, distance: shortest.length()}).vertex;
 
         group.unshift(new edges.Edge([[v.x, v.y], [nearest.x, nearest.y]]));
 
@@ -247,10 +245,6 @@ export default class GapFinder {
     const possibles = counted
       .filter(count => count.count < 3)
       .map(count => count.edge);
-
-    //this.log('all', all);
-    //this.log('counted', counted);
-    this.log('possibles', possibles);
 
     return possibles;
   }
@@ -283,11 +277,8 @@ export default class GapFinder {
 
     let nextIndex = 0;
     const theta = to.angle(around);
-    this.log('bundle', bundle);
-    this.log('theta', theta);
     for (let i = 0; i < bundle.length; i++) {
       let compare = bundle[i].angle(around);
-      this.log('compare', compare);
       if (theta < compare) {
         nextIndex = i;
         break;

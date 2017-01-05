@@ -120,7 +120,7 @@ test("Can find the next vertex from the previous two vertices", t => {
   });
 });
 
-test.skip("Can find a gap", t => {
+test("Can find a gap", t => {
   const square = ShapeMaker.make("square")
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
@@ -130,35 +130,22 @@ test.skip("Can find a gap", t => {
         {shape: square, position: [ 0, 0]},
         {shape: square, position: [ 1, 1]},
         {shape: square, position: [ 1, 0]},
-        {shape: square, position: [ 1,-1]},
-        {shape: square, position: [ 0,-1]},
       ],
       subtests: [
         {
-          input: [[-0.5,-0.5], [-0.5,-1.5]],
+          input: [[0.5,-0.5], [1.5,-0.5]],
           expected: [
-            [-0.5,-0.5],
-            [-0.5,-1.5],
+            [ 0.5,-0.5],
+            [ 1.5,-0.5],
+            [ 1.5,-1.5],
             [-1.5,-1.5],
             [-1.5, 1.5],
             [ 0.5, 1.5],
             [ 0.5, 0.5],
             [-0.5, 0.5],
-          ],
-          debug: false
-        },
-        {
-          input: [[-0.5,-1.5], [-0.5,-0.5]],
-          expected: [
-            [-0.5,-1.5],
             [-0.5,-0.5],
-            [-0.5, 0.5],
-            [ 0.5, 0.5],
-            [ 0.5, 1.5],
-            [-1.5, 1.5],
-            [-1.5,-1.5],
           ],
-          debug: false
+          debug: false,
         },
       ],
     },
