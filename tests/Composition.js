@@ -112,7 +112,7 @@ test("Removing a figure from a composition removes its vertices from the vertex 
   });
 });
 
-test("Can move figures in a composition by ID", t => {
+test("Can set the position of figures in a composition by ID", t => {
   const figureA = new figures.Figure({shape: ShapeMaker.make("right")});
   const figureB = new figures.Figure({shape: ShapeMaker.make("right")});
   const cases = [
