@@ -388,6 +388,27 @@ test("Can find gaps in the composition", t => {
       ],
       description: "Small square within a large square",
     },
+    {
+      figures: [
+        {shape: largeSquare},
+        {shape: square, position: [0,1]},
+        {shape: square, position: [1,1]}
+      ],
+      subtests: [
+        {
+          vertices: [
+            [ 0.5, 0.5],
+            [ 1.5, 0.5],
+            [ 1.5,-1.5],
+            [-1.5,-1.5],
+            [-1.5, 1.5],
+            [-0.5, 1.5],
+            [-0.5, 0.5],
+          ],
+        },
+      ],
+      description: "Old gaps are removed when a figure is placed on it",
+    },
   ];
 
   cases.forEach(item => {
@@ -413,14 +434,13 @@ test("Can find gaps in the composition", t => {
   });
 });
 
-test.failing("A gap is created when a figure is removed and totally coincident", t => {
+test("A gap is created when a figure is removed and totally coincident", t => {
   const square = ShapeMaker.make("square");
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
     {
       figures: [
         {shape: largeSquare},
-        {shape: square, position: [ 0, 0]},
         {shape: square, position: [ 1, 1]},
         {shape: square, position: [ 1, 0]},
         {shape: square, position: [ 1,-1]},
@@ -429,9 +449,10 @@ test.failing("A gap is created when a figure is removed and totally coincident",
         {shape: square, position: [-1, 0]},
         {shape: square, position: [-1, 1]},
         {shape: square, position: [ 0, 1]},
+        {shape: square, position: [ 0, 0]},
       ],
       subtests: [
-        {remove: "fig-1", expected: {shape: square, position: [ 0, 0]}},
+        {remove: "fig-9", expected: {shape: square, position: [ 0, 0]}},
         //{remove: "fig-2", expected: {shape: square, position: [ 1, 1]}},
       ],
     },
@@ -439,21 +460,20 @@ test.failing("A gap is created when a figure is removed and totally coincident",
 
   cases.forEach(item => {
     item.subtests.forEach(sub => {
-      const c = new Composition({processGaps: true, debug: false});
+      const c = new Composition({processGaps: false, debug: false});
 
       item.figures.map(settings => new figures.Figure(settings)).forEach((fig, i) => {
         const fid = c.add(fig);
       });
 
-      c._debug = true;
+      c.debug(true);
+      c.processGaps(true);
       c.remove(sub.remove);
 
       const expected = new figures.Figure(sub.expected);
       const gaps = c.gaps();
-
-      if (gaps.length) {
-        t.true(figures.same(expected, gaps[0]));
-      }
+      t.is(gaps.length, 1);
+      t.true(figures.same(expected, gaps[0]));
     });
   });
 });

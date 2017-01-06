@@ -6,19 +6,13 @@ import {VertexTree} from "vertex-tree";
 
 export default class Composition {
 
-  constructor(options) {
-    let debug = false;
-    let bounds = [[0,0], [100,100]];
-    let doSnap = true;
-    let snapTolerance = 0.001;
-    let processGaps = false;
-    if (options !== undefined) {
-      if (options.hasOwnProperty('debug')) debug = options.debug;
-      if (options.hasOwnProperty('bounds')) bounds = options.bounds;
-      if (options.hasOwnProperty('snap')) doSnap = options.snap;
-      if (options.hasOwnProperty('snapTolerance')) snapTolerance = options.snapTolerance;
-      if (options.hasOwnProperty('processGaps')) processGaps = options.processGaps;
-    }
+  constructor({
+    debug = false,
+    bounds = [[0,0], [100,100]],
+    doSnap = true,
+    snapTolerance = 0.001,
+    processGaps = false,
+  } = {}) {
     this._debug = debug;
     this.bounds.apply(this, bounds);
     this._doSnap = doSnap;
@@ -63,6 +57,24 @@ export default class Composition {
       this._tolerance = tolerance;
     }
     return this._tolerance;
+  }
+
+  processGaps(doProcess) {
+    if (doProcess !== undefined) {
+      this._doProcessGaps = doProcess;
+    }
+    return this._doProcessGaps;
+  }
+
+  debug(debug) {
+    if (debug !== undefined) {
+      this._debug = debug;
+    }
+    return this._debug;
+  }
+
+  log() {
+    if (this.debug()) console.log(...arguments);
   }
 
   get(id) {
@@ -169,7 +181,7 @@ export default class Composition {
           try {
             operation.func(id, figure);
           } catch (e) {
-            console.log(
+            this.log(
               `"${operation.description}" failed with exception:`,
               e.message
             );
@@ -189,7 +201,7 @@ export default class Composition {
                   {id: fid, figure: curr},
                 );
               } catch (e) {
-                console.log(
+                this.log(
                   `"${operation.description}" failed with exception:`,
                   e.message
                 );
@@ -300,58 +312,6 @@ export default class Composition {
       },
       {
         description: "Removes any overlap records for a removed figure",
-        action: "remove",
-        type: "singular",
-        weight: 0,
-        func: (id => this._removeOverlaps(id)),
-      },
-      {
-        description: "Removes any intersection records for a removed figure",
-        action: "remove",
-        type: "singular",
-        weight: 0,
-        func: (id => this._removeIntersections(id)),
-      },
-      {
-        description: "Removes any gap records for a removed figure",
-        action: "remove",
-        type: "singular",
-        weight: 0,
-        func: (id => this._removeGaps(id)),
-      },
-      {
-        description: "Removes any subsection records created by a removed figure",
-        action: "remove",
-        type: "iterator",
-        weight: 0,
-        func: ((a, b) => {
-          figures.subsect(a.figure, b.figure).forEach(section => {
-            this._subsectTree.removeEdge(section);
-          });
-        }),
-      },
-      {
-        description: "Removes a figures edges from the vertex tree",
-        action: "remove",
-        type: "singular",
-        weight: 1,
-        func: ((_, figure) => this._removeFromTree(figure)),
-      },
-      {
-        description: "Processes gaps for a removed figure",
-        action: "remove",
-        type: "singular",
-        weight: -1,
-        func: ((_, figure) => {
-          // Gets the figures siblings and processes them for new gaps.
-          const fids = this._getFigureSiblingIds(figure);
-          fids.forEach(id => {
-            this._processGaps(id, this._figures[id]);
-          });
-        }),
-      },
-      {
-        description: "Removes any overlap records for a removed figure",
         action: "transform",
         type: "singular",
         weight: 1,
@@ -425,22 +385,99 @@ export default class Composition {
         weight: -2,
         func: (id) => this._removeFromTree(this._figures[id]),
       },
-    ].filter(elem => elem.action === action);
+    ].concat(this._removeOperations()).filter(elem => elem.action === action);
+  }
+
+  _removeOperations() {
+    let siblings = [];
+    return [
+      {
+        description: "Register siblings of the figure that was removed",
+        action: "remove",
+        type: "singular",
+        weight: -1,
+        func: ((id, figure) => {
+          // Gets the figures siblings and processes them for new gaps.
+          siblings = this._getFigureSiblingIds(figure).filter(fid => {
+            return fid != id;
+          });
+        }),
+      },
+      {
+        description: "Removes any overlap records for a removed figure",
+        action: "remove",
+        type: "singular",
+        weight: 0,
+        func: (id => this._removeOverlaps(id)),
+      },
+      {
+        description: "Removes any intersection records for a removed figure",
+        action: "remove",
+        type: "singular",
+        weight: 0,
+        func: (id => this._removeIntersections(id)),
+      },
+      {
+        description: "Removes any gap records for a removed figure",
+        action: "remove",
+        type: "singular",
+        weight: 0,
+        func: (id => this._removeGaps(id)),
+      },
+      {
+        description: "Removes any subsection records created by a removed figure",
+        action: "remove",
+        type: "iterator",
+        weight: 0,
+        func: ((a, b) => {
+          figures.subsect(a.figure, b.figure).forEach(section => {
+            this._subsectTree.removeEdge(section);
+          });
+        }),
+      },
+      {
+        description: "Removes a figures edges from the vertex tree",
+        action: "remove",
+        type: "singular",
+        weight: 1,
+        func: ((_, figure) => this._removeFromTree(figure)),
+      },
+      {
+        description: "Process gaps on the removed figures siblings",
+        action: "remove",
+        type: "singular",
+        weight: 2,
+        func: () => {
+          siblings.forEach(siblingId => {
+            this._processGaps(siblingId, this._figures[siblingId]);
+          });
+        },
+      },
+    ];
   }
 
   _processGaps(id, figure) {
-    if (!this._doProcessGaps) return;
+    if (!this.processGaps()) return;
 
     // If this figure intersects with another figure, do not find its gaps.
     if (this._intersecting.some(i => (i.a == id || i.b == id))) {
       return;
     }
 
-    this._gaps = this._gaps.concat(this._gapFinder.gapsFrom(figure, this._gaps));
+    const found = this._gapFinder.gapsFrom(figure, this._gaps)
+    this._gaps = found.reduce((gaps, gap0) => {
+      const index = gaps.findIndex(gap1 => figures.overlap(gap0, gap1));
+      if (index !== -1) {
+        gaps.splice(index, 1, gap0);
+      } else {
+        gaps.push(gap0);
+      }
+      return gaps;
+    }, this._gaps);
   }
 
   _removeGaps(removedId) {
-    if (!this._doProcessGaps) return;
+    if (!this.processGaps()) return;
 
     const removed = this._figures[removedId];
 
@@ -510,36 +547,35 @@ export default class Composition {
   }
 
   _getFigureSiblingIds(figure) {
-    return figure.edges().reduce((all, e0) => {
+    // Get all the items around figure.
+    const items = figure.vertices().reduce((items, v) => {
+      const result = this._subsectTree.at(v);
+      return (result) ? items.concat(result) : items;
+    }, []);
 
-      const vertices = e0.vertices();
 
-      const items = vertices.reduce((items, v) => {
-        const result = this._subsectTree.at(v);
-        return (result) ? items.concat(result) : items;
-      }, []);
-
-      const relevant = items.filter(item => {
+    // Eliminate items which do not have a coincident edge with the figure.
+    const relevant = items.filter(item => {
+      return figure.edges().some(e0 => {
         return item.edges.some(e1 => edges.coincident(e0, e1));
       });
+    });
 
-      //const fids = relevant
-      const fids = items
-        .map(item => item.tags)
-        .reduce((fids, tags) => {
-          tags.forEach(tag => {
-            if (fids.indexOf(tag) === -1) fids.push(tag);
-          });
+    // 1. Extract the tags (which are figure ids) from each item.
+    // 2. Deduplicate the fids.
+    const fids = items
+      .map(item => item.tags)
+      .reduce((fids, tags) => {
+        return tags.reduce((fids, tag) => {
+          if (!fids.some(fid => fid == tag)) fids.push(tag);
           return fids;
-        }, []);
+        }, fids);
+      }, []);
 
-      const siblings = fids.filter(fid => {
-        return figures.siblings(figure, this._figures[fid]);
-      });
-
-      all = all.concat(siblings.filter(fid => !all.some(id => id == fid)));
-      return all;
-    }, []);
+    // Filter out figure ids which aren't siblings of the given figure.
+    return fids.filter(fid => {
+      return figures.siblings(figure, this._figures[fid]);
+    });
   }
 
   _getID() {

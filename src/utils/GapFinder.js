@@ -56,15 +56,6 @@ export default class GapFinder {
 
       return !remaining.some(e1 => edges.same(e0, e1));
     });
-    //const lonely = figureEdges.filter(edge => {
-    //  const subsected = edge.vertices().reduce((subsected, v) => {
-    //    const at = this._subsectTree.at(v) || {edges: []};
-    //    return subsected.concat(at.edges);
-    //  }, []);
-
-    //  const coincident = (compare) => { return edges.coincident(edge, compare); };
-    //  return !subsected.some(coincident);
-    //});
 
     if (figureEdges.length > lonely.length && lonely.length > 0) {
       return lonely.reduce((gaps, edge, i) => {
