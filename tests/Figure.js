@@ -238,3 +238,35 @@ test("Can detect if two figures have intersecting edges", t => {
     )
   });
 });
+
+test("Can detect if two figures are siblings", t => {
+  const square = ShapeMaker.make("square");
+  const cases = [
+    {
+      figures: [
+        {shape: square, position: [0,0]},
+        {shape: square, position: [2,0]}
+      ],
+      expected: false
+    },
+    {
+      figures: [
+        {shape: square, position: [0,0]},
+        {shape: square, position: [1,0]}
+      ],
+      expected: true
+    },
+    {
+      figures: [
+        {shape: square, position: [0,0]},
+        {shape: square, position: [0,-1]}
+      ],
+      expected: true
+    },
+  ];
+  const createFigure = (options) => new figures.Figure(options);
+  cases.forEach(item => {
+    const figs = item.figures.map(createFigure);
+    t.is(figures.siblings(...figs), item.expected);
+  });
+});
