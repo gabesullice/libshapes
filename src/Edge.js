@@ -65,11 +65,10 @@ export class Edge {
 }
 
 export function same(a, b) {
-  const a0 = a.left(), a1 = a.right();
-  const b0 = b.left(), b1 = b.right();
   return (
-    (vertex.same(a0, b0) && vertex.same(a1, b1))
-    || (vertex.same(a0, b1) && vertex.same(a1, b0))
+    (vertex.same(a._a, b._a) && vertex.same(a._b, b._b))
+    ||
+    (vertex.same(a._a, b._b) && vertex.same(a._b, b._a))
   );
 }
 
@@ -104,9 +103,28 @@ export function intersect(e0, e1) {
   return withinBounds(e0, intersection) && withinBounds(e1, intersection);
 }
 
-export function coincident(e0, e1) {
+export function coincident(e0, e1, debug) {
+  // If these edges are the same, then they are coincident.
+  if (same(e0, e1)) {
+    return true;
+  }
   // Find the slope of the lines.
   const m0 = e0.slope(), m1 = e1.slope();
+  // Helps determine if an edge is withinBounds of the other edge
+  const inBounds = (e0, e1) => {
+    return (
+      e0.vertices().some(v => withinBounds(e1, v))
+      || e1.vertices().some(v => withinBounds(e0, v))
+    );
+  };
+  // Handle the special case of two infinite slopes.
+  if (Math.abs(m0) === Infinity && Math.abs(m1) === Infinity) {
+    // If these lines don't have the same x intercept, they're no coincident.
+    if (e0.left().x != e1.left().x) {
+      return false;
+    }
+    return inBounds(e0, e1);
+  }
   // If the slopes are not the same, these edges cannot be coincident.
   if (Math.abs(m1 - m0) > EPSILON) {
     return false;
@@ -117,19 +135,10 @@ export function coincident(e0, e1) {
   if (Math.abs(b1 - b0) > EPSILON) {
     return false;
   }
-  // If these edges are the same, then they are coincident.
-  if (same(e0, e1)) {
-    return true;
-  }
-  // If any vertex falls within the bounds of an edge, the edges are coincident.
-  if (withinBounds(e1, e0.left()) || withinBounds(e1, e0.right())) {
-    return true;
-  }
-  if (withinBounds(e0, e1.left()) || withinBounds(e0, e1.right())) {
-    return true;
-  }
   // No vertices were in the bounds of an edge, the edges are not coincident.
-  return false;
+  // If any vertex falls within the bounds of an edge, the edges are coincident,
+  // if not, they cannot be coincident at this point.
+  return inBounds(e0, e1);
 }
 
 export function subsect(e0, e1) {
