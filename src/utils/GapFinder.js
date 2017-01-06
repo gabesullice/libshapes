@@ -18,14 +18,8 @@ export default class GapFinder {
     return this._debug;
   }
 
-  log(label, variable, message) {
-    if (this.debug()) {
-      if (message) {
-        console.log(label, variable, message);
-      } else {
-        console.log(label, variable);
-      }
-    }
+  log() {
+    if (this.debug()) console.log(...arguments);
   }
 
   gapsFrom(figure, knownGaps) {

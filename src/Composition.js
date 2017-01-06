@@ -69,6 +69,7 @@ export default class Composition {
   debug(debug) {
     if (debug !== undefined) {
       this._debug = debug;
+      this._gapFinder.debug(debug);
     }
     return this._debug;
   }
@@ -126,14 +127,14 @@ export default class Composition {
         description: "Records the initial position of the figure",
         action: "transform",
         type: "singular",
-        weight: -3,
+        weight: -100,
         func: (id) => start = this._figures[id].position(),
       },
       {
         description: "Moves a figure to a specified position",
         action: "transform",
         type: "singular",
-        weight: -1,
+        weight: 0,
         func: (_, figure) => {
           if (position !== undefined) figure.position(position);
         },
@@ -142,7 +143,7 @@ export default class Composition {
         description: "Rotates the figure to a specified position",
         action: "transform",
         type: "singular",
-        weight: -1,
+        weight: 0,
         func: (_, figure) => {
           if (rotation !== undefined) figure.rotation(rotation);
         },
@@ -151,7 +152,7 @@ export default class Composition {
         description: "Handles snap for a moved figure",
         action: "transform",
         type: "singular",
-        weight: -1,
+        weight: 0,
         func: (id => {
           final = this._handleSnap(id, options);
         }),
@@ -175,9 +176,11 @@ export default class Composition {
   }
 
   _doOperations(id, figure, operations) {
-    this._organizeOperations(operations).forEach(set => {
-      if (set.hasOwnProperty("singular")) {
-        set.singular.forEach(operation => {
+    const organized = this._organizeOperations(operations);
+    while (organized.length > 0) {
+      const batch = organized.shift();
+      if (batch.hasOwnProperty("singular")) {
+        batch.singular.forEach(operation => {
           try {
             operation.func(id, figure);
           } catch (e) {
@@ -190,11 +193,11 @@ export default class Composition {
         });
       }
 
-      if (set.hasOwnProperty("iterator")) {
+      if (batch.hasOwnProperty("iterator")) {
         Object.keys(this._figures).forEach(fid => {
           const curr = this._figures[fid];
           if (id != fid) {
-            set.iterator.forEach(operation => {
+            batch.iterator.forEach(operation => {
               try {
                 operation.func(
                   {id: id, figure: figure},
@@ -211,30 +214,25 @@ export default class Composition {
           }
         });
       }
-    });
+    }
   }
 
   _organizeOperations(operations) {
-    // 1. Only return operations for the given action
-    // 2. Sort the operations by weight
-    // 3. Bundle the operations by weight into sets of operation
-    // 4. Bundle operations within each set by their type
-    return operations
-      .sort((a, b) => {
-        return (a.weight < b.weight) ? -1 : 1;
-      })
-      .reduce((ops, operation) => {
-        if (ops.lastWeight === undefined) {
-          ops.sets[0].push(operation);
-        } else if (ops.lastWeight < operation.weight) {
-          ops.sets.push([operation]);
+    // 1. Bundle the operations by weight into batches
+    // 2. Sort the batches by weight
+    // 3. Bundle operations within each set by their type
+    const organized = operations.reduce((ops, operation) => {
+        const index = ops.findIndex(set => set[0].weight == operation.weight);
+        if (index !== -1) {
+          ops[index].push(operation);
         } else {
-          ops.sets[ops.sets.length - 1].push(operation);
+          ops.push([operation]);
         }
-        ops.lastWeight = operation.weight;
         return ops;
-      }, {lastWeight: undefined, sets: [[]]})
-      .sets
+      }, [])
+      .sort((a, b) => {
+        return (a[0].weight < b[0].weight) ? -1 : 1;
+      })
       .map(set => {
         return set.reduce((ops, operation) => {
           if (ops[operation.type] === undefined) {
@@ -245,6 +243,7 @@ export default class Composition {
           return ops;
         }, {});
       });
+    return organized;
   }
 
   _getOperations(action) {
@@ -255,27 +254,6 @@ export default class Composition {
         type: "singular",
         weight: -100,
         func: ((id, figure) => this._figures[id] = figure),
-      },
-      {
-        description: "Adds a figures edges to the vertex tree",
-        action: "insert",
-        type: "singular",
-        weight: -1,
-        func: ((_, figure) => this._addToTree(figure)),
-      },
-      {
-        description: "Finds any gaps created by an inserted figure",
-        action: "insert",
-        type: "singular",
-        weight: 0,
-        func: ((id, figure) => this._processGaps(id, figure)),
-      },
-      {
-        description: "Processes any realignment that needs to happen",
-        action: "insert",
-        type: "singular",
-        weight: -2,
-        func: (id => this._handleSnap(id)),
       },
       {
         description: "Finds and stores instersecting figures",
@@ -311,6 +289,66 @@ export default class Composition {
         }),
       },
       {
+        description: "Processes any realignment that needs to happen",
+        action: "insert",
+        type: "singular",
+        weight: -2,
+        func: (id => this._handleSnap(id)),
+      },
+      {
+        description: "Adds a figures edges to the vertex tree",
+        action: "insert",
+        type: "singular",
+        weight: -1,
+        func: ((_, figure) => this._addToTree(figure)),
+      },
+      {
+        description: "Finds any gaps created by an inserted figure",
+        action: "insert",
+        type: "singular",
+        weight: 0,
+        func: ((id, figure) => this._processGaps(id, figure)),
+      },
+    ].concat(
+      this._removeOperations(),
+      this._transformOperations()
+    ).filter(elem => elem.action === action);
+  }
+
+  _transformOperations() {
+    let siblings = [];
+    return [
+      {
+        description: "Removes the unmoved figures edges from the vertex tree",
+        action: "transform",
+        type: "singular",
+        weight: -3,
+        func: (id) => this._removeFromTree(this._figures[id]),
+      },
+      {
+        description: "Register siblings of the figure that was removed",
+        action: "remove",
+        type: "singular",
+        weight: -2,
+        func: ((id, figure) => {
+          // Gets the figures siblings and processes them for new gaps.
+          siblings = this._getFigureSiblingIds(figure).filter(fid => {
+            return fid != id;
+          });
+        }),
+      },
+      {
+        description: "Removes any subsection records created by a removed figure",
+        action: "transform",
+        type: "iterator",
+        weight: -1,
+        func: ((a, b) => {
+          figures.subsect(a.figure, b.figure).forEach(section => {
+            this._subsectTree.removeEdge(section);
+          });
+        }),
+      },
+      {
         description: "Removes any overlap records for a removed figure",
         action: "transform",
         type: "singular",
@@ -335,21 +373,25 @@ export default class Composition {
         description: "Adds a moved figure's edges back into the vertex tree",
         action: "transform",
         type: "singular",
-        weight: 1,
+        weight: 2,
         func: ((_, figure) => this._addToTree(figure)),
       },
       {
-        description: "Adds a moved figure's edges back into the vertex tree",
+        description: "Finds and stores subsected edges created by coincident figures",
         action: "transform",
-        type: "singular",
-        weight: 0,
-        func: ((_, figure) => this._addToTree(figure)),
+        type: "iterator",
+        weight: 2,
+        func: ((a, b) => {
+          figures.subsect(a.figure, b.figure).forEach(section => {
+            this._subsectTree.insertEdge(section, [a.id, b.id]);
+          });
+        }),
       },
       {
         description: "Finds and stores instersecting figures",
         action: "transform",
         type: "iterator",
-        weight: 1,
+        weight: 3,
         func: ((a, b) => {
           if (figures.intersect(a.figure, b.figure)) {
             this._intersecting.push({a: a.id, b: b.id});
@@ -360,7 +402,7 @@ export default class Composition {
         description: "Finds and stores overlapping figures",
         action: "transform",
         type: "iterator",
-        weight: 1,
+        weight: 3,
         func: ((a, b) => {
           if (figures.overlap(a.figure, b.figure)) {
             this._overlapping.push({a: a.id, b: b.id});
@@ -368,24 +410,24 @@ export default class Composition {
         }),
       },
       {
-        description: "Finds and stores subsected edges created by coincident figures",
-        action: "transform",
-        type: "iterator",
-        weight: 1,
-        func: ((a, b) => {
-          figures.subsect(a.figure, b.figure).forEach(section => {
-            this._subsectTree.insertEdge(section, [a.id, b.id]);
-          });
-        }),
-      },
-      {
-        description: "Removes the unmoved figures edges from the vertex tree",
+        description: "Process gaps on the moved figures siblings",
         action: "transform",
         type: "singular",
-        weight: -2,
-        func: (id) => this._removeFromTree(this._figures[id]),
+        weight: 4,
+        func: () => {
+          siblings.forEach(siblingId => {
+            this._processGaps(siblingId, this._figures[siblingId]);
+          });
+        },
       },
-    ].concat(this._removeOperations()).filter(elem => elem.action === action);
+      {
+        description: "Finds any gaps created by the moved figure",
+        action: "transform",
+        type: "singular",
+        weight: 4,
+        func: ((id, figure) => this._processGaps(id, figure)),
+      },
+    ];
   }
 
   _removeOperations() {
@@ -464,16 +506,18 @@ export default class Composition {
       return;
     }
 
-    const found = this._gapFinder.gapsFrom(figure, this._gaps)
+    const found = this._gapFinder.gapsFrom(figure, this._gaps);
     this._gaps = found.reduce((gaps, gap0) => {
-      const index = gaps.findIndex(gap1 => figures.overlap(gap0, gap1));
+      const index = gaps.findIndex(gap1 => {
+        return figures.overlap(gap0, gap1)
+      });
       if (index !== -1) {
         gaps.splice(index, 1, gap0);
       } else {
         gaps.push(gap0);
       }
       return gaps;
-    }, this._gaps);
+    }, this._gaps || []);
   }
 
   _removeGaps(removedId) {
@@ -487,7 +531,7 @@ export default class Composition {
           return edges.coincident(gapEdge, removeEdge);
         });
       })) {
-        delete this._gaps[index];
+        this._gaps.splice(index, 1);
         this._processGaps("gap", gap);
       };
     });

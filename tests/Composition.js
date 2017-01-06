@@ -434,7 +434,7 @@ test("Can find gaps in the composition", t => {
   });
 });
 
-test("A gap is created when a figure is removed and totally coincident", t => {
+test("A gap is created when a figure is removed", t => {
   const square = ShapeMaker.make("square");
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
@@ -452,22 +452,44 @@ test("A gap is created when a figure is removed and totally coincident", t => {
         {shape: square, position: [ 0, 0]},
       ],
       subtests: [
-        {remove: "fig-9", expected: {shape: square, position: [ 0, 0]}},
-        //{remove: "fig-2", expected: {shape: square, position: [ 1, 1]}},
+        {
+          remove: "fig-9",
+          expected: {shape: square, position: [ 0, 0]},
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: largeSquare},
+        {shape: square, position: [ 0, 1]},
+        {shape: square, position: [ 1, 1]},
+      ],
+      subtests: [
+        {
+          remove: "fig-1",
+          expected: {shape: ShapeMaker.arbitrary([
+            [ 0.5, 1.5],
+            [ 0.5, 0.5],
+            [ 1.5, 0.5],
+            [ 1.5,-1.5],
+            [-1.5,-1.5],
+            [-1.5, 1.5],
+          ])},
+        },
       ],
     },
   ];
 
   cases.forEach(item => {
     item.subtests.forEach(sub => {
-      const c = new Composition({processGaps: false, debug: false});
+      const c = new Composition({processGaps: true, debug: false});
+      c.debug(sub.debug);
 
       item.figures.map(settings => new figures.Figure(settings)).forEach((fig, i) => {
         const fid = c.add(fig);
       });
 
-      c.debug(true);
-      c.processGaps(true);
       c.remove(sub.remove);
 
       const expected = new figures.Figure(sub.expected);
@@ -478,7 +500,7 @@ test("A gap is created when a figure is removed and totally coincident", t => {
   });
 });
 
-test.failing("Gaps are reprocessed when a figure coincident to a gap is (re)moved", t => {
+test("Gaps are reprocessed when a figure is moved", t => {
   const square = ShapeMaker.make("square")
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
@@ -488,14 +510,17 @@ test.failing("Gaps are reprocessed when a figure coincident to a gap is (re)move
         {
           move: {
             id: "fig-1",
-            position: [0, 2],
+            position: [1,1],
           },
-          vertices: [
-            [ 1.5, 1.5],
+          expected: [
+            [ 0.5, 1.5],
+            [ 0.5, 0.5],
+            [ 1.5, 0.5],
             [ 1.5,-1.5],
             [-1.5,-1.5],
             [-1.5, 1.5],
           ],
+          debug: false,
         },
       ],
     },
@@ -516,10 +541,9 @@ test.failing("Gaps are reprocessed when a figure coincident to a gap is (re)move
     };
 
     item.subtests.forEach(sub => {
-      c.doLog = true;
+      c.debug(sub.debug)
       c.move(sub.move.id, sub.move.position);
-      c.doLog = false;
-      const gap = new figures.Figure({shape: new Shape(sub.vertices)});
+      const gap = new figures.Figure({shape: ShapeMaker.arbitrary(sub.expected)});
       const expected = toPoints([gap]);
       const actual = toPoints(c.gaps());
       t.deepEqual(actual, expected);
