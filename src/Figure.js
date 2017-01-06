@@ -89,6 +89,10 @@ export function same(f0, f1) {
   });
 }
 
+export function siblings(f0, f1) {
+  return coincidentAny(f0.edges(), f1.edges());
+}
+
 export function overlap(f0, f1) {
   return intersectAny(
     f0.edges().concat(f0.innerEdges()),
@@ -100,10 +104,18 @@ export function intersect(f0, f1) {
   return intersectAny(f0.edges(), f1.edges());
 }
 
+function coincidentAny(e0s, e1s) {
+  return arrayAny(e0s, e1s, (a, b) => edges.coincident(a, b));
+}
+
 function intersectAny(e0s, e1s) {
-  return e0s.some(e0 => {
-    return e1s.some(e1 => {
-      return edges.intersect(e0, e1);
+  return arrayAny(e0s, e1s, (a, b) => edges.intersect(a, b));
+}
+
+function arrayAny(a0, a1, comparator) {
+  return a0.some(a => {
+    return a1.some(b => {
+      return comparator(a, b);
     });
   });
 }

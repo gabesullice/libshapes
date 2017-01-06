@@ -185,6 +185,14 @@ Rotates the `Figure`'s by the given angle. Always returns the final rotation ang
 
 Whether the given `Figure`s overlap.
 
+###`function intersect(Figure, Figure)`
+
+Whether the given `Figure`s have any intersecting edges.
+
+###`function siblings(Figure, Figure)`
+
+Whether the given `Figure`s share any coincident edges.
+
 ## Composition
 Can represent many figures on a plane and answer questions of the relationships between those figures.
 

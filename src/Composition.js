@@ -338,6 +338,19 @@ export default class Composition {
         func: ((_, figure) => this._removeFromTree(figure)),
       },
       {
+        description: "Processes gaps for a removed figure",
+        action: "remove",
+        type: "singular",
+        weight: -1,
+        func: ((_, figure) => {
+          // Gets the figures siblings and processes them for new gaps.
+          const fids = this._getFigureSiblingIds(figure);
+          fids.forEach(id => {
+            this._processGaps(id, this._figures[id]);
+          });
+        }),
+      },
+      {
         description: "Removes any overlap records for a removed figure",
         action: "transform",
         type: "singular",
@@ -494,6 +507,39 @@ export default class Composition {
 
   _removeIntersections(id) {
     this._intersecting = this._intersecting.filter(i => !(i.a == id || i.b == id));
+  }
+
+  _getFigureSiblingIds(figure) {
+    return figure.edges().reduce((all, e0) => {
+
+      const vertices = e0.vertices();
+
+      const items = vertices.reduce((items, v) => {
+        const result = this._subsectTree.at(v);
+        return (result) ? items.concat(result) : items;
+      }, []);
+
+      const relevant = items.filter(item => {
+        return item.edges.some(e1 => edges.coincident(e0, e1));
+      });
+
+      //const fids = relevant
+      const fids = items
+        .map(item => item.tags)
+        .reduce((fids, tags) => {
+          tags.forEach(tag => {
+            if (fids.indexOf(tag) === -1) fids.push(tag);
+          });
+          return fids;
+        }, []);
+
+      const siblings = fids.filter(fid => {
+        return figures.siblings(figure, this._figures[fid]);
+      });
+
+      all = all.concat(siblings.filter(fid => !all.some(id => id == fid)));
+      return all;
+    }, []);
   }
 
   _getID() {

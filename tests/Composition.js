@@ -432,7 +432,7 @@ test.failing("A gap is created when a figure is removed and totally coincident",
       ],
       subtests: [
         {remove: "fig-1", expected: {shape: square, position: [ 0, 0]}},
-        {remove: "fig-2", expected: {shape: square, position: [ 1, 1]}},
+        //{remove: "fig-2", expected: {shape: square, position: [ 1, 1]}},
       ],
     },
   ];
@@ -440,10 +440,12 @@ test.failing("A gap is created when a figure is removed and totally coincident",
   cases.forEach(item => {
     item.subtests.forEach(sub => {
       const c = new Composition({processGaps: true, debug: false});
+
       item.figures.map(settings => new figures.Figure(settings)).forEach((fig, i) => {
         const fid = c.add(fig);
       });
 
+      c._debug = true;
       c.remove(sub.remove);
 
       const expected = new figures.Figure(sub.expected);
