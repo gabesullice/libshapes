@@ -119,8 +119,8 @@ export default class GapFinder {
       return false;
     }
     
-    if (vertex.same(next, gap[0])) {
-      return gap;
+    if (vertex.same(next, gap[1])) {
+      return gap.slice(0,-1);
     }
 
     gap.push(next);

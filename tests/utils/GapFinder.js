@@ -174,31 +174,31 @@ test("Can find a gap", t => {
         },
       ],
     },
-    //{
-    //  figures: [
-    //    {shape: largeSquare},
-    //    {shape: square, position: [ 1, 1]},
-    //    {shape: square, position: [ 0, 0]},
-    //  ],
-    //  subtests: [
-    //    {
-    //      input: [[ 0.5, 0.5], [ 1.5, 0.5]],
-    //      expected: [
-    //        [ 0.5, 0.5],
-    //        [ 1.5, 0.5],
-    //        [ 1.5,-1.5],
-    //        [-1.5,-1.5],
-    //        [-1.5, 1.5],
-    //        [ 0.5, 1.5],
-    //        [ 0.5, 0.5],
-    //        [-0.5, 0.5],
-    //        [-0.5,-0.5],
-    //        [ 0.5,-0.5],
-    //      ],
-    //      debug: true,
-    //    },
-    //  ],
-    //},
+    {
+      figures: [
+        {shape: largeSquare},
+        {shape: square, position: [ 1, 1]},
+        {shape: square, position: [ 0, 0]},
+      ],
+      subtests: [
+        {
+          input: [[ 0.5, 0.5], [ 1.5, 0.5]],
+          expected: [
+            [ 0.5, 0.5],
+            [ 1.5, 0.5],
+            [ 1.5,-1.5],
+            [-1.5,-1.5],
+            [-1.5, 1.5],
+            [ 0.5, 1.5],
+            [ 0.5, 0.5],
+            [-0.5, 0.5],
+            [-0.5,-0.5],
+            [ 0.5,-0.5],
+          ],
+          debug: true,
+        },
+      ],
+    },
   ];
 
   cases.forEach(item => {
