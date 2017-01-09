@@ -409,6 +409,31 @@ test("Can find gaps in the composition", t => {
       ],
       description: "Old gaps are removed when a figure is placed on it",
     },
+    {
+      figures: [
+        {shape: largeSquare},
+        {shape: square, position: [1,1]},
+        {shape: square, position: [0,0]}
+      ],
+      subtests: [
+        {
+          vertices: [
+            [-0.5, 0.5],
+            [-0.5,-0.5],
+            [ 0.5,-0.5],
+            [ 0.5, 0.5],
+            [ 1.5, 0.5],
+            [ 1.5,-1.5],
+            [-1.5,-1.5],
+            [-1.5, 1.5],
+            [ 0.5, 1.5],
+            [ 0.5, 0.5],
+          ],
+        },
+      ],
+      description: "Gaps are found with an middle intersection",
+      debug: false,
+    },
   ];
 
   cases.forEach(item => {

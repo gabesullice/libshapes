@@ -307,7 +307,9 @@ export default class Composition {
         action: "insert",
         type: "singular",
         weight: 0,
-        func: ((id, figure) => this._processGaps(id, figure)),
+        func: ((id, figure) => {
+          this._processGaps(id, figure);
+        }),
       },
     ].concat(
       this._removeOperations(),
@@ -600,6 +602,8 @@ export default class Composition {
 
     // Eliminate items which do not have a coincident edge with the figure.
     const relevant = items.filter(item => {
+      // @todo: remove this code block unless something is broken by doing it
+      //return true;
       return figure.edges().some(e0 => {
         return item.edges.some(e1 => edges.coincident(e0, e1));
       });

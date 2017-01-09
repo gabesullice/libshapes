@@ -211,7 +211,7 @@ test("Can find a gap", t => {
             [-0.5, 0.5],
             [-0.5,-0.5],
           ],
-          debug: true,
+          debug: false,
         },
       ],
     },

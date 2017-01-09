@@ -51,7 +51,8 @@ export default class GapFinder {
       return !remaining.some(e1 => edges.same(e0, e1));
     });
 
-    if (figureEdges.length > lonely.length && lonely.length > 0) {
+    //if (figureEdges.length > lonely.length && lonely.length > 0) {
+    if (lonely.length > 0) {
       return lonely.reduce((gaps, edge, i) => {
         const found = this.findGap(edge, figure);
 
@@ -59,11 +60,7 @@ export default class GapFinder {
         if (found) {
           // and it's not one that we've already found...
           const duplicate = gaps.concat(knownGaps).some(gap => {
-            return gap.vertices().every(v0 => {
-              return found.vertices().some(v1 => {
-                return vertex.same(v0, v1);
-              });
-            });
+            return figures.same(found, gap);
           });
 
           if (!duplicate) {
