@@ -77,3 +77,18 @@ test("Can translate a Vertex", t => {
     t.true(vertex.same(vertex.translate(vo, test.translation), ve));
   });
 });
+
+test("Can find the vector angle from one vertex to another", t => {
+  const cases = [
+    {from: [0,0], to: [0,-1], expected: 3 * Math.PI/2},
+    {from: [0,0], to: [0, 1], expected: Math.PI/2},
+    {from: [0,0], to: [1, 1], expected: Math.PI/4},
+    {from: [0,0], to: [1, -1], expected: 7 * Math.PI/4},
+    {from: [0.5,0.5], to: [0.5,-0.5], expected: 3 * Math.PI/2},
+  ];
+  cases.forEach(item => {
+    const from = new vertex.Vertex(item.from[0], item.from[1]);
+    const to = new vertex.Vertex(item.to[0], item.to[1]);
+    t.is(vertex.angleBetween(from, to), item.expected);
+  });
+});

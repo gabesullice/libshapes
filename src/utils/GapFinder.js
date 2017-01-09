@@ -235,41 +235,34 @@ export default class GapFinder {
   }
 
   _nearestEdge(to, around, bundle) {
-    bundle.sort((a, b) => {
+    const sorted = bundle.sort((a, b) => {
       const t0 = a.angle(around), t1 = b.angle(around);
       if (t0 < t1) {
         return -1;
-      } else if (t0 == t1 && t0 == 0) {
-        if (vertex.same(a.right(), b.left())) {
-          return 1;
-        } else if (vertex.same(b.right(), a.left())) {
-          return -1;
-        } else {
-          return (a.length() < b.length()) ? -1 : 1;
-        }
-      } else if (t0 == t1 && t0 == Math.PI/2) {
-        if (vertex.same(a.top(), b.bottom())) {
-          return 1;
-        } else if (vertex.same(b.top(), a.bottom())) {
-          return -1;
-        } else {
-          return (a.length() < b.length()) ? -1 : 1;
-        }
-      } else {
+      } else if (t0 > t1) {
         return 1;
+      } else {
+        return (a.length() < b.length()) ? -1 : 1;
       }
     });
 
-    let nextIndex = 0;
+    const angles = sorted.map(edge => edge.angle(around));
+
+
     const theta = to.angle(around);
-    for (let i = 0; i < bundle.length; i++) {
-      let compare = bundle[i].angle(around);
-      if (theta < compare) {
-        nextIndex = i;
+    let indexNext = 0;
+    for (let i = 0; i < angles.length; i++) {
+      if (theta < angles[i]) {
+        indexNext = i;
         break;
       }
     }
-    return bundle[nextIndex];
+    // this.log('theta', theta);
+    // this.log('angles', angles);
+    // this.log('indexNext', indexNext);
+    // this.log('prev', to);
+    // this.log('next', sorted[indexNext]);
+    return sorted[indexNext];
   }
 
   _getAngle(edge, v) {
