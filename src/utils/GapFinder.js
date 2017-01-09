@@ -119,8 +119,11 @@ export default class GapFinder {
       return false;
     }
     
-    if (vertex.same(next, gap[1])) {
-      return gap.slice(0,-1);
+    if (vertex.same(next, gap[0])) {
+      const peek = this.nextVertex(curr, next);
+      if (vertex.same(peek, gap[1])) {
+        return gap;
+      }
     }
 
     gap.push(next);

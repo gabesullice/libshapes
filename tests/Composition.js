@@ -413,6 +413,7 @@ test("Can find gaps in the composition", t => {
 
   cases.forEach(item => {
     const c = new Composition({processGaps: true, snap: false, debug: false});
+    c.debug(item.debug);
     item.figures.forEach((options, i) => {
       c.add(new figures.Figure(options))
     })
