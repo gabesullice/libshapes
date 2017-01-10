@@ -112,6 +112,10 @@ export default class GapFinder {
     const curr = gap[gap.length - 1];
     const next = this.nextVertex(prev, curr);
 
+    if (next === undefined) {
+      return false;
+    }
+
     if (vertex.same(next, prev)) {
       return false;
     }
@@ -134,6 +138,10 @@ export default class GapFinder {
     const possibles = around.filter(possible => {
       return !edges.same(edge, possible);
     });
+
+    if (possibles.length == 0) {
+      return undefined;
+    }
 
     const nextEdge = this._nearestEdge(edge, current, possibles);
 

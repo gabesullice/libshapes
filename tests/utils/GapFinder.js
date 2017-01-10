@@ -120,7 +120,7 @@ test("Can find the next vertex from the previous two vertices", t => {
   });
 });
 
-test("Can find a gap", t => {
+test("Can find a gap by walking its vertices", t => {
   const square = ShapeMaker.make("square")
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
@@ -170,7 +170,7 @@ test("Can find a gap", t => {
             [ 0.5, 1.5],
             [ 0.5, 0.5],
           ],
-          debug: true,
+          debug: false,
         },
       ],
     },

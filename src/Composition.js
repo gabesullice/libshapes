@@ -306,9 +306,23 @@ export default class Composition {
         description: "Finds any gaps created by an inserted figure",
         action: "insert",
         type: "singular",
-        weight: 0,
+        weight: 1,
         func: ((id, figure) => {
           this._processGaps(id, figure);
+        }),
+      },
+      {
+        description: "Find and process gaps on the figure's siblings",
+        action: "insert",
+        type: "singular",
+        weight: 0,
+        func: ((id, figure) => {
+          // Gets the figures siblings and processes them for new gaps.
+          this._getFigureSiblingIds(figure)
+            .filter(fid => fid != id)
+            .forEach(fid => {
+              this._processGaps(fid, this.get(fid));
+            });
         }),
       },
     ].concat(

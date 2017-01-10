@@ -526,6 +526,57 @@ test("A gap is created when a figure is removed", t => {
   });
 });
 
+test("Can find gaps in a composition (integrated)", t => {
+  const square = ShapeMaker.make("square")
+  const cases = [
+    {
+      figures: [
+        {
+          shape: ShapeMaker.arbitrary([
+            [-0.5,-1.5],
+            [-0.5, 1.5],
+            [ 0.5, 1.5],
+            [ 0.5,-1.5],
+          ]),
+          position: [0, 0]
+        },
+      ],
+      subtests: [
+        {
+          add: [
+            {shape: square, position: [0, 0]},
+          ],
+          gaps: [
+            {shape: square, position: [0, 1]},
+            {shape: square, position: [0,-1]},
+          ],
+          debug: false,
+        },
+      ],
+      description: "Gaps are found when a shape splits an existing gap",
+    },
+  ];
+
+  cases.forEach(item => {
+    item.subtests.forEach(sub => {
+      const c = new Composition({
+        processGaps: true,
+        snap: false,
+        debug: sub.debug
+      });
+
+      item.figures.forEach(options => c.add(new figures.Figure(options)));
+      sub.add.forEach(options => c.add(new figures.Figure(options)));
+
+      const result = c.gaps();
+      t.is(result.length, sub.gaps.length);
+      for (let i = 0; i < sub.gaps.length; i++) {
+        t.true(figures.same(result[i], new figures.Figure(sub.gaps[i])));
+      }
+    });
+  });
+});
+
 test("Gaps are reprocessed when a figure is moved", t => {
   const square = ShapeMaker.make("square")
   const largeSquare = ShapeMaker.make("square", 3)
