@@ -711,6 +711,38 @@ test("Can find gaps in a composition (integrated)", t => {
         },
       ],
     },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square", 3), position: [ 10, 10]},
+            {shape: ShapeMaker.make("square", 1), position: [ 10,-10]},
+            {shape: ShapeMaker.make("square", 1), position: [-10,-10]},
+          ],
+          move: [
+            {id: 'fig-0', position: [ 0, 0]},
+            {id: 'fig-1', position: [-1, 1]},
+            {id: 'fig-2', position: [-1,-1]},
+          ],
+          gaps: [
+            {
+              shape: ShapeMaker.arbitrary([
+                [-1.5,-0.5],
+                [-0.5,-0.5],
+                [-0.5,-1.5],
+                [ 1.5,-1.5],
+                [ 1.5, 1.5],
+                [-0.5, 1.5],
+                [-0.5, 0.5],
+                [-1.5, 0.5],
+              ]),
+            },
+          ],
+          debug: false,
+        },
+      ],
+    },
   ];
 
   cases.forEach((item, caseIndex) => {

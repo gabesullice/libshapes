@@ -203,6 +203,9 @@ export default class GapFinder {
         const nearest = result
           .map(item => item.vertex)
           .filter(vFound => {
+            if (Math.abs(shortest.slope()) === Infinity) {
+              return Math.abs(vFound.x - v.x) < vertex.EPSILON;
+            }
             const b = vFound.y - shortest.slope() * vFound.x;
             return Math.abs(b - shortest.yIntercept()) < vertex.EPSILON;
           })
