@@ -557,16 +557,21 @@ test("Can find gaps in a composition (integrated)", t => {
     },
     {
       figures: [
-        {
-          shape: ShapeMaker.make("square", 2),
-          position: [0, 0]
-        },
       ],
       subtests: [
         {
           add: [
-            {shape: square, position: [-0.5, 0.5]},
-            {shape: square, position: [ 0.5, 0.5]},
+            {
+              shape: ShapeMaker.make("square", 2),
+              position: [100, 0]
+            },
+            {shape: ShapeMaker.make("square", 1), position: [200, 0.0]},
+            {shape: ShapeMaker.make("square", 1), position: [300, 0.0]},
+          ],
+          move: [
+            {id: 'fig-0', position: [ 0.0, 0.0]},
+            {id: 'fig-1', position: [-0.5, 0.5]},
+            {id: 'fig-2', position: [ 0.5, 0.5]},
           ],
           gaps: [
             {
@@ -590,18 +595,21 @@ test("Can find gaps in a composition (integrated)", t => {
     item.subtests.forEach(sub => {
       const c = new Composition({
         processGaps: true,
-        snap: false,
+        snap: true,
         debug: sub.debug
       });
 
       const make = shape => new figures.Figure(shape);
+      const doMove = move => c.move(move.id, move.position);
 
       const original = item.figures.map(make);
-      const additonal = sub.add.map(make);
+      const adds = (sub.add) ? sub.add.map(make) : [];
+      const moves = sub.move || [];
       const expected = sub.gaps.map(make);
 
       original.forEach(fig => c.add(fig));
-      additonal.forEach(fig => c.add(fig));
+      adds.forEach(fig => c.add(fig));
+      moves.forEach(doMove);
 
       const result = c.gaps();
       t.is(result.length, expected.length);
