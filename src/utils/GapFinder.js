@@ -52,7 +52,7 @@ export default class GapFinder {
     });
 
     //if (figureEdges.length > lonely.length && lonely.length > 0) {
-    if (lonely.length > 0) {
+    if (lonely.length > 0 && lonely.length < figureEdges.length) {
       return lonely.reduce((gaps, edge, i) => {
         const found = this.findGap(edge, figure);
 

@@ -397,13 +397,13 @@ test("Can find gaps in the composition", t => {
       subtests: [
         {
           vertices: [
+            [-0.5, 1.5],
+            [-0.5, 0.5],
             [ 0.5, 0.5],
             [ 1.5, 0.5],
             [ 1.5,-1.5],
             [-1.5,-1.5],
             [-1.5, 1.5],
-            [-0.5, 1.5],
-            [-0.5, 0.5],
           ],
         },
       ],
@@ -431,7 +431,7 @@ test("Can find gaps in the composition", t => {
           ],
         },
       ],
-      description: "Gaps are found with an middle intersection",
+      description: "Gaps are found with a middle intersection",
       debug: false,
     },
   ];
