@@ -354,7 +354,7 @@ export default class Composition {
       },
       {
         description: "Register siblings of the figure that was removed",
-        action: "remove",
+        action: "transform",
         type: "singular",
         weight: -2,
         func: ((id, figure) => {
