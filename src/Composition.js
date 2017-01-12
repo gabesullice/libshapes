@@ -300,7 +300,9 @@ export default class Composition {
         action: "insert",
         type: "singular",
         weight: -1,
-        func: ((_, figure) => this._addToTree(figure)),
+        func: ((id, figure) => {
+          figure.edges().forEach(e => this._vTree.insertEdge(e, [id]));
+        }),
       },
       {
         description: "Removes any gaps overlapped by the inserted figure",
@@ -399,7 +401,9 @@ export default class Composition {
         action: "transform",
         type: "singular",
         weight: 2,
-        func: ((_, figure) => this._addToTree(figure)),
+        func: ((id, figure) => {
+          figure.edges().forEach(e => this._vTree.insertEdge(e, [id]));
+        }),
       },
       {
         description: "Finds and stores subsected edges created by coincident figures",
@@ -627,19 +631,13 @@ export default class Composition {
   _getFigureSiblingIds(figure) {
     // Get all the items around figure.
     const items = figure.vertices().reduce((items, v) => {
-      const result = this._subsectTree.at(v);
-      return (result) ? items.concat(result) : items;
+      const subsects = this._subsectTree.at(v);
+      items = (subsects) ? items.concat(subsects) : items;
+      const regulars = this._vTree.at(v);
+      items = (regulars) ? items.concat(regulars) : items;
+      return items;
     }, []);
 
-
-    // Eliminate items which do not have a coincident edge with the figure.
-    const relevant = items.filter(item => {
-      // @todo: remove this code block unless something is broken by doing it
-      //return true;
-      return figure.edges().some(e0 => {
-        return item.edges.some(e1 => edges.coincident(e0, e1));
-      });
-    });
 
     // 1. Extract the tags (which are figure ids) from each item.
     // 2. Deduplicate the fids.
@@ -662,10 +660,6 @@ export default class Composition {
     const id = "fig-" + this._count;
     this._count++;
     return id;
-  }
-
-  _addToTree(figure) {
-    figure.edges().forEach(e => this._vTree.insertEdge(e, [ figure.id ]));
   }
 
   _removeFromTree(figure) {

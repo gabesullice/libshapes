@@ -418,6 +418,8 @@ test("Can find gaps in the composition", t => {
       subtests: [
         {
           vertices: [
+            [ 0.5, 1.5],
+            [ 0.5, 0.5],
             [-0.5, 0.5],
             [-0.5,-0.5],
             [ 0.5,-0.5],
@@ -426,8 +428,6 @@ test("Can find gaps in the composition", t => {
             [ 1.5,-1.5],
             [-1.5,-1.5],
             [-1.5, 1.5],
-            [ 0.5, 1.5],
-            [ 0.5, 0.5],
           ],
         },
       ],

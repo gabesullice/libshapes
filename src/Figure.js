@@ -1,4 +1,5 @@
-import * as edges from "../lib/Edge";
+import * as vertex from "./Vertex";
+import * as edges from "./Edge";
 
 export class Figure {
 
@@ -105,7 +106,10 @@ export function same(f0, f1, debug) {
 }
 
 export function siblings(f0, f1) {
-  return coincidentAny(f0.edges(), f1.edges());
+  return (
+    coincidentAny(f0.edges(), f1.edges())
+    || sharedVerticesAny(f0.vertices(), f1.vertices())
+  );
 }
 
 export function overlap(f0, f1) {
@@ -125,6 +129,10 @@ function coincidentAny(e0s, e1s) {
 
 function intersectAny(e0s, e1s) {
   return arrayAny(e0s, e1s, (a, b) => edges.intersect(a, b));
+}
+
+function sharedVerticesAny(v0s, v1s) {
+  return arrayAny(v0s, v1s, (a, b) => vertex.same(a, b));
 }
 
 function arrayAny(a0, a1, comparator) {
