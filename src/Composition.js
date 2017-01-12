@@ -372,7 +372,7 @@ export default class Composition {
         }),
       },
       {
-        description: "Removes any subsection records created by a removed figure",
+        description: "Removes any subsection records created by a moved figure",
         action: "transform",
         type: "iterator",
         weight: -1,
@@ -383,11 +383,20 @@ export default class Composition {
         }),
       },
       {
-        description: "Removes any overlap records for a removed figure",
+        description: "Removes any overlap records for a moved figure",
         action: "transform",
         type: "singular",
-        weight: 1,
+        weight: -1,
         func: (id => this._removeOverlaps(id)),
+      },
+      {
+        description: "Removes any gap records for a moved figure",
+        action: "transform",
+        type: "singular",
+        weight: -1,
+        func: ((_, figure) => this._gaps = this._gaps.filter(gap => {
+          return !figures.coincident(figure, gap);
+        }))
       },
       {
         description: "Removes any intersection records for a removed figure",
@@ -509,7 +518,9 @@ export default class Composition {
         action: "remove",
         type: "singular",
         weight: 0,
-        func: (id => this._removeGaps(id)),
+        func: ((_, figure) => this._gaps = this._gaps.filter(gap => {
+          return !figures.coincident(figure, gap);
+        }))
       },
       {
         description: "Removes any subsection records created by a removed figure",
@@ -563,23 +574,6 @@ export default class Composition {
       }
       return gaps;
     }, this._gaps || []);
-  }
-
-  _removeGaps(removedId) {
-    if (!this.processGaps()) return;
-
-    const removed = this._figures[removedId];
-
-    this._gaps.forEach((gap, index) => {
-      if (gap.edges().some((gapEdge, index) => {
-        return removed.edges().some(removeEdge => {
-          return edges.coincident(gapEdge, removeEdge);
-        });
-      })) {
-        this._gaps.splice(index, 1);
-        this._processGaps("gap", gap);
-      };
-    });
   }
 
   _handleSnap(id, options) {

@@ -119,6 +119,10 @@ export function overlap(f0, f1) {
   );
 }
 
+export function coincident(f0, f1) {
+  return coincidentAny(f0.edges(), f1.edges());
+}
+
 export function intersect(f0, f1) {
   return intersectAny(f0.edges(), f1.edges());
 }

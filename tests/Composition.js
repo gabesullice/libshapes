@@ -611,7 +611,7 @@ test("Can find gaps in a composition (integrated)", t => {
               ]),
               position: [0, 0]},
           ],
-          debug: true,
+          debug: false,
         },
       ],
     },
@@ -641,7 +641,73 @@ test("Can find gaps in a composition (integrated)", t => {
               ]),
             },
           ],
-          debug: true,
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: ShapeMaker.make("square", 3)},
+      ],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square", 1), position: [1,0]},
+          ],
+          move: [],
+          gaps: [
+            {
+              shape: ShapeMaker.arbitrary([
+                [ 0.5,-0.5],
+                [ 0.5, 0.5],
+                [ 1.5, 0.5],
+                [ 1.5, 1.5],
+                [-1.5, 1.5],
+                [-1.5,-1.5],
+                [ 1.5,-1.5],
+                [ 1.5,-0.5],
+              ]),
+            },
+          ],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square", 3), position: [ 10,10]},
+            {shape: ShapeMaker.make("square", 1), position: [-10, 0]},
+            {shape: ShapeMaker.make("square", 1), position: [ -5, 0]},
+            {shape: ShapeMaker.make("square", 1), position: [ 10, 0]},
+          ],
+          move: [
+            {id: 'fig-0', position: [ 0, 0]},
+            {id: 'fig-1', position: [-1, 1]},
+            {id: 'fig-2', position: [ 0, 1]},
+            {id: 'fig-3', position: [ 0, 0]},
+            {id: 'fig-1', position: [ 0,-1]},
+            {id: 'fig-1', position: [ 0,-10]},
+          ],
+          gaps: [
+            {
+              shape: ShapeMaker.arbitrary([
+                [-0.5,-0.5],
+                [-0.5, 0.5],
+                [-0.5, 1.5],
+                [-1.5, 1.5],
+                [-1.5,-1.5],
+                [ 1.5,-1.5],
+                [ 1.5, 1.5],
+                [ 0.5, 1.5],
+                [ 0.5, 0.5],
+                [ 0.5,-0.5],
+              ]),
+            },
+          ],
+          debug: false,
         },
       ],
     },
@@ -668,7 +734,9 @@ test("Can find gaps in a composition (integrated)", t => {
       moves.forEach(doMove);
 
       const result = c.gaps();
-      t.is(result.length, expected.length);
+      let pass = result.length == expected.length;
+      if (!pass && result.length > 0) console.log(result.map(res => res.vertices()));
+      t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex}`);
       for (let i = 0; i < expected.length; i++) {
         const pass = figures.same(result[i], expected[i]);
         if (!pass) console.log(result[i].vertices());
