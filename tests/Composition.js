@@ -555,6 +555,35 @@ test("Can find gaps in a composition (integrated)", t => {
       ],
       description: "Gaps are found when a shape splits an existing gap",
     },
+    {
+      figures: [
+        {
+          shape: ShapeMaker.make("square", 2),
+          position: [0, 0]
+        },
+      ],
+      subtests: [
+        {
+          add: [
+            {shape: square, position: [-0.5, 0.5]},
+            {shape: square, position: [ 0.5, 0.5]},
+          ],
+          gaps: [
+            {
+              shape: ShapeMaker.arbitrary([
+                [-1.0, 0.0],
+                [ 0.0, 0.0],
+                [ 1.0, 0.0],
+                [ 1.0,-1.0],
+                [-1.0,-1.0],
+              ]),
+              position: [0, 0]},
+          ],
+          debug: true,
+        },
+      ],
+      description: "Gaps are found when a shape splits an existing gap",
+    },
   ];
 
   cases.forEach(item => {
@@ -572,22 +601,16 @@ test("Can find gaps in a composition (integrated)", t => {
       const expected = sub.gaps.map(make);
 
       original.forEach(fig => c.add(fig));
-      //if (sub.debug) console.log(c.gaps().map(res => res.vertices()));
       additonal.forEach(fig => c.add(fig));
-      //if (sub.debug) console.log(c.gaps().map(res => res.vertices()));
 
       const result = c.gaps();
-      //if (sub.debug) console.log(result.map(res => res.vertices()));
       t.is(result.length, expected.length);
       for (let i = 0; i < expected.length; i++) {
-        const res = figures.same(result[i], expected[i]);
-        if (!res) {
-          //console.log(i);
-          //console.log(result[i].vertices());
-          //console.log(expected[i].vertices());
-          figures.same(result[i], expected[i], true);
+        const pass = figures.same(result[i], expected[i]);
+        if (!pass) {
+          console.log(result[i].vertices());
         }
-        t.true(res);
+        t.true(pass);
       }
     });
   });
