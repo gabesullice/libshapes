@@ -15,7 +15,7 @@ export default class Composition {
   } = {}) {
     this._debug = debug;
     this.bounds.apply(this, bounds);
-    this._doSnap = doSnap;
+    this.snap(doSnap);
     this._doProcessGaps = processGaps;
     this.snapTolerance(snapTolerance);
     this._count = 0;
@@ -50,6 +50,13 @@ export default class Composition {
     const l = this._bounds.left(), r = this._bounds.right();
     const ret = [[l.x, l.y], [r.x, r.y]];
     return ret;
+  }
+
+  snap(doSnap) {
+    if (doSnap !== undefined) {
+      this._doSnap = doSnap;
+    }
+    return this._doSnap;
   }
 
   snapTolerance(tolerance) {
