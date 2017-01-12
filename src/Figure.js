@@ -81,12 +81,27 @@ export function subsect(f0, f1) {
   return subsections;
 }
 
-export function same(f0, f1) {
-  return f0.edges().every(e0 => {
-    return f1.edges().some(e1 => {
-      return edges.same(e0, e1);
-    });
-  });
+export function same(f0, f1, debug) {
+  const e0s = f0.edges(), e1s = f1.edges();
+  if (e0s.length != e1s.length) return false;
+  return e0s.reduce((same, e0) => {
+    if (same.result) {
+      const index = same.remaining.findIndex(e1 => edges.same(e0, e1));
+      if (index === -1) {
+        same.result = false;
+      } else {
+        same.remaining.splice(index, 1);
+      }
+    }
+    return same;
+  }, {result: true, remaining: e1s}).result;
+  //return f0.edges().every(e0 => {
+  //  return f1.edges().some(e1 => {
+  //    const res = edges.same(e0, e1);
+  //    //if (debug && !res) console.log(e0, e1);
+  //    return res
+  //  });
+  //});
 }
 
 export function siblings(f0, f1) {

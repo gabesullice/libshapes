@@ -73,13 +73,15 @@ test("Can get the midpoint of an Edge", t => {
 
 test("Can detect that two edges are the same", t => {
   const tests = [
-    {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: true},
-    {input: [[[0,0], [1,1]], [[1,1], [0,0]]], expected: true},
-    {input: [[[0,0], [0,1]], [[0,1], [0,0]]], expected: true},
-    {input: [[[0,0], [1,0]], [[1,0], [0,0]]], expected: true},
-    {input: [[[0,0], [1,0]], [[2,0], [0,0]]], expected: false},
-    {input: [[[0,0], [1,1]], [[0,2], [1,1]]], expected: false},
-    {input: [[[0,0], [2,2]], [[1,0], [1,2]]], expected: false},
+    {input: [[[ 0.0, 0.0], [ 1.0, 1.0]], [[ 0.0, 0.0], [ 1.0, 1.0]]], expected: true},
+    {input: [[[ 0.0, 0.0], [ 1.0, 1.0]], [[ 1.0, 1.0], [ 0.0, 0.0]]], expected: true},
+    {input: [[[ 0.0, 0.0], [ 0.0, 1.0]], [[ 0.0, 1.0], [ 0.0, 0.0]]], expected: true},
+    {input: [[[ 0.0, 0.0], [ 1.0, 0.0]], [[ 1.0, 0.0], [ 0.0, 0.0]]], expected: true},
+    {input: [[[ 0.0, 0.0], [ 1.0, 0.0]], [[ 1.0, 0.0], [ 0.0, 0.0]]], expected: true},
+    {input: [[[-0.5, 0.5], [ 0.5, 0.5]], [[ 0.5, 0.5], [-0.5, 0.5]]], expected: true},
+    {input: [[[ 0.0, 0.0], [ 1.0, 0.0]], [[ 2.0, 0.0], [ 0.0, 0.0]]], expected: false},
+    {input: [[[ 0.0, 0.0], [ 1.0, 1.0]], [[ 0.0, 2.0], [ 1.0, 1.0]]], expected: false},
+    {input: [[[ 0.0, 0.0], [ 2.0, 2.0]], [[ 1.0, 0.0], [ 1.0, 2.0]]], expected: false},
   ];
   tests.forEach(test => {
     const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);

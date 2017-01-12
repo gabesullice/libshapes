@@ -565,13 +565,29 @@ test("Can find gaps in a composition (integrated)", t => {
         debug: sub.debug
       });
 
-      item.figures.forEach(options => c.add(new figures.Figure(options)));
-      sub.add.forEach(options => c.add(new figures.Figure(options)));
+      const make = shape => new figures.Figure(shape);
+
+      const original = item.figures.map(make);
+      const additonal = sub.add.map(make);
+      const expected = sub.gaps.map(make);
+
+      original.forEach(fig => c.add(fig));
+      //if (sub.debug) console.log(c.gaps().map(res => res.vertices()));
+      additonal.forEach(fig => c.add(fig));
+      //if (sub.debug) console.log(c.gaps().map(res => res.vertices()));
 
       const result = c.gaps();
-      t.is(result.length, sub.gaps.length);
-      for (let i = 0; i < sub.gaps.length; i++) {
-        t.true(figures.same(result[i], new figures.Figure(sub.gaps[i])));
+      //if (sub.debug) console.log(result.map(res => res.vertices()));
+      t.is(result.length, expected.length);
+      for (let i = 0; i < expected.length; i++) {
+        const res = figures.same(result[i], expected[i]);
+        if (!res) {
+          //console.log(i);
+          //console.log(result[i].vertices());
+          //console.log(expected[i].vertices());
+          figures.same(result[i], expected[i], true);
+        }
+        t.true(res);
       }
     });
   });
