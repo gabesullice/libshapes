@@ -1,7 +1,7 @@
-import * as edges from "../../lib/Edge";
-import * as vertex from "../../lib/Vertex";
-import * as figures from "../../lib/Figure";
-import Shape from "../../lib/Shape";
+import * as edges from "../Edge";
+import * as vertex from "../Vertex";
+import * as figures from "../Figure";
+import Shape from "../Shape";
 
 export default class GapFinder {
 
@@ -123,7 +123,7 @@ export default class GapFinder {
     
     if (vertex.same(next, gap[0])) {
       const peek = this.nextVertex(curr, next);
-      if (vertex.same(peek, gap[1])) {
+      if (peek && vertex.same(peek, gap[1])) {
         return gap;
       }
     }
@@ -155,8 +155,8 @@ export default class GapFinder {
   }
 
   _getPossibleEdges(v) {
-    const regular = this._vTree.at(v) || {edges: []};
-    const subsected = this._subsectTree.at(v) || {edges: []};
+    const regular = this._vTree.at(v) || {edges: [], tags: []};
+    const subsected = this._subsectTree.at(v) || {edges: [], tags: []};
     // Get all the edges around a vertex into one array.
     let all = regular.edges.concat(subsected.edges);
 
@@ -227,23 +227,22 @@ export default class GapFinder {
     // Ungroup all the edges.
     all = [].concat(...all);
 
-    // Count and record the occasions of duplicate edges. 
-    const counted = all.reduce((counts, edge) => {
-      const index = counts.findIndex(count => edges.same(edge, count.edge));
-      if (index !== -1) {
-        counts[index].count++;
-      } else {
-        counts.push({edge: edge, count: 1});
-      }
-      return counts;
-    }, []);
+    // Remove all edges that are also a subsected edge
+    // TRUE if the edge is not the same as any subsected edges (it's just a lonely regular edge)
+    // OR 
+    // TRUE if the edge IS a subsection, but only coincident with less than 2 regular edges
+    all = all.filter(e0 => {
+      // count regular coincidences
+      const count = regular.edges.reduce((count, e1) => {
+        return (edges.coincident(e0, e1)) ? count + 1 : count;
+      }, 0);
+      return (
+        subsected.edges.some(e1 => !edges.same(e0, e1))
+        || count < 2
+      );
+    });
 
-    // Get only the edges with 2 or fewer occurences.
-    const possibles = counted
-      .filter(count => count.count < 3)
-      .map(count => count.edge);
-
-    return possibles;
+    return all;
   }
 
   _nearestEdge(to, around, bundle) {

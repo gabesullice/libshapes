@@ -17,6 +17,7 @@ test("Can find the next vertex from the previous two vertices", t => {
       subtests: [
         {input: [[-0.5,0.5], [-1.5,0.5]], expected: [-1.5,1.5], debug: false},
         {input: [[-1.5,0.5], [-1.5,1.5]], expected: [1.5,1.5], debug: false},
+        {input: [[-1.5,-0.5], [-1.5,-1.5]], expected: [1.5,-1.5], debug: false},
         {input: [[-1.5,1.5], [1.5,1.5]], expected: [1.5,-1.5]},
         {input: [[1.5,1.5], [1.5,-1.5]], expected: [-1.5,-1.5]},
         {input: [[1.5,-1.5], [-1.5,-1.5]], expected: [-1.5,-0.5], debug: false},
@@ -102,20 +103,21 @@ test("Can find the next vertex from the previous two vertices", t => {
     },
   ];
 
-  cases.forEach(item => {
+  cases.forEach((item, caseIndex) => {
     const vertexTree = new VertexTree();
     const subsectTree = new VertexTree();
     fillTrees(item.figures, vertexTree, subsectTree);
     const gapFinder = new GapFinder({vertexTree, subsectTree});
 
-    item.subtests.forEach(sub => {
+    item.subtests.forEach((sub, subtestIndex) => {
       gapFinder.debug(sub.debug);
       const input = sub.input.map(point => {
         return new vertex.Vertex(point[0], point[1]);
       });
       const next = gapFinder.nextVertex(...input);
+      t.truthy(next, `Case: ${caseIndex} | Subtest: ${subtestIndex}`);
       const actual = [next.x, next.y];
-      t.deepEqual(actual, sub.expected, sub.message);
+      t.deepEqual(actual, sub.expected, `Case: ${caseIndex} | Subtest: ${subtestIndex}`);
     });
   });
 });
