@@ -303,6 +303,15 @@ export default class Composition {
         func: ((_, figure) => this._addToTree(figure)),
       },
       {
+        description: "Removes any gaps overlapped by the inserted figure",
+        action: "insert",
+        type: "singular",
+        weight: 0,
+        func: ((_, figure) => {
+          this._gaps = this._gaps.filter(gap => !figures.overlap(figure, gap));
+        }),
+      },
+      {
         description: "Finds any gaps created by an inserted figure",
         action: "insert",
         type: "singular",
@@ -423,6 +432,15 @@ export default class Composition {
           if (figures.overlap(a.figure, b.figure)) {
             this._overlapping.push({a: a.id, b: b.id});
           }
+        }),
+      },
+      {
+        description: "Removes any gaps overlapped by the moved figure",
+        action: "transform",
+        type: "singular",
+        weight: 3,
+        func: ((_, figure) => {
+          this._gaps = this._gaps.filter(gap => !figures.overlap(figure, gap));
         }),
       },
       {
