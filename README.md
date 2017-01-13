@@ -229,6 +229,10 @@ Returns an array of `Figure` that represent gaps created by existing figures.
 
 Returns an array of figure ids which are not coincident with any other figures in the composition.
 
+###`Composition.nonIntegrated()`
+
+Returns an array of figure ids which have vertices which are not shared with any other vertex.
+
 ###`Composition.add(Figure[, options])`
 
 Inserts a new `Figure` into the `Composition`. Returns a unique string to be used to identify the `Figure` within the composition.

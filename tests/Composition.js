@@ -830,7 +830,6 @@ test("Gaps are reprocessed when a figure is moved", t => {
 });
 
 test("Can indentify 'floating' figures in a composition", t => {
-  const square = ShapeMaker.make("square")
   const cases = [
     {
       figures: [],
@@ -960,6 +959,175 @@ test("Can indentify 'floating' figures in a composition", t => {
       removes.forEach(doRemove);
 
       const result = c.floats();
+      let pass = result.length == expected.length;
+      if (!pass) console.log(result);
+      t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Length`);
+      for (let i = 0; pass && i < expected.length; i++) {
+        const pass = result[i] == expected[i];
+        if (!pass) console.log(result[i]);
+        t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Values`);
+      }
+    });
+  });
+});
+
+test("Can find and report figure IDs with non-integrated vertices", t => {
+  const cases = [
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [2, 0]},
+          ],
+          nonIntegrated: ["fig-0", "fig-1"],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+          ],
+          nonIntegrated: [],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [1, 0]},
+          ],
+          nonIntegrated: ["fig-0", "fig-1"],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+          ],
+          move: [
+            {id: "fig-1", position: [1, 0]},
+          ],
+          nonIntegrated: ["fig-0", "fig-1"],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+          ],
+          move: [
+            {id: "fig-1", position: [2, 0]},
+          ],
+          nonIntegrated: ["fig-0", "fig-1"],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [2, 0]},
+          ],
+          move: [
+            {id: "fig-1", position: [0, 0]},
+          ],
+          nonIntegrated: [],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+          ],
+          remove: ["fig-1"],
+          nonIntegrated: ["fig-0"],
+          debug: true,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [1, 0]},
+          ],
+          remove: ["fig-1"],
+          nonIntegrated: ["fig-0"],
+          debug: true,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [2, 0]},
+          ],
+          remove: ["fig-1"],
+          nonIntegrated: ["fig-0"],
+          debug: true,
+        },
+      ],
+    },
+  ];
+
+  cases.forEach((item, caseIndex) => {
+    item.subtests.forEach((sub, subtestIndex) => {
+      const c = new Composition({
+        processGaps: true,
+        snap: true,
+        debug: sub.debug
+      });
+
+      const make = shape => new figures.Figure(shape);
+      const doMove = move => c.move(move.id, move.position);
+      const doRemove = remove => c.remove(remove);
+
+      const original = item.figures.map(make);
+      const adds = (sub.add) ? sub.add.map(make) : [];
+      const moves = sub.move || [];
+      const removes = sub.remove || [];
+      const expected = sub.nonIntegrated;
+
+      original.forEach(fig => c.add(fig));
+      adds.forEach(fig => c.add(fig));
+      moves.forEach(doMove);
+      removes.forEach(doRemove);
+
+      const result = c.nonIntegrated();
       let pass = result.length == expected.length;
       if (!pass) console.log(result);
       t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Length`);
