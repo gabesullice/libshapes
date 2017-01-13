@@ -828,3 +828,146 @@ test("Gaps are reprocessed when a figure is moved", t => {
     });
   });
 });
+
+test("Can indentify 'floating' figures in a composition", t => {
+  const square = ShapeMaker.make("square")
+  const cases = [
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+          ],
+          floats: [],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [2, 0]},
+          ],
+          floats: ["fig-0", "fig-1"],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [0, 0]},
+            {shape: ShapeMaker.make("square"), position: [2, 0]},
+          ],
+          floats: [
+            "fig-2"
+          ],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: ShapeMaker.make("square"), position: [0, 0]},
+        {shape: ShapeMaker.make("square"), position: [0, 0]},
+      ],
+      subtests: [
+        {
+          move: [
+            {id: "fig-1", position: [2, 0]},
+          ],
+          floats: [
+            "fig-0",
+            "fig-1",
+          ],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: ShapeMaker.make("square"), position: [0, 0]},
+        {shape: ShapeMaker.make("square"), position: [0, 0]},
+      ],
+      subtests: [
+        {
+          move: [
+            {id: "fig-1", position: [2, 0]},
+            {id: "fig-0", position: [2, 0]},
+          ],
+          floats: [],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: ShapeMaker.make("square"), position: [0, 0]},
+        {shape: ShapeMaker.make("square"), position: [0, 0]},
+      ],
+      subtests: [
+        {
+          remove: ["fig-1"],
+          floats: ["fig-0"],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: ShapeMaker.make("square"), position: [0, 0]},
+        {shape: ShapeMaker.make("square"), position: [2, 0]},
+      ],
+      subtests: [
+        {
+          remove: ["fig-0"],
+          floats: ["fig-1"],
+          debug: false,
+        },
+      ],
+    },
+  ];
+
+  cases.forEach((item, caseIndex) => {
+    item.subtests.forEach((sub, subtestIndex) => {
+      const c = new Composition({
+        processGaps: true,
+        snap: true,
+        debug: sub.debug
+      });
+
+      const make = shape => new figures.Figure(shape);
+      const doMove = move => c.move(move.id, move.position);
+      const doRemove = remove => c.remove(remove);
+
+      const original = item.figures.map(make);
+      const adds = (sub.add) ? sub.add.map(make) : [];
+      const moves = sub.move || [];
+      const removes = sub.remove || [];
+      const expected = sub.floats;
+
+      original.forEach(fig => c.add(fig));
+      adds.forEach(fig => c.add(fig));
+      moves.forEach(doMove);
+      removes.forEach(doRemove);
+
+      const result = c.floats();
+      let pass = result.length == expected.length;
+      if (!pass) console.log(result);
+      t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Length`);
+      for (let i = 0; pass && i < expected.length; i++) {
+        const pass = result[i] == expected[i];
+        if (!pass) console.log(result[i]);
+        t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Values`);
+      }
+    });
+  });
+});

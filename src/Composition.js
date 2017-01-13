@@ -23,6 +23,9 @@ export default class Composition {
     this._overlapping = [];
     this._intersecting = [];
     this._gaps = [];
+    this._floats = [];
+    this._coincidentPairs = [];
+    this._vertexTwins = [];
     this._vTree = new VertexTree({
       leftBound: 0,
       rightBound: this._bounds.length(),
@@ -95,6 +98,10 @@ export default class Composition {
 
   gaps() {
     return this._gaps;
+  }
+
+  floats() {
+    return this._floats;
   }
 
   add(figure, options) {
@@ -303,10 +310,43 @@ export default class Composition {
         func: (id => this._handleSnap(id)),
       },
       {
+        description: "Keeps a record of coincident pairs",
+        action: "insert",
+        type: "iterator",
+        weight: -1,
+        func: ((a, b) => {
+          if (figures.coincident(a.figure, b.figure)) {
+            this._coincidentPairs.push({a: a.id, b: b.id});
+          }
+        }),
+      },
+      {
+        description: "Check and records floats for inserted figures",
+        action: "insert",
+        type: "singular",
+        weight: -0.9,
+        func: ((id, figure) => {
+          // if the inserted is not paired with anything, it's a float
+          // if it is paired with something, it's not a float
+          // remove any of it's new pairs from floats
+          const isInPairs = (id, pairs) => {
+            return pairs.some(pair => (pair.a == id || pair.b == id));
+          };
+
+          if (!isInPairs(id, this._coincidentPairs)) {
+            this._floats.push(id);
+          } else {
+            this._floats = this._floats.filter(fid => {
+              return !isInPairs(fid, this._coincidentPairs);
+            });
+          }
+        }),
+      },
+      {
         description: "Adds a figures edges to the vertex tree",
         action: "insert",
         type: "singular",
-        weight: -1,
+        weight: 0,
         func: ((id, figure) => {
           figure.edges().forEach(e => this._vTree.insertEdge(e, [id]));
         }),
@@ -315,25 +355,16 @@ export default class Composition {
         description: "Removes any gaps overlapped by the inserted figure",
         action: "insert",
         type: "singular",
-        weight: 0,
+        weight: 1,
         func: ((_, figure) => {
           this._gaps = this._gaps.filter(gap => !figures.overlap(figure, gap));
-        }),
-      },
-      {
-        description: "Finds any gaps created by an inserted figure",
-        action: "insert",
-        type: "singular",
-        weight: 1,
-        func: ((id, figure) => {
-          this._processGaps(id, figure);
         }),
       },
       {
         description: "Find and process gaps on the figure's siblings",
         action: "insert",
         type: "singular",
-        weight: 0,
+        weight: 2,
         func: ((id, figure) => {
           // Gets the figures siblings and processes them for new gaps.
           this._getFigureSiblingIds(figure)
@@ -341,6 +372,15 @@ export default class Composition {
             .forEach(fid => {
               this._processGaps(fid, this.get(fid));
             });
+        }),
+      },
+      {
+        description: "Finds any gaps created by an inserted figure",
+        action: "insert",
+        type: "singular",
+        weight: 2,
+        func: ((id, figure) => {
+          this._processGaps(id, figure);
         }),
       },
     ].concat(
@@ -411,6 +451,62 @@ export default class Composition {
         type: "singular",
         weight: 1,
         func: (id => this._removeIntersections(id)),
+      },
+      {
+        description: "Removes old coincident pair records and takes new ones if needed",
+        action: "transform",
+        type: "singular",
+        weight: 1.0,
+        func: id => {
+          const data = this._coincidentPairs.reduce((data, pair) => {
+            if (pair.a == id || pair.b == id) {
+              const counterpart = (pair.a == id) ? pair.b : pair.a;
+              data.unpaired.push(counterpart);
+            } else {
+              data.remaining.push(pair);
+              data.unpaired = data.unpaired.filter(fid => {
+                return !(pair.a == fid || pair.b == fid);
+              });
+            }
+            return data;
+          }, {unpaired: [], remaining: []});
+
+          this._coincidentPairs = data.remaining;
+          this._floats = this._floats.concat(data.unpaired);
+        },
+      },
+      {
+        description: "Removes old coincident pair records and takes new ones if needed",
+        action: "transform",
+        type: "iterator",
+        weight: 1.1,
+        func: (a, b) => {
+          if (figures.coincident(a.figure, b.figure)) {
+            this._coincidentPairs.push({a: a.id, b: b.id});
+          }
+        },
+      },
+      {
+        description: "Keeps record of any floating figures",
+        action: "transform",
+        type: "singular",
+        weight: 1.2,
+        func: ((id, figure) => {
+          // if the inserted is not paired with anything, it's a float
+          // if it is paired with something, it's not a float
+          // remove any of it's new pairs from floats
+          const isInPairs = (id, pairs) => {
+            return pairs.some(pair => (pair.a == id || pair.b == id));
+          };
+
+          if (!isInPairs(id, this._coincidentPairs)) {
+            this._floats.push(id);
+          } else {
+            this._floats = this._floats.filter(fid => {
+              return !isInPairs(fid, this._coincidentPairs);
+            });
+          }
+        }),
       },
       {
         description: "Adds a moved figure's edges back into the vertex tree",
@@ -532,6 +628,38 @@ export default class Composition {
             this._subsectTree.removeEdge(section);
           });
         }),
+      },
+      {
+        description: "Removes old coincident pair records and takes new ones if needed",
+        action: "remove",
+        type: "singular",
+        weight: 1,
+        func: (id, figure) => {
+          const data = this._coincidentPairs.reduce((data, pair) => {
+            if (pair.a == id || pair.b == id) {
+              const counterpart = (pair.a == id) ? pair.b : pair.a;
+              data.unpaired.push(counterpart);
+            } else {
+              data.remaining.push(pair);
+              data.unpaired = data.unpaired.filter(fid => {
+                return !(pair.a == fid || pair.b == fid);
+              });
+            }
+            return data;
+          }, {unpaired: [], remaining: []});
+
+          this._coincidentPairs = data.remaining;
+          this._floats = this._floats.concat(data.unpaired);
+        },
+      },
+      {
+        description: "Removes the removed figure id from the float record",
+        action: "remove",
+        type: "singular",
+        weight: 1,
+        func: id => {
+          this._floats = this._floats.filter(fid => (fid != id));
+        },
       },
       {
         description: "Removes a figures edges from the vertex tree",

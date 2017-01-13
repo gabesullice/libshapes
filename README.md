@@ -221,6 +221,14 @@ Getter/Setter for the `Composition`'s position. Bounds are used to determine the
 
 Returns an object containing all the `Figure`s within the composition. Each figure is assigned a unique key.
 
+###`Composition.gaps()`
+
+Returns an array of `Figure` that represent gaps created by existing figures.
+
+###`Composition.floats()`
+
+Returns an array of figure ids which are not coincident with any other figures in the composition.
+
 ###`Composition.add(Figure[, options])`
 
 Inserts a new `Figure` into the `Composition`. Returns a unique string to be used to identify the `Figure` within the composition.
