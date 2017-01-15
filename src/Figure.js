@@ -65,6 +65,7 @@ export class Figure {
       this._shape
       .rotate(this._rotation)
       .translate(this._position);
+    this._bound = getBounds(this.vertices());
   }
 
 }
@@ -96,13 +97,6 @@ export function same(f0, f1, debug) {
     }
     return same;
   }, {result: true, remaining: e1s}).result;
-  //return f0.edges().every(e0 => {
-  //  return f1.edges().some(e1 => {
-  //    const res = edges.same(e0, e1);
-  //    //if (debug && !res) console.log(e0, e1);
-  //    return res
-  //  });
-  //});
 }
 
 export function siblings(f0, f1) {

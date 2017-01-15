@@ -1,4 +1,5 @@
-import * as vertex from "./Vertex.js";
+import * as vertex from "./Vertex";
+import Shape from "./Shape";
 
 const EPSILON = vertex.EPSILON;
 
@@ -9,6 +10,8 @@ export class Edge {
     this._b = new vertex.Vertex(points[1][0], points[1][1]);
     this._slope = slope(this._a, this._b);
     this._angle = angle(this._a, this._b);
+    // must come after _a and _b are defined.
+    this._box = box(this);
   }
 
   slope() {
@@ -60,6 +63,10 @@ export class Edge {
 
   opposite(v) {
     return (vertex.same(v, this.left())) ? this.right() : this.left();
+  }
+
+  box() {
+    return this._box;
   }
 
 }
@@ -217,13 +224,13 @@ export function withinBounds(edge, v) {
   }
 }
 
-function on(edge, v) {
+export function on(edge, v) {
   // Find the line defined by e.
   const m = edge.slope(), b = edge.yIntercept();
   if (Math.abs(m) == Infinity) {
-    return v.x >= edge.left().x && v.x <= edge.right().x;
-  } else if (Math.abs(m) === 0) {
     return v.y >= edge.bottom().y && v.y <= edge.top().y;
+  } else if (Math.abs(m) === 0) {
+    return v.x >= edge.left().x && v.x <= edge.right().x;
   } else {
     return withinBounds(edge, new vertex.Vertex(v.x, m * v.x + b)); 
   }
@@ -246,4 +253,13 @@ function angle(v0, v1) {
 
 function slope(v0, v1) {
   return (v1.y - v0.y)/(v1.x - v0.x);
+}
+
+function box(edge) {
+  return new Shape([
+    [edge.left().x,  edge.bottom().y],
+    [edge.left().x,  edge.top().y],
+    [edge.right().x, edge.top().y],
+    [edge.right().x, edge.bottom().y],
+  ]);
 }
