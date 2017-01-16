@@ -123,7 +123,7 @@ export function overlap(f0, f1) {
   if (!f0in.every(v => v === undefined) && f0in.some(v => v == true)) return true;
 
   const f1vs = f1.vertices().concat(f1.edges().map(e => e.midpoint()));
-  const f1in = f1vs.map(v => vertexWithin(f0, v, debug));
+  const f1in = f1vs.map(v => vertexWithin(f0, v));
   if (!f1in.every(v => v === undefined) && f1in.some(v => v == true)) return true;
 
   // If we've made it this far, they might just be the same exact figure.
@@ -188,7 +188,7 @@ function boundsCheck(boundA, boundB) {
 }
 
 // An odd number of intersections means that a vertex is within a figure.
-function vertexWithin(figure, v, debug) {
+function vertexWithin(figure, v) {
   const bndLn = figure._bound.length();
   const ray0 = new edges.Edge([[v.x, v.y], [v.x + bndLn, v.y]]);
   const ray1 = new edges.Edge([[v.x, v.y], [v.x + bndLn, v.y + bndLn/2]]);

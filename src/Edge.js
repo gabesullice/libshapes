@@ -110,7 +110,7 @@ export function intersect(e0, e1) {
   return withinBounds(e0, intersection) && withinBounds(e1, intersection);
 }
 
-export function coincident(e0, e1, debug) {
+export function coincident(e0, e1) {
   // If these edges are the same, then they are coincident.
   if (same(e0, e1)) {
     return true;
@@ -224,7 +224,7 @@ export function withinBounds(edge, v) {
   }
 }
 
-export function on(edge, v, debug) {
+export function on(edge, v) {
   // Find the line defined by e.
   const m = edge.slope(), b = edge.yIntercept();
   if (Math.abs(m) === Infinity) {
