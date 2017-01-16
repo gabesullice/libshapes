@@ -233,6 +233,7 @@ test("Can detect if two figures are overlapping", t => {
         {shape: ShapeMaker.make("square", 1), position: [0,1]},
       ],
       expected: false,
+      debug: false,
     },
     {
       input: [
@@ -264,12 +265,20 @@ test("Can detect if two figures are overlapping", t => {
       expected: true,
       debug: false,
     },
+    {
+      input: [
+        {shape: ShapeMaker.make("equilateral"), position: [-0.5, 0.2886751345948127]},
+        {shape: ShapeMaker.make("equilateral"), position: [ 0.5, 0.2886751345948127]},
+      ],
+      expected: false,
+      debug: false,
+    },
   ];
   cases.forEach((item, index) => {
     const first = new figures.Figure(item.input[0]);
     const second = new figures.Figure(item.input[1]);
-    const pass = figures.overlap(first, second) == item.expected;
-    t.true(pass, `Fail: Case ${index}`);
+    const msg = `Fail: Case ${index}`;
+    t.is(figures.overlap(first, second, item.debug), item.expected, msg);
   });
 });
 

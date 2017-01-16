@@ -19,7 +19,7 @@
     "shape-factory": "^0.1.4"
   },
   "dependencies": {
-    "shape-factory": "^0.1.8",
+    "shape-factory": "^0.1.9",
     "vertex-tree": "^0.3.10"
   }
 }
