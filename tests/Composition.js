@@ -1264,3 +1264,68 @@ test("Can find and report overlapping figures", t => {
     });
   });
 });
+
+test("Can find and report figures with noncoincident edges", t => {
+  const cases = [
+    {
+      figures: [
+        {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+        {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+      ],
+      subtests: [
+        {
+          add: [],
+          noncoincident: [],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+        {shape: ShapeMaker.make("square"), position: [ 1.0, 0.0]},
+      ],
+      subtests: [
+        {
+          add: [],
+          noncoincident: ["fig-0", "fig-1"],
+          debug: true,
+        },
+      ],
+    },
+  ];
+
+  cases.forEach((item, caseIndex) => {
+    item.subtests.forEach((sub, subtestIndex) => {
+      const c = new Composition({
+        processGaps: true,
+        snap: true,
+        debug: sub.debug
+      });
+
+      const make = shape => new figures.Figure(shape);
+      const doMove = move => c.move(move.id, move.position);
+      const doRemove = remove => c.remove(remove);
+
+      const original = item.figures.map(make);
+      const adds = (sub.add) ? sub.add.map(make) : [];
+      const moves = sub.move || [];
+      const removes = sub.remove || [];
+      const expected = sub.noncoincident;
+
+      original.forEach(fig => c.add(fig));
+      adds.forEach(fig => c.add(fig));
+      moves.forEach(doMove);
+      removes.forEach(doRemove);
+
+      const result = c.nonCoincident();
+      let pass = result.length == expected.length;
+      if (!pass) console.log(result);
+      t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Length`);
+      for (let i = 0; pass && i < expected.length; i++) {
+        const msg = `Case: ${caseIndex} | Subtest: ${subtestIndex} | Values`;
+        const pass = t.deepEqual(result[i], expected[i], msg);
+      }
+    });
+  });
+});

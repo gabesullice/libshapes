@@ -109,6 +109,24 @@ export default class Composition {
     return this._nonIntegrated;
   }
 
+  nonCoincident() {
+    return Object.keys(this._figures)
+      .map(key => { return {id: key, figure: this._figures[key]}; })
+      .map(item => { item.edges = item.figure.edges(); return item })
+      .filter(item => {
+        return item.edges.some(e0 => {
+          const areCoincident = e1 => edges.coincident(e0, e1);
+          const left = this._subsectTree.at(e0.left());
+          const right = this._subsectTree.at(e0.right());
+          return (
+            (left === undefined || !left.edges.some(areCoincident)) ||
+            (right === undefined || !right.edges.some(areCoincident))
+          );
+        });
+      })
+      .map(item => item.id);
+  }
+
   add(figure, options) {
     const id = this._getID();
     this._doOperations(id, figure, this._getOperations("insert"));
