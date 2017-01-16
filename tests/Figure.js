@@ -189,20 +189,56 @@ test("Can detect if two figures are overlapping", t => {
   const figE = {shape: hexagon, position: [0,0]};
 
   const cases = [
-    {input: [figA, figA], expected: false, should: "return false for the same figure"},
-    {input: [figA, figB], expected: false, should: "return false for two non-overlapping figures"},
-    {input: [figB, figC], expected: true, should: "return true for overlapping figures"},
-    {input: [figC, figB], expected: true, should: "return true for overlapping figures"},
-    {input: [figD, figE], expected: true, should: "return true for a figure on top of another figure"},
+    {input: [figA, figB], expected: false},
+    {input: [figA, figA], expected: true},
+    {input: [figB, figC], expected: true},
+    {input: [figC, figB], expected: true},
+    {input: [figD, figE], expected: true},
+    {
+      input: [
+        {shape: ShapeMaker.make("square", 1)},
+        {shape: ShapeMaker.make("square", 3)},
+      ],
+      expected: true,
+    },
+    {
+      input: [
+        {shape: ShapeMaker.arbitrary([
+          [-1.5,-1.5],
+          [-1.5, 1.5],
+          [-0.5, 1.5],
+          [-0.5, 0.5],
+          [ 0.5, 0.5],
+          [ 0.5, 1.5],
+          [ 1.5, 1.5],
+          [ 1.5,-1.5],
+        ])},
+        {shape: ShapeMaker.make("square", 1)},
+      ],
+      expected: true,
+    },
+    {
+      input: [
+        {shape: ShapeMaker.arbitrary([
+          [-1.5,-1.5],
+          [-1.5, 1.5],
+          [-0.5, 1.5],
+          [-0.5, 0.5],
+          [ 0.5, 0.5],
+          [ 0.5, 1.5],
+          [ 1.5, 1.5],
+          [ 1.5,-1.5],
+        ])},
+        {shape: ShapeMaker.make("square", 1), position: [0,1]},
+      ],
+      expected: false,
+    },
   ];
-  cases.forEach(item => {
+  cases.forEach((item, index) => {
     const first = new figures.Figure(item.input[0]);
     const second = new figures.Figure(item.input[1]);
-    t.is(
-      figures.overlap(first, second),
-      item.expected,
-      item.should
-    )
+    const pass = figures.overlap(first, second) == item.expected;
+    t.true(pass, `Fail: Case ${index}`);
   });
 });
 

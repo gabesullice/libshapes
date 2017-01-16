@@ -83,7 +83,7 @@ export function subsect(f0, f1) {
   return subsections;
 }
 
-export function same(f0, f1, debug) {
+export function same(f0, f1) {
   const e0s = f0.edges(), e1s = f1.edges();
   if (e0s.length != e1s.length) return false;
   return e0s.reduce((same, e0) => {
@@ -107,10 +107,25 @@ export function siblings(f0, f1) {
 }
 
 export function overlap(f0, f1) {
-  return intersectAny(
-    f0.edges().concat(f0.innerEdges()),
-    f1.edges().concat(f1.innerEdges()),
-  );
+  // Fast check to eliminate work if overlap is impossible.
+  if (!boundsCheck(f0._bound, f1._bound)) return false;
+  
+  // Any intersection means certain overlap.
+  if (intersectAny(f0.edges(), f1.edges())) return true;
+
+  // If any vertex is within a figure, we have overlap.
+  // It's possible that all points lie on a vertex or edge and so vertexWithin
+  // will return undefined. In the case that every point is undefined, we
+  // must check if the figures are the same. If they are not, then the two
+  // figures do not overlap but are perfect complements.
+  const f0in = f0.vertices().map(v => vertexWithin(f1, v));
+  if (!f0in.every(v => v === undefined) && f0in.some(v => v == true)) return true;
+
+  const f1in = f1.vertices().map(v => vertexWithin(f0, v));
+  if (!f1in.every(v => v === undefined) && f1in.some(v => v == true)) return true;
+
+  // If we've made it this far, they might just be the same exact figure.
+  return same(f0, f1);
 }
 
 export function coincident(f0, f1) {
@@ -139,4 +154,55 @@ function arrayAny(a0, a1, comparator) {
       return comparator(a, b);
     });
   });
+}
+
+function getBounds(vertices) {
+  const functor = (v) => { return {_v: v, map: function (fn) { return fn(this._v); }}; };
+  return functor(vertices
+    .reduce((carry, v) => {
+      carry.minX = (v.x < carry.minX || carry.minX === undefined) ? v.x : carry.minX;
+      carry.minY = (v.y < carry.minY || carry.minY === undefined) ? v.y : carry.minY;
+      carry.maxX = (v.x > carry.maxX || carry.maxX === undefined) ? v.x : carry.maxX;
+      carry.maxY = (v.y > carry.maxY || carry.maxY === undefined) ? v.y : carry.maxY;
+      return carry;
+    }, {}))
+    .map(reduced => {
+      return new edges.Edge([
+        [reduced.minX, reduced.minY],
+        [reduced.maxX, reduced.maxY]
+      ]);
+    });
+}
+
+// Determines if overlap is possible using two bounding boxes.
+function boundsCheck(boundA, boundB) {
+  const e0s = boundA.box().edges(), e1s = boundB.box().edges();
+  return (
+    intersectAny(e0s, e1s) ||
+    coincidentAny(e0s, e1s) ||
+    boundA.vertices().some(v => edges.withinBounds(boundB, v)) ||
+    boundB.vertices().some(v => edges.withinBounds(boundA, v))
+  );
+}
+
+// An odd number of intersections means that a vertex is within a figure.
+function vertexWithin(figure, v) {
+  const ray = new edges.Edge([[v.x, v.y], [v.x + figure._bound.length(), v.y]]);
+  const fEdges = figure.edges();
+
+  let ixs = 0;
+  let invalid = false;
+  fEdges.forEach(e => {
+    if (invalid) return;
+
+    invalid = (
+      edges.on(e, v) ||
+      vertex.same(e.left(), v) ||
+      vertex.same(e.right(), v)
+    );
+
+    ixs += (!invalid && edges.intersect(ray, e)) ? 1 : 0;
+  });
+
+  return (invalid) ? undefined : ixs % 2 === 1;
 }

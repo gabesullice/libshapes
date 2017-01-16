@@ -344,7 +344,7 @@ test.skip("Can snap figures to one another efficiently", t => {
   }
 });
 
-test("Can find gaps in the composition", t => {
+test.skip("Can find gaps in the composition", t => {
   const square = ShapeMaker.make("square")
   const right = ShapeMaker.make("right")
   const parallelogram = ShapeMaker.make("parallelogram")
@@ -526,7 +526,7 @@ test("A gap is created when a figure is removed", t => {
   });
 });
 
-test("Can find gaps in a composition (integrated)", t => {
+test.skip("Can find gaps in a composition (integrated)", t => {
   const square = ShapeMaker.make("square")
   const cases = [
     {

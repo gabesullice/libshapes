@@ -842,7 +842,9 @@ export default class Composition {
         return figures.overlap(gap0, gap1)
       });
       if (index !== -1) {
-        gaps.splice(index, 1, gap0);
+        if (gap0.edges().length > gap1.edges().length) {
+          gaps.splice(index, 1, gap0);
+        }
       } else {
         gaps.push(gap0);
       }

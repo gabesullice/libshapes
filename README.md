@@ -221,8 +221,9 @@ Getter/Setter for the `Composition`'s position. Bounds are used to determine the
 
 Returns an object containing all the `Figure`s within the composition. Each figure is assigned a unique key.
 
-###`Composition.gaps()`
+###`Composition.gaps()` **DEPRECATED**
 
+This method is deprecated, it cannot currently be relied upon to find all gaps in the composition.
 Returns an array of `Figure` that represent gaps created by existing figures.
 
 ###`Composition.floats()`
