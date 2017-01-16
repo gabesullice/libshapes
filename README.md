@@ -234,6 +234,10 @@ Returns an array of figure ids which are not coincident with any other figures i
 
 Returns an array of figure ids which have vertices which are not shared with any other vertex.
 
+###`Composition.nonCoincident()`
+
+Returns an array of figure ids which have one or more edges which are not shared with any other edge.
+
 ###`Composition.add(Figure[, options])`
 
 Inserts a new `Figure` into the `Composition`. Returns a unique string to be used to identify the `Figure` within the composition.
