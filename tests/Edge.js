@@ -205,3 +205,22 @@ test("Can detect if a point is within the bounds of an edge", t => {
     t.is(actual, item.expected);
   });
 });
+
+test("Can detect if a vertex is on an edge", t => {
+  const cases = [
+    {e: [[-0.5, 0.0], [ 0.5, 0.0]],   v: [ 0.0, 0.0],   expected: true},
+    {e: [[-0.5, 1.0], [ 0.5, 1.0]],   v: [ 0.0, 0.0],   expected: false},
+    {
+      e: [
+        [-0.4999999999999998, 0.8660254037844387],
+        [ 0.5000000000000001, 0.8660254037844386]
+      ],
+      v: [ 0.0, 0.0],
+      expected: false
+    },
+  ];
+  cases.forEach(item => {
+    const e = new edges.Edge(item.e), v = new vertex.Vertex(item.v[0], item.v[1]);
+    t.is(edges.on(e, v), item.expected);
+  });
+});

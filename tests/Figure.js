@@ -181,6 +181,7 @@ test("Can detect if two figures are overlapping", t => {
   const rightTriangle = ShapeMaker.make("right");
   const equilateral = ShapeMaker.make("equilateral");
   const hexagon = ShapeMaker.make("hexagon");
+  const diamond = ShapeMaker.make("diamond");
 
   const figA = {shape: rightTriangle};
   const figB = {shape: rightTriangle, position: [2, 0]};
@@ -232,6 +233,36 @@ test("Can detect if two figures are overlapping", t => {
         {shape: ShapeMaker.make("square", 1), position: [0,1]},
       ],
       expected: false,
+    },
+    {
+      input: [
+        {shape: hexagon},
+        {
+          shape: ShapeMaker.arbitrary([
+            [hexagon.vertices()[4].x, hexagon.vertices()[4].y],
+            [ 0.0, 0.0],
+            [hexagon.vertices()[5].x, hexagon.vertices()[5].y],
+          ]),
+          position: [0,0]
+        },
+      ],
+      expected: true,
+      debug: false,
+    },
+    {
+      input: [
+        {shape: diamond},
+        {
+          shape: ShapeMaker.arbitrary([
+            [diamond.vertices()[0].x, diamond.vertices()[0].y],
+            [diamond.vertices()[2].x, diamond.vertices()[2].y],
+            [diamond.vertices()[3].x, diamond.vertices()[3].y],
+          ]),
+          position: [0,0]
+        },
+      ],
+      expected: true,
+      debug: false,
     },
   ];
   cases.forEach((item, index) => {

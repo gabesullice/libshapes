@@ -118,10 +118,12 @@ export function overlap(f0, f1) {
   // will return undefined. In the case that every point is undefined, we
   // must check if the figures are the same. If they are not, then the two
   // figures do not overlap but are perfect complements.
-  const f0in = f0.vertices().map(v => vertexWithin(f1, v));
+  const f0vs = f0.vertices().concat(f0.edges().map(e => e.midpoint()));
+  const f0in = f0vs.map(v => vertexWithin(f1, v));
   if (!f0in.every(v => v === undefined) && f0in.some(v => v == true)) return true;
 
-  const f1in = f1.vertices().map(v => vertexWithin(f0, v));
+  const f1vs = f1.vertices().concat(f1.edges().map(e => e.midpoint()));
+  const f1in = f1vs.map(v => vertexWithin(f0, v, debug));
   if (!f1in.every(v => v === undefined) && f1in.some(v => v == true)) return true;
 
   // If we've made it this far, they might just be the same exact figure.
@@ -186,8 +188,10 @@ function boundsCheck(boundA, boundB) {
 }
 
 // An odd number of intersections means that a vertex is within a figure.
-function vertexWithin(figure, v) {
-  const ray = new edges.Edge([[v.x, v.y], [v.x + figure._bound.length(), v.y]]);
+function vertexWithin(figure, v, debug) {
+  const bndLn = figure._bound.length();
+  const ray0 = new edges.Edge([[v.x, v.y], [v.x + bndLn, v.y]]);
+  const ray1 = new edges.Edge([[v.x, v.y], [v.x + bndLn, v.y + bndLn/2]]);
   const fEdges = figure.edges();
 
   let ixs = 0;
@@ -201,7 +205,10 @@ function vertexWithin(figure, v) {
       vertex.same(e.right(), v)
     );
 
-    ixs += (!invalid && edges.intersect(ray, e)) ? 1 : 0;
+    ixs += (
+      !invalid &&
+      (edges.intersect(ray0, e) || edges.intersect(ray1, e))
+    ) ? 1 : 0;
   });
 
   return (invalid) ? undefined : ixs % 2 === 1;

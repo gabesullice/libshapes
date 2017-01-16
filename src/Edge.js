@@ -224,12 +224,12 @@ export function withinBounds(edge, v) {
   }
 }
 
-export function on(edge, v) {
+export function on(edge, v, debug) {
   // Find the line defined by e.
   const m = edge.slope(), b = edge.yIntercept();
   if (Math.abs(m) === Infinity) {
     return v.x == edge.left().x && v.y >= edge.bottom().y && v.y <= edge.top().y;
-  } else if (Math.abs(m) === 0) {
+  } else if (Math.abs(m) < EPSILON) {
     return v.y == edge.bottom().y && v.x >= edge.left().x && v.x <= edge.right().x;
   } else {
     return withinBounds(edge, new vertex.Vertex(v.x, m * v.x + b)); 

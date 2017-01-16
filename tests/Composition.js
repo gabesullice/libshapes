@@ -460,7 +460,7 @@ test.skip("Can find gaps in the composition", t => {
   });
 });
 
-test("A gap is created when a figure is removed", t => {
+test.skip("A gap is created when a figure is removed", t => {
   const square = ShapeMaker.make("square");
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
@@ -778,7 +778,7 @@ test.skip("Can find gaps in a composition (integrated)", t => {
   });
 });
 
-test("Gaps are reprocessed when a figure is moved", t => {
+test.skip("Gaps are reprocessed when a figure is moved", t => {
   const square = ShapeMaker.make("square")
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
@@ -1070,7 +1070,7 @@ test("Can find and report figure IDs with non-integrated vertices", t => {
           ],
           remove: ["fig-1"],
           nonIntegrated: ["fig-0"],
-          debug: true,
+          debug: false,
         },
       ],
     },
@@ -1084,7 +1084,7 @@ test("Can find and report figure IDs with non-integrated vertices", t => {
           ],
           remove: ["fig-1"],
           nonIntegrated: ["fig-0"],
-          debug: true,
+          debug: false,
         },
       ],
     },
@@ -1098,7 +1098,7 @@ test("Can find and report figure IDs with non-integrated vertices", t => {
           ],
           remove: ["fig-1"],
           nonIntegrated: ["fig-0"],
-          debug: true,
+          debug: false,
         },
       ],
     },
@@ -1135,6 +1135,131 @@ test("Can find and report figure IDs with non-integrated vertices", t => {
         const pass = result[i] == expected[i];
         if (!pass) console.log(result[i]);
         t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Values`);
+      }
+    });
+  });
+});
+
+test("Can find and report overlapping figures", t => {
+  const cases = [
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+            {shape: ShapeMaker.make("square"), position: [ 0.5, 0.5]},
+          ],
+          overlapping: [{a: "fig-1", b: "fig-0"}],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+            {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+          ],
+          overlapping: [{a: "fig-1", b: "fig-0"}],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+            {shape: ShapeMaker.make("square", 3), position: [ 0.0, 0.0]},
+          ],
+          overlapping: [{a: "fig-1", b: "fig-0"}],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [],
+      subtests: [
+        {
+          add: [
+            {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+            {shape: ShapeMaker.make("square"), position: [ 5.0, 0.0]},
+          ],
+          overlapping: [],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: ShapeMaker.make("square"), position: [ 0.0, 0.0]},
+        {shape: ShapeMaker.make("square"), position: [ 0.5, 0.0]},
+      ],
+      subtests: [
+        {
+          add: [],
+          move: [{id: "fig-1", position: [ 0.0, 0.0]}],
+          overlapping: [{a: "fig-1", b: "fig-0"}],
+          debug: false,
+        },
+      ],
+    },
+    {
+      figures: [
+        {shape: ShapeMaker.make("hexagon"), position: [ 0.0, 0.0]},
+        {
+          shape: ShapeMaker.arbitrary([
+            [-0.5000000000000004,-0.8660254037844385],
+            [ 0.0, 0.0],
+            [ 0.49999999999999933,-0.866025403784439]
+          ]),
+          position: [ 0.0, 0.0]},
+      ],
+      subtests: [
+        {
+          add: [],
+          move: [],
+          overlapping: [{a: "fig-1", b: "fig-0"}],
+          debug: false,
+        },
+      ],
+    },
+  ];
+
+  cases.forEach((item, caseIndex) => {
+    item.subtests.forEach((sub, subtestIndex) => {
+      const c = new Composition({
+        processGaps: true,
+        snap: true,
+        debug: sub.debug
+      });
+
+      const make = shape => new figures.Figure(shape);
+      const doMove = move => c.move(move.id, move.position);
+      const doRemove = remove => c.remove(remove);
+
+      const original = item.figures.map(make);
+      const adds = (sub.add) ? sub.add.map(make) : [];
+      const moves = sub.move || [];
+      const removes = sub.remove || [];
+      const expected = sub.overlapping;
+
+      original.forEach(fig => c.add(fig));
+      adds.forEach(fig => c.add(fig));
+      moves.forEach(doMove);
+      removes.forEach(doRemove);
+
+      const result = c.overlapping();
+      let pass = result.length == expected.length;
+      if (!pass) console.log(result);
+      t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Length`);
+      for (let i = 0; pass && i < expected.length; i++) {
+        const msg = `Case: ${caseIndex} | Subtest: ${subtestIndex} | Values`;
+        const pass = t.deepEqual(result[i], expected[i], msg);
       }
     });
   });
