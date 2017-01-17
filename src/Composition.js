@@ -225,7 +225,7 @@ export default class Composition {
               `"${operation.description}" failed with exception:`,
               e.message
             );
-            throw e;
+            if (this.debug()) throw e;
           }
         });
       }
@@ -245,7 +245,7 @@ export default class Composition {
                   `"${operation.description}" failed with exception:`,
                   e.message
                 );
-                throw e;
+                if (this.debug()) throw e;
               }
             });
           }
