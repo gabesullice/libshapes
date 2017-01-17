@@ -293,6 +293,13 @@ export default class Composition {
         func: ((id, figure) => this._figures[id] = figure),
       },
       {
+        description: "Processes any realignment that needs to happen",
+        action: "insert",
+        type: "singular",
+        weight: -6,
+        func: (id => this._handleSnap(id)),
+      },
+      {
         description: "Finds and stores instersecting figures",
         action: "insert",
         type: "iterator",
@@ -324,13 +331,6 @@ export default class Composition {
             this._subsectTree.insertEdge(section, [a.id, b.id]);
           });
         }),
-      },
-      {
-        description: "Processes any realignment that needs to happen",
-        action: "insert",
-        type: "singular",
-        weight: -2,
-        func: (id => this._handleSnap(id)),
       },
       {
         description: "Keeps a record of coincident pairs",

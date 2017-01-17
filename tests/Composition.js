@@ -1228,6 +1228,20 @@ test("Can find and report overlapping figures", t => {
         },
       ],
     },
+    {
+      figures: [
+        {shape: ShapeMaker.make("hexagon"), position: [ 0.0, 0.0]},
+        {shape: ShapeMaker.make("hexagon"), position: [ 1.875, 0.0]},
+      ],
+      subtests: [
+        {
+          add: [],
+          move: [],
+          overlapping: [],
+          debug: false,
+        },
+      ],
+    },
   ];
 
   cases.forEach((item, caseIndex) => {
