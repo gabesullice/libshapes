@@ -113,16 +113,33 @@ export function overlap(f0, f1) {
   // Any intersection means certain overlap.
   if (intersectAny(f0.edges(), f1.edges())) return true;
 
+  // Whether a point is valid to test. It is invalid if it's on an edge or another vertex.
+  const validPoint = (e, v) => {
+    return (
+      !edges.on(e, v) &&
+      !vertex.same(e.left(), v) &&
+      !vertex.same(e.right(), v)
+    );
+  };
+
   // If any vertex is within a figure, we have overlap.
   // It's possible that all points lie on a vertex or edge and so vertexWithin
   // will return undefined. In the case that every point is undefined, we
   // must check if the figures are the same. If they are not, then the two
   // figures do not overlap but are perfect complements.
-  const f0vs = f0.vertices().concat(f0.edges().map(e => e.midpoint()));
+  const f0vs = f0.vertices()
+    .concat(f0.edges().map(e => e.midpoint()))
+    .filter(v => edges.withinBounds(f1._bound, v))
+    .filter(v => f1.edges().every(e => validPoint(e, v)));
+
   const f0in = f0vs.map(v => vertexWithin(f1, v));
   if (!f0in.every(v => v === undefined) && f0in.some(v => v == true)) return true;
 
-  const f1vs = f1.vertices().concat(f1.edges().map(e => e.midpoint()));
+  const f1vs = f1.vertices()
+    .concat(f1.edges().map(e => e.midpoint()))
+    .filter(v => edges.withinBounds(f0._bound, v))
+    .filter(v => f0.edges().every(e => validPoint(e, v)));
+
   const f1in = f1vs.map(v => vertexWithin(f0, v));
   if (!f1in.every(v => v === undefined) && f1in.some(v => v == true)) return true;
 
@@ -191,25 +208,15 @@ function boundsCheck(boundA, boundB) {
 function vertexWithin(figure, v) {
   const bndLn = figure._bound.length() * 1000;
   const ray0 = new edges.Edge([[v.x, v.y], [v.x + bndLn, v.y]]);
-  const ray1 = new edges.Edge([[v.x, v.y], [v.x + bndLn, v.y + bndLn/100]]);
+  const ray1 = new edges.Edge([[v.x - bndLn, v.y + bndLn/79], [v.x, v.y]]);
   const fEdges = figure.edges();
 
-  let ixs = 0;
-  let invalid = false;
+  // Count the number of intersections for both rays.
+  let r0ixs = 0, r1ixs = 0;
   fEdges.forEach(e => {
-    if (invalid) return;
-
-    invalid = (
-      edges.on(e, v) ||
-      vertex.same(e.left(), v) ||
-      vertex.same(e.right(), v)
-    );
-
-    ixs += (
-      !invalid &&
-      (edges.intersect(ray0, e) || edges.intersect(ray1, e))
-    ) ? 1 : 0;
+    r0ixs += edges.intersect(ray0, e) ? 1 : 0;
+    r1ixs += edges.intersect(ray1, e) ? 1 : 0;
   });
 
-  return (invalid) ? undefined : ixs % 2 === 1;
+  return r0ixs % 2 === 1 || r1ixs % 2 === 1;
 }

@@ -232,7 +232,11 @@ export function on(edge, v) {
   } else if (Math.abs(m) < EPSILON) {
     return v.y == edge.bottom().y && v.x >= edge.left().x && v.x <= edge.right().x;
   } else {
-    return withinBounds(edge, new vertex.Vertex(v.x, m * v.x + b)); 
+    // Does the point fall on the line defined by e?
+    const onLine = vertex.same(v, new vertex.Vertex(v.x, m * v.x + b));
+    // Is the point within e?
+    const inEdge = withinBounds(edge, new vertex.Vertex(v.x, m * v.x + b));
+    return onLine && inEdge;
   }
 }
 

@@ -217,6 +217,7 @@ test("Can detect if two figures are overlapping", t => {
         {shape: ShapeMaker.make("square", 1)},
       ],
       expected: true,
+      debug: false,
     },
     {
       input: [

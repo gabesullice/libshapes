@@ -509,8 +509,7 @@ test("A gap is created when a figure is removed", t => {
 
   cases.forEach(item => {
     item.subtests.forEach(sub => {
-      const c = new Composition({processGaps: true, debug: false});
-      c.debug(sub.debug);
+      const c = new Composition({processGaps: true, debug: sub.debug});
 
       item.figures.map(settings => new figures.Figure(settings)).forEach((fig, i) => {
         const fid = c.add(fig);
@@ -767,11 +766,11 @@ test("Can find gaps in a composition (integrated)", t => {
 
       const result = c.gaps();
       let pass = result.length == expected.length;
-      if (!pass && result.length > 0) console.log(result.map(res => res.vertices()));
+      if (!pass && sub.debug && result.length > 0) console.log(result.map(res => res.vertices()));
       t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex}`);
       for (let i = 0; i < expected.length; i++) {
         const pass = figures.same(result[i], expected[i]);
-        if (!pass) console.log(result[i].vertices());
+        if (!pass && sub.debug) console.log(result[i].vertices());
         t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex}`);
       }
     });
@@ -1129,11 +1128,11 @@ test("Can find and report figure IDs with non-integrated vertices", t => {
 
       const result = c.nonIntegrated();
       let pass = result.length == expected.length;
-      if (!pass) console.log(result);
+      if (!pass && sub.debug) console.log(result);
       t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Length`);
       for (let i = 0; pass && i < expected.length; i++) {
         const pass = result[i] == expected[i];
-        if (!pass) console.log(result[i]);
+        if (!pass && sub.debug) console.log(result[i]);
         t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Values`);
       }
     });
@@ -1269,7 +1268,7 @@ test("Can find and report overlapping figures", t => {
 
       const result = c.overlapping();
       let pass = result.length == expected.length;
-      if (!pass) console.log(result);
+      if (!pass && sub.debug) console.log(result);
       t.true(pass, `Case: ${caseIndex} | Subtest: ${subtestIndex} | Length`);
       for (let i = 0; pass && i < expected.length; i++) {
         const msg = `Case: ${caseIndex} | Subtest: ${subtestIndex} | Values`;

@@ -218,9 +218,48 @@ test("Can detect if a vertex is on an edge", t => {
       v: [ 0.0, 0.0],
       expected: false
     },
+    {
+      e: [
+        [-0.4999999999999998, 0.8660254037844387],
+        [-1.0000000000000000, 1.2246467991473532e-16]
+      ],
+      v: [-0.5,-0.2886751345948127],
+      expected: false,
+      debug: false,
+    },
+    {
+      e: [[-0.5, 0.5], [ 0.5, 0.5]],
+      v: [-0.5,-0.5],
+      expected: false,
+      debug: true,
+    },
+    {
+      e: [[-0.5, 0.5], [-0.5, 1.5]],
+      v: [-0.5,-0.5],
+      expected: false,
+      debug: false,
+    },
+    {
+      e: [[-1.5, 1.5], [-0.5, 1.5]],
+      v: [-0.5,-0.5],
+      expected: false,
+      debug: false,
+    },
+    {
+      e: [[-1.5,-1.5], [-1.5, 1.5]],
+      v: [-0.5,-0.5],
+      expected: false,
+      debug: false,
+    },
+    {
+      e: [[-1.5,-1.5], [ 1.5,-1.5]],
+      v: [-0.5,-0.5],
+      expected: false,
+      debug: false,
+    },
   ];
   cases.forEach(item => {
     const e = new edges.Edge(item.e), v = new vertex.Vertex(item.v[0], item.v[1]);
-    t.is(edges.on(e, v), item.expected);
+    t.is(edges.on(e, v, item.debug), item.expected);
   });
 });
