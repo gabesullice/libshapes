@@ -460,7 +460,7 @@ export default class Composition {
         action: "transform",
         type: "singular",
         weight: -3,
-        func: (id, figure) => this._removeFromTree(id, figure),
+        func: (id, figure) => this._removeFromVTree(id, figure),
       },
       {
         description: "Register siblings of the figure that was removed",
@@ -480,9 +480,10 @@ export default class Composition {
         type: "iterator",
         weight: -1,
         func: ((a, b) => {
-          figures.subsect(a.figure, b.figure).forEach(section => {
-            this._subsectTree.removeEdge(section);
-          });
+          this._removeFromSubsectTree(
+            [a.id, b.id],
+            figures.subsect(a.figure, b.figure),
+          );
         }),
       },
       {
@@ -758,9 +759,10 @@ export default class Composition {
         type: "iterator",
         weight: 0,
         func: ((a, b) => {
-          figures.subsect(a.figure, b.figure).forEach(section => {
-            this._subsectTree.removeEdge(section);
-          });
+          this._removeFromSubsectTree(
+            [a.id, b.id],
+            figures.subsect(a.figure, b.figure), this._subsectTree,
+          );
         }),
       },
       {
@@ -800,7 +802,7 @@ export default class Composition {
         action: "remove",
         type: "singular",
         weight: 1,
-        func: ((id, figure) => this._removeFromTree(id, figure)),
+        func: ((id, figure) => this._removeFromVTree(id, figure)),
       },
       {
         description: "Removes old vertex twin records and makes new ones if needed",
@@ -957,13 +959,23 @@ export default class Composition {
     return id;
   }
 
-  _removeFromTree(id, figure) {
-    figure.edges().forEach(edge => {
-      this._vTree.removeEdge(edge);
+  _removeFromVTree(id, figure) {
+    this._removeFromTree([id], figure.edges(), this._vTree);
+  }
+
+  _removeFromSubsectTree(ids, sections) {
+    this._removeFromTree(ids, sections, this._subsectTree);
+  }
+
+  _removeFromTree(ids, edges, tree) {
+    edges.forEach(edge => {
+      tree.removeEdge(edge);
     });
-    figure.vertices().forEach(v => {
-      const result = this._vTree.at(v);
-      if (result) result.removeTag(id);
+    edges.forEach(e => {
+      e.vertices().forEach(v => {
+        const result = tree.at(v);
+        if (result) ids.forEach(id => result.removeTag(id));
+      })
     });
   }
 
