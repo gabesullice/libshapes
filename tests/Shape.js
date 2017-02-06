@@ -1,7 +1,23 @@
 import test from "ava";
 import * as vertex from "../lib/Vertex";
-import Shape from "../lib/Shape";
+import { Shape, same } from "../lib/Shape";
 import { Edge } from "../lib/Edge";
+import ShapeFactory from "shape-factory";
+
+// The shape-factory library depends on this library, so it never has the
+// latest features that we're trying to test here. However, it _does_ have a
+// useful list of premade shapes that we would like to use in these tests.
+// We can use those shape definitions and then "upcast" them to the latest
+// Shape class.
+const ShapeMaker = {
+  factory: new ShapeFactory(),
+  make(name) {
+    return this.upcast(this.factory.make(name));
+  },
+  upcast(shape) {
+    return new Shape(shape.vertices().map(v => [v.x, v.y]));
+  }
+}
 
 test("Can instantiate a Shape", t => {
   const rightTriangle = new Shape([[0,0], [1,0], [0,1]]);
@@ -57,5 +73,47 @@ test("Can translate a Shape", t => {
       const vs = test.e.vertices();
       t.true(vertex.same(v, vs[i]));
     });
+  });
+});
+
+test("Can reflect a Shape across the x-axis", t => {
+  const cases = [
+    {
+      input: ShapeMaker.make('square'),
+      expected: ShapeMaker.make('square'),
+    },
+    {
+      input: ShapeMaker.make('equilateral'),
+      expected: ShapeMaker.make('equilateral').rotate(Math.PI),
+    },
+    {
+      input: ShapeMaker.make('equilateral').rotate(Math.PI/4),
+      expected: ShapeMaker.make('equilateral').rotate(3 * Math.PI/4),
+    },
+  ];
+  cases.forEach(item => {
+    const actual = item.input.reflectX();
+    t.true(same(actual, item.expected));
+  });
+});
+
+test("Can reflect a Shape across the y-axis", t => {
+  const cases = [
+    {
+      input: ShapeMaker.make('equilateral'),
+      expected: ShapeMaker.make('equilateral'),
+    },
+    {
+      input: ShapeMaker.make('square'),
+      expected: ShapeMaker.make('square'),
+    },
+    {
+      input: ShapeMaker.make('equilateral').rotate(Math.PI/2),
+      expected: ShapeMaker.make('equilateral').rotate(-Math.PI/2),
+    },
+  ];
+  cases.forEach(item => {
+    const actual = item.input.reflectY();
+    t.true(same(actual, item.expected));
   });
 });

@@ -37,6 +37,48 @@ class Shape {
     }));
   }
 
+  reflectX() {
+    return this._reflect(this, function (v) {
+      return new vertex.Vertex(v.x, v.y * -1);
+    });
+  }
+
+  reflectY() {
+    return this._reflect(this, function (v) {
+      return new vertex.Vertex(v.x * -1, v.y);
+    });
+  }
+
+  _reflect(shape, reflector) {
+    return new Shape(shape._vertices.map(v => {
+      const reflected = reflector(v);
+      return [reflected.x, reflected.y];
+    }));
+  }
+
+}
+
+function same(s0, s1) {
+  // Get the vertices of the shape as arrays.
+  const v0s = s0.vertices(), v1s = s1.vertices();
+
+  // Quick parity check.
+  if (v0s.length != v1s.length) return false;
+
+  let v0 = v0s.pop();
+  while (v0) {
+    // Does v0 exist in v1s?
+    const index = v1s.findIndex(v1 => vertex.same(v0, v1));
+    // If not, shapes are different.
+    if (index === -1) return false;
+    // If so, remove the vertex from the array so we don't use it twice.
+    v1s.splice(index, 1);
+    // Get the next vertex out of v0s.
+    v0 = v0s.pop()
+  }
+  // If we made it this far, the shapes are the same.
+  return true;
 }
 
 export default Shape;
+export {Shape, same};
