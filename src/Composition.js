@@ -154,10 +154,18 @@ export default class Composition {
     return this.transform(id, {rotation: target}, options);
   }
 
+  reflectOwnX(id, options) {
+    return this.transform(id, {reflection: {x: true}}, options);
+  }
+
+  reflectOwnY(id, options) {
+    return this.transform(id, {reflection: {y: true}}, options);
+  }
+
   transform(id, transform, options) {
     let start, final;
 
-    const {position, rotation} = transform;
+    const {position, rotation, reflection} = transform;
 
     const transformOps = this._getOperations("transform").concat([
       {
@@ -166,6 +174,21 @@ export default class Composition {
         type: "singular",
         weight: -100,
         func: (id) => start = this._figures[id].position(),
+      },
+      {
+        description: "Reflects the figure",
+        action: "transform",
+        type: "singular",
+        weight: -0.1,
+        func: (_, figure) => {
+          if (reflection !== undefined) {
+            const {x, y, _} = reflection;
+            if (x) figure.reflectX();
+            if (y) figure.reflectY();
+            // In future, we may want reflection across arbitrary axes.
+            //if (_) figure.reflect(_);
+          }
+        },
       },
       {
         description: "Moves a figure to a specified position",

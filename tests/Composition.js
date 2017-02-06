@@ -144,6 +144,54 @@ test("Can set the rotation figures in a composition by ID", t => {
   });
 });
 
+test("Can reflect figures in a composition by ID across their X-axis", t => {
+  const cases = [
+    {
+      input: ShapeMaker.make('square'),
+      expected: ShapeMaker.make('square')
+    },
+    {
+      input: ShapeMaker.make('equilateral'),
+      expected: ShapeMaker.make('equilateral').rotate(Math.PI)
+    },
+  ];
+  cases.forEach(item => {
+    const c = new Composition();
+    const input = new figures.Figure({shape: item.input});
+    const expected = new figures.Figure({shape: item.expected});
+    const id = c.add(input);
+    c.reflectOwnX(id);
+    const actual = c.get(id);
+    t.true(figures.same(actual, expected));
+  });
+});
+
+test("Can reflect figures in a composition by ID across their Y-axis", t => {
+  const cases = [
+    {
+      input: ShapeMaker.make('square'),
+      expected: ShapeMaker.make('square')
+    },
+    {
+      input: ShapeMaker.make('equilateral'),
+      expected: ShapeMaker.make('equilateral')
+    },
+    {
+      input: ShapeMaker.make('equilateral').rotate(Math.PI/2),
+      expected: ShapeMaker.make('equilateral').rotate(-Math.PI/2),
+    },
+  ];
+  cases.forEach(item => {
+    const c = new Composition();
+    const input = new figures.Figure({shape: item.input});
+    const expected = new figures.Figure({shape: item.expected});
+    const id = c.add(input);
+    c.reflectOwnY(id);
+    const actual = c.get(id);
+    t.true(figures.same(actual, expected));
+  });
+});
+
 test("Move returns an initial position, target, and final position", t => {
   const right = ShapeMaker.make("right");
   const cases = [

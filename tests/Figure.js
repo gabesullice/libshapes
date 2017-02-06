@@ -77,7 +77,6 @@ test("Can rotate a Figure", t => {
 
 test("Can reflect a Figure across the x-axis", t => {
   const cases = [
-    // tracks the corner of a triangle about the origin
     {
       input: ShapeMaker.make('square'),
       expected: ShapeMaker.make('square')
@@ -97,7 +96,6 @@ test("Can reflect a Figure across the x-axis", t => {
 
 test("Can reflect a Figure across the y-axis", t => {
   const cases = [
-    // tracks the corner of a triangle about the origin
     {
       input: ShapeMaker.make('square'),
       expected: ShapeMaker.make('square')

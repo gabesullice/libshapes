@@ -278,6 +278,14 @@ Utility wrapper around `Composition.transform()`.
 
 Utility wrapper around `Composition.transform()`.
 
+###`Composition.reflectOwnX(id[, options])`
+
+Utility wrapper around `Composition.transform()`. **Note** that this rotates the figure about its _own_ axes. Not the axes of the composition.
+
+###`Composition.reflectOwnY(id[, options])`
+
+Utility wrapper around `Composition.transform()`. **Note** that this rotates the figure about its _own_ axes. Not the axes of the composition.
+
 ###`Composition.transform(id, transform[, options])`
 
 Sets the transform of a figure within a `Composition` by its ID. `transform` is an object which defaults to:
@@ -286,8 +294,14 @@ Sets the transform of a figure within a `Composition` by its ID. `transform` is 
 {
   position: [x, y],   // A target position to where the figure should be moved. Defaults to the starting position of the figure.
   rotation: <angle>,  // A target angle of rotation for the figure. Defaults to the starting rotation of the figure.
+  reflection: {
+    x: <bool>, // Whether to rotate the figure about its own x-axis.
+    y: <bool>, // Whether to rotate the figure about its own y-axis.
+  },
 }
 ```
+
+**Note** reflections is _always_ processed before any other transformation, if you need to rotate before reflection, you'll need to do this in two separate operations.
 
 `tranform()` also takes an optional options object which defaults to `{snap: true}`.
 
