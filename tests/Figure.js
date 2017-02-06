@@ -75,6 +75,50 @@ test("Can rotate a Figure", t => {
   });
 });
 
+test("Can reflect a Figure across the x-axis", t => {
+  const cases = [
+    // tracks the corner of a triangle about the origin
+    {
+      input: ShapeMaker.make('square'),
+      expected: ShapeMaker.make('square')
+    },
+    {
+      input: ShapeMaker.make('equilateral'),
+      expected: ShapeMaker.make('equilateral').rotate(Math.PI)
+    },
+  ];
+  cases.forEach(item => {
+    const actual = new figures.Figure({shape: item.input});
+    const expected = new figures.Figure({shape: item.expected});
+    actual.reflectX();
+    t.true(figures.same(actual, expected));
+  });
+});
+
+test("Can reflect a Figure across the y-axis", t => {
+  const cases = [
+    // tracks the corner of a triangle about the origin
+    {
+      input: ShapeMaker.make('square'),
+      expected: ShapeMaker.make('square')
+    },
+    {
+      input: ShapeMaker.make('equilateral'),
+      expected: ShapeMaker.make('equilateral')
+    },
+    {
+      input: ShapeMaker.make('equilateral').rotate(-Math.PI/2),
+      expected: ShapeMaker.make('equilateral').rotate(Math.PI/2)
+    },
+  ];
+  cases.forEach(item => {
+    const actual = new figures.Figure({shape: item.input});
+    const expected = new figures.Figure({shape: item.expected});
+    actual.reflectY();
+    t.true(figures.same(actual, expected));
+  });
+});
+
 test("Can get and set the rotation of a Figure", t => {
   t.is(Math.PI/2 + Math.PI/2, Math.PI);
   const cases = [

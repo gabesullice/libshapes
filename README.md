@@ -141,6 +141,14 @@ Returns the `Edge`s defined by the `Vertex`s of the `Shape`.
 
 Returns a new `Shape` rotated about the origin (0,0). `angle` is given in radians.
 
+###`Shape.reflectX()`
+
+Returns a new `Shape` reflected across the X-axis.
+
+###`Shape.reflectY()`
+
+Returns a new `Shape` reflected across the Y-axis.
+
 ###`Shape.translate([offsetX, offsetY])`
 
 Returns a new `Shape` translated by the given offsets.
@@ -152,9 +160,9 @@ A representation of a `Shape` combined with positional coordinates and a rotatio
 
 Constructs a new `Figure`. The only required key is `shape`. Defaults: `{position: [0,0], rotation: 0}`. `rotation` is given in radians.
 
-###`Figure.shape()`
+###`Figure.shape([Shape])`
 
-Returns the original `Shape` of the figure, with _no_ mutations for position or rotation taken into account.
+Returns the original `Shape` of the figure, with _no_ mutations for position or rotation taken into account. If a shape is passed, the figure will have its original shape set to the new shape given. It will still retain its tranformations like rotation and translation.
 
 ###`Figure.vertices()`
 
@@ -180,6 +188,14 @@ Getter/Setter for the `Figure`'s rotation. Always returns the final rotation of 
 ###`Figure.rotate(angle)`
 
 Rotates the `Figure`'s by the given angle. Always returns the final rotation angle of the `Figure`.
+
+###`Figure.reflectX()`
+
+Reflects the figure about the X-axis. Returns itself so that method calls can be chained.
+
+###`Figure.reflectY()`
+
+Reflects the figure about the Y-axis. Returns itself so that method calls can be chained.
 
 ###`function overlap(Figure, Figure)`
 

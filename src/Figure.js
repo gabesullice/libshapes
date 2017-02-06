@@ -10,7 +10,11 @@ export class Figure {
     this._compute()
   }
 
-  shape() {
+  shape(shape) {
+    if (shape !== undefined) {
+      this._shape = shape;
+      this._compute();
+    }
     return this._shape;
   }
 
@@ -60,9 +64,19 @@ export class Figure {
     return this.rotation((this._rotation + angle) % (2 * Math.PI));
   }
 
+  reflectX() {
+    this.shape(this.shape().reflectX());
+    return this;
+  }
+
+  reflectY() {
+    this.shape(this.shape().reflectY());
+    return this;
+  }
+
   _compute() {
     this._computed =
-      this._shape
+      this.shape()
       .rotate(this._rotation)
       .translate(this._position);
     this._bound = getBounds(this.vertices());
