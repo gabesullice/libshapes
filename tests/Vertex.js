@@ -16,7 +16,8 @@ test("Can compare two vertices", t => {
     {x1: 1, y1: 0, x2: 0, y2: 0, expect: false},
     {x1: 1, y1: 0, x2: 0, y2: 1, expect: false},
     {x1: 0, y1: 1, x2: 1, y2: 0, expect: false},
-    {x1: 0.000001, y1: 0, x2: 0.000002, y2: 0, expect: false},
+    {x1: 0.0001, y1: 0, x2: 0.00021, y2: 0, expect: false},
+    {x1: 0.000001, y1: 0, x2: 0.000002, y2: 0, expect: true},
     {x1: 0.0000001, y1: 0, x2: 0.0000002, y2: 0, expect: true},
   ];
   coords.forEach(test => {
