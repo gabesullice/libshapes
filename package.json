@@ -1,6 +1,6 @@
 {
   "name": "libshapes",
-  "version": "0.15.18",
+  "version": "0.15.19",
   "description": "Library for manipulating shapes",
   "main": "index.js",
   "scripts": {
