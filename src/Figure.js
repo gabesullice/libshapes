@@ -7,6 +7,7 @@ export class Figure {
     this._shape = values.shape;
     this._position = values.position === undefined ? [0,0] : values.position;
     this._rotation = values.rotation === undefined ? 0 : values.rotation;
+    this._reflection = values.reflection === undefined ? {x: false, y: false} : values.reflection;
     this._compute()
   }
 
@@ -65,20 +66,23 @@ export class Figure {
   }
 
   reflectX() {
-    this.shape(this.shape().reflectX());
+    this._reflection.x = (this._reflection.x) ? false : true;
+    this._compute();
     return this;
   }
 
   reflectY() {
-    this.shape(this.shape().reflectY());
+    this._reflection.y = (this._reflection.y) ? false : true;
+    this._compute();
     return this;
   }
 
   _compute() {
-    this._computed =
-      this.shape()
+    this._computed = this.shape()
       .rotate(this._rotation)
       .translate(this._position);
+    this._computed = (this._reflection.x) ? this._computed.reflectX() : this._computed;
+    this._computed = (this._reflection.y) ? this._computed.reflectY() : this._computed;
     this._bound = getBounds(this.vertices());
   }
 
