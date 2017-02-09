@@ -67,12 +67,24 @@ export class Figure {
 
   reflectX() {
     this._reflection.x = (this._reflection.x) ? false : true;
+    this.shape(
+      this.shape()
+      .rotate(this._rotation)
+      .reflectX()
+      .rotate(-this._rotation)
+    );
     this._compute();
     return this;
   }
 
   reflectY() {
     this._reflection.y = (this._reflection.y) ? false : true;
+    this.shape(
+      this.shape()
+      .rotate(this._rotation)
+      .reflectY()
+      .rotate(-this._rotation)
+    );
     this._compute();
     return this;
   }
@@ -81,11 +93,13 @@ export class Figure {
     this._computed = this.shape().rotate(this._rotation);
 
     if (this._reflection.x) {
-      this._computed = this._computed.reflect(this._rotation);
+      //this._computed = this._computed.reflect(this._rotation);
+      //this._computed = this._computed.reflectX();
     }
 
     if (this._reflection.y) {
-      this._computed = this._computed.reflect(this._rotation + Math.PI / 2);
+      //this._computed = this._computed.reflect(this._rotation + Math.PI / 2);
+      //this._computed = this._computed.reflectY();
     }
 
     this._computed = this._computed.translate(this._position);

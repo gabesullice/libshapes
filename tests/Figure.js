@@ -94,33 +94,58 @@ test("Can reflect a Figure across the x-axis", t => {
         rotation: Math.PI,
       },
     },
+    {
+      input: {
+        shape: ShapeMaker.make('equilateral'),
+        rotation: Math.PI/2,
+      },
+      expected: {
+        shape: ShapeMaker.make('equilateral'),
+        rotation: Math.PI/2,
+      },
+    },
   ];
   cases.forEach(item => {
     const actual = new figures.Figure(item.input);
     const expected = new figures.Figure(item.expected);
     actual.reflectX();
-    t.true(figures.same(actual, expected));
+    const pass = figures.same(actual, expected);
+    if (!pass) {
+      console.log(actual.vertices());
+      console.log(expected.vertices());
+    }
+    t.true(pass);
   });
 });
 
 test("Can reflect a Figure across the y-axis", t => {
   const cases = [
     {
-      input: ShapeMaker.make('square'),
-      expected: ShapeMaker.make('square')
+      input: {shape: ShapeMaker.make('square')},
+      expected: {shape: ShapeMaker.make('square')},
     },
     {
-      input: ShapeMaker.make('equilateral'),
-      expected: ShapeMaker.make('equilateral')
+      input: {shape: ShapeMaker.make('equilateral')},
+      expected: {shape: ShapeMaker.make('equilateral')},
     },
     {
-      input: ShapeMaker.make('equilateral').rotate(-Math.PI/2),
-      expected: ShapeMaker.make('equilateral').rotate(Math.PI/2)
+      input: {shape: ShapeMaker.make('equilateral').rotate(-Math.PI/2)},
+      expected: {shape: ShapeMaker.make('equilateral').rotate(Math.PI/2)},
+    },
+    {
+      input: {
+        shape: ShapeMaker.make('equilateral'),
+        rotation: Math.PI,
+      },
+      expected: {
+        shape: ShapeMaker.make('equilateral'),
+        rotation: Math.PI,
+      },
     },
   ];
   cases.forEach(item => {
-    const actual = new figures.Figure({shape: item.input});
-    const expected = new figures.Figure({shape: item.expected});
+    const actual = new figures.Figure(item.input);
+    const expected = new figures.Figure(item.expected);
     actual.reflectY();
     t.true(figures.same(actual, expected));
   });
