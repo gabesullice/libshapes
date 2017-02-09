@@ -78,6 +78,11 @@ export class Figure {
   }
 
   _compute() {
+    //this._computed = this.shape().rotate(this._rotation);
+    //if (this._reflection.x) this._computed = this._computed.reflect(this.rotation);
+    //if (this._reflection.y) this._computed = this._computed.reflect(this.rotation + Math.PI/2);
+    //this._computed = this._computed.translate(this._position);
+
     this._computed = this.shape()
       .rotate(this._rotation)
       .translate(this._position);

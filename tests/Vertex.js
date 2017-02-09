@@ -79,6 +79,30 @@ test("Can translate a Vertex", t => {
   });
 });
 
+test("Can reflect a vertex across an arbitrary angle", t => {
+  const cases = [
+    {input: [ 0, 0], expect: [ 0, 0], angle: 0},
+    {input: [ 0, 0], expect: [ 0, 0], angle: Math.PI},
+    {input: [ 0, 0], expect: [ 0, 0], angle: Math.PI / 2},
+    {input: [ 1, 1], expect: [ 1,-1], angle: 0},
+    {input: [ 1, 1], expect: [ 1,-1], angle: Math.PI},
+    {input: [ 1, 1], expect: [-1, 1], angle: Math.PI / 2},
+    {input: [ 1, 1], expect: [ 1, 1], angle: Math.PI / 4},
+    {input: [ 0, 1], expect: [ 0,-1], angle: 0},
+    {input: [ 0, 1], expect: [ 0,-1], angle: Math.PI},
+    {input: [ 0, 1], expect: [ 0, 1], angle: Math.PI / 2},
+    {input: [ 1, 0], expect: [ 1, 0], angle: 0},
+    {input: [ 1, 0], expect: [ 1, 0], angle: Math.PI},
+    {input: [ 1, 0], expect: [-1, 0], angle: Math.PI / 2},
+    {input: [ 1, 1], expect: [-1,-1], angle: 3 * Math.PI / 4},
+  ];
+  cases.forEach(item => {
+    const input = new vertex.Vertex(item.input[0], item.input[1]);
+    const expect = new vertex.Vertex(item.expect[0], item.expect[1]);
+    t.true(vertex.same(vertex.reflect(input, item.angle), expect));
+  });
+});
+
 test("Can find the vector angle from one vertex to another", t => {
   const cases = [
     {from: [0,0], to: [0,-1], expected: 3 * Math.PI/2},

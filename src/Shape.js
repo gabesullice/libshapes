@@ -38,21 +38,17 @@ class Shape {
   }
 
   reflectX() {
-    return this._reflect(this, function (v) {
-      return new vertex.Vertex(v.x, v.y * -1);
-    });
+    return this.reflect(0);
   }
 
   reflectY() {
-    return this._reflect(this, function (v) {
-      return new vertex.Vertex(v.x * -1, v.y);
-    });
+    return this.reflect(Math.PI/2);
   }
 
-  _reflect(shape, reflector) {
-    return new Shape(shape._vertices.map(v => {
-      const reflected = reflector(v);
-      return [reflected.x, reflected.y];
+  reflect(angle) {
+    return new Shape(this.vertices().map(v => {
+      const vr = vertex.reflect(v, angle);
+      return [vr.x, vr.y];
     }));
   }
 
