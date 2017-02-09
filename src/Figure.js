@@ -77,17 +77,19 @@ export class Figure {
     return this;
   }
 
-  _compute() {
-    //this._computed = this.shape().rotate(this._rotation);
-    //if (this._reflection.x) this._computed = this._computed.reflect(this.rotation);
-    //if (this._reflection.y) this._computed = this._computed.reflect(this.rotation + Math.PI/2);
-    //this._computed = this._computed.translate(this._position);
+  _compute(debug) {
+    this._computed = this.shape().rotate(this._rotation);
 
-    this._computed = this.shape()
-      .rotate(this._rotation)
-      .translate(this._position);
-    this._computed = (this._reflection.x) ? this._computed.reflectX() : this._computed;
-    this._computed = (this._reflection.y) ? this._computed.reflectY() : this._computed;
+    if (this._reflection.x) {
+      this._computed = this._computed.reflect(this._rotation);
+    }
+
+    if (this._reflection.y) {
+      this._computed = this._computed.reflect(this._rotation + Math.PI / 2);
+    }
+
+    this._computed = this._computed.translate(this._position);
+
     this._bound = getBounds(this.vertices());
   }
 
