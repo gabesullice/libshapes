@@ -1,6 +1,6 @@
 {
   "name": "libshapes",
-  "version": "0.15.23",
+  "version": "0.15.24",
   "description": "Library for manipulating shapes",
   "main": "index.js",
   "scripts": {
@@ -16,10 +16,9 @@
     "ava": "^0.17.0",
     "babel-cli": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
-    "shape-factory": "^0.1.4"
+    "shape-factory": "^0.1.16"
   },
   "dependencies": {
-    "shape-factory": "^0.1.14",
-    "vertex-tree": "^0.3.11"
+    "vertex-tree": "^0.3.12"
   }
 }
