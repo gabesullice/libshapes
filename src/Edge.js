@@ -214,8 +214,7 @@ export function withinBounds(edge, v) {
     const bottom = edge.bottom(), top = edge.top();
     return (bottom.x == v.x && bottom.y < v.y && v.y < top.y);
   } else if (m < EPSILON) {
-    const left = edge.left(), right = edge.right();
-    return (left.y == v.y && left.x < v.x && v.x < right.x);
+    return on(edge, v);
   } else {
     return (
       (edge.left().x < v.x && v.x < edge.right().x) &&

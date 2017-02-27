@@ -116,7 +116,7 @@ test("Can determine if two edges are coincident", t => {
   const tests = [
     {input: [[[0,0], [1,1]], [[0,0], [1,1]]], expected: true}, // Same.
     {input: [[[0.5,0.5], [0.5,-0.5]], [[0.5,-0.5], [0.5,0.5]]], expected: true}, // Same.
-    {input: [[[0.5,0.5], [0.5,-0.5]], [[0.5,-1.0], [0.5,0.0]]], expected: true, debug: true}, // Same.
+    {input: [[[0.5,0.5], [0.5,-0.5]], [[0.5,-1.0], [0.5,0.0]]], expected: true}, // Same.
     {input: [[[0.25,0.25], [0.75,0.75]], [[0,0], [1,1]]], expected: true}, // First witin the second.
     {input: [[[0,0], [1,1]], [[0.25,0.25], [0.75,0.75]]], expected: true}, // Second witin the first.
     {input: [[[-1,-1], [1,1]], [[0,0], [2,2]]], expected: true}, // Same line, first then second.
@@ -127,6 +127,14 @@ test("Can determine if two edges are coincident", t => {
     {input: [[[0,0], [2,2]], [[1,0], [1,2]]], expected: false},
     {input: [[[-1.5,-1.5], [-1.5,-0.5]], [[-1.5,-0.5], [-1.5,0.5]]], expected: false}, // Shared vertex, non-coincident.
     {input: [[[-1.5,-1.5], [-1.5, 1.5]], [[-0.5, 0.5], [-0.5, 1.5]]], expected: false},
+    {
+      input: [
+        [[10.710786437626904, 7.044119770960239], [13.539213562373096, 7.044119770960238]],
+        [[13.539213562373096, 7.044119770960238], [13.125, 7.044119770960238]]
+      ],
+      expected: true,
+      debug: true,
+    },
   ];
   tests.forEach(test => {
     const e0 = new edges.Edge(test.input[0]), e1 = new edges.Edge(test.input[1]);
@@ -231,7 +239,7 @@ test("Can detect if a vertex is on an edge", t => {
       e: [[-0.5, 0.5], [ 0.5, 0.5]],
       v: [-0.5,-0.5],
       expected: false,
-      debug: true,
+      debug: false,
     },
     {
       e: [[-0.5, 0.5], [-0.5, 1.5]],
