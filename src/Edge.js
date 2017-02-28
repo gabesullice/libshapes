@@ -177,7 +177,7 @@ export function vertexIntersection(e, v) {
   if (Math.abs(m) == Infinity) {
     ix =  e.left().x;
     iy =  v.y;
-  } else if (Math.abs(m) === 0) {
+  } else if (Math.abs(m) < EPSILON) {
     ix = v.x;
     // Find the y-coord where this line intersects e.
     iy = e.left().y;
@@ -212,9 +212,10 @@ export function withinBounds(edge, v) {
   const m = Math.abs(edge.slope());
   if (m == Infinity) {
     const bottom = edge.bottom(), top = edge.top();
-    return (bottom.x == v.x && bottom.y < v.y && v.y < top.y);
+    return (eqEpsilon(bottom.x, v.x) && bottom.y < v.y && v.y < top.y);
   } else if (m < EPSILON) {
-    return on(edge, v);
+    const left = edge.left(), right = edge.right();
+    return (eqEpsilon(left.y, v.y) && left.x < v.x && v.x < right.x);
   } else {
     return (
       (edge.left().x < v.x && v.x < edge.right().x) &&
@@ -227,9 +228,9 @@ export function on(edge, v) {
   // Find the line defined by e.
   const m = edge.slope(), b = edge.yIntercept();
   if (Math.abs(m) === Infinity) {
-    return v.x == edge.left().x && v.y >= edge.bottom().y && v.y <= edge.top().y;
+    return eqEpsilon(v.x, edge.left().x) && v.y >= edge.bottom().y && v.y <= edge.top().y;
   } else if (Math.abs(m) < EPSILON) {
-    return v.y == edge.bottom().y && v.x >= edge.left().x && v.x <= edge.right().x;
+    return eqEpsilon(v.y, edge.bottom().y) && v.x >= edge.left().x && v.x <= edge.right().x;
   } else {
     // Does the point fall on the line defined by e?
     const onLine = vertex.same(v, new vertex.Vertex(v.x, m * v.x + b));
@@ -265,4 +266,8 @@ function box(edge) {
     [edge.right().x, edge.top().y],
     [edge.right().x, edge.bottom().y],
   ]);
+}
+
+function eqEpsilon(a, b) {
+  return Math.abs(a - b) < EPSILON;
 }

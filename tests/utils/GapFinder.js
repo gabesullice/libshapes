@@ -8,7 +8,7 @@ import GapFinder from "../../lib/utils/GapFinder";
 
 const ShapeMaker = new ShapeFactory();
 
-test.failing("Can find the next vertex from the previous two vertices", t => {
+test("Can find the next vertex from the previous two vertices", t => {
   const square = ShapeMaker.make("square")
   const largeSquare = ShapeMaker.make("square", 3)
   const cases = [
