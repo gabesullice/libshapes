@@ -115,7 +115,9 @@ export default class Composition {
   }
 
   nonIntegrated() {
-    return this._nonIntegrated;
+    return Object.keys(this._figures).filter(id => {
+      return !this._checkIntegrated(id, this.get(id));
+    });
   }
 
   nonCoincident() {
@@ -396,46 +398,6 @@ export default class Composition {
         }),
       },
       {
-        description: "Records if a figure is not fully integrated (all of its vertices are shared)",
-        action: "insert",
-        type: "singular",
-        weight: 1,
-        func: ((id, figure) => {
-          if (!this._checkIntegrated(id, figure)) {
-            this._nonIntegrated.push(id);
-          }
-
-          figure
-            .vertices()
-            .map(v => this._vTree.at(v))
-            .filter(item => item !== undefined)
-            .filter(item => item.tags.length > 1)
-            .reduce((tags, item) => tags.concat(item.tags), [])
-            .filter(tag => tag != id)
-            .reduce((dedupe, tag) => {
-              return (dedupe.findIndex(id => tag == id) === -1) ? dedupe.concat(tag) : dedupe;
-            }, [])
-            .forEach(tag => {
-              const twin = {a: id, b: tag};
-              if (this._vertexTwins.findIndex(compare => {
-                return (
-                  (compare.a == twin.a && compare.b == twin.b) ||
-                  (compare.a == twin.b && compare.b == twin.a)
-                );
-              }) === -1) {
-                this._vertexTwins.push(twin);
-              }
-              if (this._checkIntegrated(tag, this.get(tag))) {
-                this._nonIntegrated = this._nonIntegrated.filter(id => id != tag);
-              } else {
-                if (this._nonIntegrated.findIndex(id => tag == id) === -1) {
-                  this._nonIntegrated.push(tag);
-                }
-              }
-            });
-        }),
-      },
-      {
         description: "Removes any gaps overlapped by the inserted figure",
         action: "insert",
         type: "singular",
@@ -618,77 +580,6 @@ export default class Composition {
         }),
       },
       {
-        description: "Removes old vertex twin records and makes new ones if needed",
-        action: "transform",
-        type: "singular",
-        weight: 2.9,
-        func: (id, figure) => {
-          const data = this._vertexTwins.reduce((data, twin) => {
-            if (twin.a == id || twin.b == id) {
-              const counterpart = (twin.a == id) ? twin.b : twin.a;
-              data.unpaired.push(counterpart);
-            } else {
-              data.remaining.push(twin);
-            }
-            return data;
-          }, {unpaired: [], remaining: []});
-
-          data.unpaired
-            .filter(tag => !this._checkIntegrated(tag, this.get(tag)))
-            .forEach(tag => {
-              if (!this._nonIntegrated.some(fid => fid == tag)) {
-                this._nonIntegrated.push(tag);
-              } else {
-                this._nonIntegrated.filter(fid => fid != tag)
-              }
-            });
-
-          this._vertexTwins = data.remaining;
-        },
-      },
-      {
-        description: "Records if a figure is not fully integrated (all of its vertices are shared)",
-        action: "transform",
-        type: "singular",
-        weight: 3,
-        func: ((id, figure) => {
-          if (!this._checkIntegrated(id, figure)) {
-            this._nonIntegrated.push(id);
-          } else {
-            this._nonIntegrated = this._nonIntegrated.filter(fid => fid != id)
-          }
-
-          figure
-            .vertices()
-            .map(v => this._vTree.at(v))
-            .filter(item => item !== undefined)
-            .filter(item => item.tags.length > 1)
-            .reduce((tags, item) => tags.concat(item.tags), [])
-            .filter(tag => tag != id)
-            .reduce((dedupe, tag) => {
-              return (dedupe.findIndex(id => tag == id) === -1) ? dedupe.concat(tag) : dedupe;
-            }, [])
-            .forEach(tag => {
-              const twin = {a: id, b: tag};
-              if (this._vertexTwins.findIndex(compare => {
-                return (
-                  (compare.a == twin.a && compare.b == twin.b) ||
-                  (compare.a == twin.b && compare.b == twin.a)
-                );
-              }) === -1) {
-                this._vertexTwins.push(twin);
-              }
-              if (this._checkIntegrated(tag, this.get(tag))) {
-                this._nonIntegrated = this._nonIntegrated.filter(id => id != tag);
-              } else {
-                if (this._nonIntegrated.findIndex(id => tag == id) === -1) {
-                  this._nonIntegrated.push(tag);
-                }
-              }
-            });
-        }),
-      },
-      {
         description: "Removes any gaps overlapped by the moved figure",
         action: "transform",
         type: "singular",
@@ -799,36 +690,6 @@ export default class Composition {
         type: "singular",
         weight: 1,
         func: ((id, figure) => this._removeFromVTree(id, figure)),
-      },
-      {
-        description: "Removes old vertex twin records and makes new ones if needed",
-        action: "remove",
-        type: "singular",
-        weight: 2,
-        func: (id, figure) => {
-          const data = this._vertexTwins.reduce((data, twin) => {
-            if (twin.a == id || twin.b == id) {
-              const counterpart = (twin.a == id) ? twin.b : twin.a;
-              data.unpaired.push(counterpart);
-            } else {
-              data.remaining.push(twin);
-            }
-            return data;
-          }, {unpaired: [], remaining: []});
-
-          data.unpaired
-            .filter(tag => !this._checkIntegrated(tag, this.get(tag)))
-            .forEach(tag => {
-              if (!this._nonIntegrated.some(fid => fid == tag)) {
-                this._nonIntegrated.push(tag);
-              } else {
-                this._nonIntegrated.filter(fid => fid != tag)
-              }
-            });
-
-          this._nonIntegrated = this._nonIntegrated.filter(fid => fid != id);
-          this._vertexTwins = data.remaining;
-        },
       },
       {
         description: "Process gaps on the removed figures siblings",
