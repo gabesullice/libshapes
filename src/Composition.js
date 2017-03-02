@@ -23,7 +23,6 @@ export default class Composition {
     this._intersecting = [];
     this._gaps = [];
     this._vertexTwins = [];
-    this._nonIntegrated = [];
     this._vTree = new VertexTree({
       leftBound: 0,
       rightBound: this._bounds.length(),
