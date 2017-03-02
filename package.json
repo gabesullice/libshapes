@@ -16,7 +16,7 @@
     "ava": "^0.17.0",
     "babel-cli": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
-    "shape-factory": "^0.1.16"
+    "shape-factory": "^0.1.19"
   },
   "dependencies": {
     "vertex-tree": "^0.3.12"
