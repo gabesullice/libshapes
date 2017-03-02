@@ -23,6 +23,7 @@ export default class Composition {
     this._intersecting = [];
     this._gaps = [];
     this._vertexTwins = [];
+    this._history = [];
     this._vTree = new VertexTree({
       leftBound: 0,
       rightBound: this._bounds.length(),
@@ -79,6 +80,10 @@ export default class Composition {
       this._gapFinder.debug(debug);
     }
     return this._debug;
+  }
+
+  history() {
+    return this._history;
   }
 
   log() {
@@ -154,12 +159,16 @@ export default class Composition {
   }
 
   add(figure, options) {
+    this._record("add", [...arguments]);
+
     const id = this._getID();
     this._doOperations(id, figure, this._getOperations("insert"));
     return id;
   }
 
   remove(id) {
+    this._record("remove", [...arguments]);
+
     if (this._figures.hasOwnProperty(id)) {
       this._doOperations(id, this._figures[id], this._getOperations("remove"));
       return delete this._figures[id];
@@ -189,6 +198,8 @@ export default class Composition {
   }
 
   transform(id, transform, options) {
+    this._record("transform", [...arguments]);
+
     let start, final;
 
     const {position, rotation, reflection} = transform;
@@ -735,6 +746,20 @@ export default class Composition {
       }
       return false;
     });
+  }
+
+  _record(method, args) {
+    if (this.debug()) {
+      switch (method) {
+        case "add": {
+          args.splice(0, 1, args[0].normalize());
+          break;
+        }
+        default: {
+        }
+      }
+      this._history.push({method, args});
+    }
   }
 
 }

@@ -7,6 +7,16 @@ export class Vertex {
     this.y = y
   }
 
+  normalize() {
+    return {
+      type: "vertex",
+      data: {
+        x: this.x.toString(),
+        y: this.y.toString(),
+      }
+    };
+  }
+
 }
 
 export function same(va, vb) {

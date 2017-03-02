@@ -14,6 +14,9 @@ const ShapeMaker = {
   make(name) {
     return this.upcast(this.factory.make(name));
   },
+  arbitrary() {
+    return this.upcast(this.factory.arbitrary(...arguments));
+  },
   upcast(shape) {
     return new Shape(shape.vertices().map(v => [v.x, v.y]));
   }
@@ -22,6 +25,23 @@ const ShapeMaker = {
 test("Can instantiate a Shape", t => {
   const rightTriangle = new Shape([[0,0], [1,0], [0,1]]);
   const square = new Shape([[0,0], [1,0], [1,1], [0,1]]);
+});
+
+test("Can normalize a Shape", t => {
+  const cases = [
+    {
+      input: ShapeMaker.make("equilateral"),
+      expected: {
+        type: "shape",
+        data: {
+          vertices: ShapeMaker.make("equilateral").vertices().map(v => v.normalize()),
+        },
+      },
+    },
+  ];
+  cases.forEach(item => {
+    t.deepEqual(item.input.normalize(), item.expected)
+  });
 });
 
 test("Can get vertices of a Shape", t => {

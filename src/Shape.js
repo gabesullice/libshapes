@@ -10,6 +10,15 @@ class Shape {
     });
   }
 
+  normalize() {
+    return {
+      type: "shape",
+      data: {
+        vertices: this.vertices().map(v => v.normalize())
+      },
+    };
+  }
+
   vertices() {
     return this._vertices;
   }

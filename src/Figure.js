@@ -11,6 +11,18 @@ export class Figure {
     this._compute()
   }
 
+  normalize() {
+    return {
+      type: "figure",
+      data: {
+        shape: this.shape().normalize(),
+        rotation: this.rotation().toString(),
+        position: {x: this.position()[0].toString(), y: this.position()[1].toString()},
+        reflection: this._reflection,
+      },
+    };
+  }
+
   shape(shape) {
     if (shape !== undefined) {
       this._shape = shape;

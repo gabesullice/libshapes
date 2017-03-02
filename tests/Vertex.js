@@ -7,6 +7,21 @@ test("Can instantiate a Vertex", t => {
   t.is(v.y, 0)
 });
 
+test("Can normalize a Vertex", t => {
+  const cases = [
+    {input: [ 0, 0], expected: {type: "vertex", data: {x:  "0", y:  "0"}}},
+    {input: [-1, 0], expected: {type: "vertex", data: {x: "-1", y:  "0"}}},
+    {input: [-1,-1], expected: {type: "vertex", data: {x: "-1", y: "-1"}}},
+    {input: [ 1, 1], expected: {type: "vertex", data: {x:  "1", y:  "1"}}},
+    {input: [ Infinity, 0], expected: {type: "vertex", data: {x:  "Infinity", y: "0"}}},
+    {input: [-Infinity, 0], expected: {type: "vertex", data: {x: "-Infinity", y: "0"}}},
+  ];
+  cases.forEach(item => {
+    const v = new vertex.Vertex(item.input[0], item.input[1]);
+    t.deepEqual(v.normalize(), item.expected)
+  });
+});
+
 test("Can compare two vertices", t => {
   const coords = [
     {x1: 0, y1: 0, x2: 0, y2: 0, expect: true},

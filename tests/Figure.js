@@ -5,7 +5,23 @@ import * as edges from "../lib/Edge";
 import Shape from "../lib/Shape";
 import * as figures from "../lib/Figure";
 
-const ShapeMaker = new ShapeFactory();
+// The shape-factory library depends on this library, so it never has the
+// latest features that we're trying to test here. However, it _does_ have a
+// useful list of premade shapes that we would like to use in these tests.
+// We can use those shape definitions and then "upcast" them to the latest
+// Shape class.
+const ShapeMaker = {
+  factory: new ShapeFactory(),
+  make(name) {
+    return this.upcast(this.factory.make(name));
+  },
+  arbitrary() {
+    return this.upcast(this.factory.arbitrary(...arguments));
+  },
+  upcast(shape) {
+    return new Shape(shape.vertices().map(v => [v.x, v.y]));
+  }
+}
 
 test("Can create a new Figure", t => {
   const tests = [
@@ -20,6 +36,35 @@ test("Can create a new Figure", t => {
   ];
   tests.forEach(values => {
     const f = new figures.Figure(values);
+  });
+});
+
+test("Can normalize a Figure", t => {
+  const cases = [
+    {
+      input: {
+        shape: ShapeMaker.make("equilateral"),
+      },
+      expected: {
+        type: "figure",
+        data: {
+          shape: ShapeMaker.make("equilateral").normalize(),
+          rotation: "0",
+          position: {
+            x: "0",
+            y: "0",
+          },
+          reflection: {
+            x: false,
+            y: false,
+          },
+        },
+      },
+    },
+  ];
+  cases.forEach(item => {
+    const f = new figures.Figure(item.input);
+    t.deepEqual(f.normalize(), item.expected)
   });
 });
 
