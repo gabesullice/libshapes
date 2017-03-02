@@ -20,7 +20,6 @@ export default class Composition {
     this.snapTolerance(snapTolerance);
     this._count = 0;
     this._figures = {};
-    this._overlapping = [];
     this._intersecting = [];
     this._gaps = [];
     this._floats = [];
@@ -94,7 +93,17 @@ export default class Composition {
   }
 
   overlapping() {
-    return this._overlapping;
+    const pairs = [];
+    const ids = Object.keys(this._figures);
+    while (ids.length > 0) {
+      let id0 = ids.pop();
+      ids.forEach(id1 => {
+        if (figures.overlap(this.get(id0), this.get(id1))) {
+          pairs.push({a: id0, b: id1});
+        }
+      });
+    }
+    return pairs;
   }
 
   gaps() {
@@ -334,17 +343,6 @@ export default class Composition {
         }),
       },
       {
-        description: "Finds and stores overlapping figures",
-        action: "insert",
-        type: "iterator",
-        weight: -4,
-        func: ((a, b) => {
-          if (figures.overlap(a.figure, b.figure)) {
-            this._overlapping.push({a: a.id, b: b.id});
-          }
-        }),
-      },
-      {
         description: "Finds and stores subsected edges created by coincident figures",
         action: "insert",
         type: "iterator",
@@ -510,13 +508,6 @@ export default class Composition {
         }),
       },
       {
-        description: "Removes any overlap records for a moved figure",
-        action: "transform",
-        type: "singular",
-        weight: -1,
-        func: (id => this._removeOverlaps(id)),
-      },
-      {
         description: "Removes any gap records for a moved figure",
         action: "transform",
         type: "singular",
@@ -623,17 +614,6 @@ export default class Composition {
         func: ((a, b) => {
           if (figures.intersect(a.figure, b.figure)) {
             this._intersecting.push({a: a.id, b: b.id});
-          }
-        }),
-      },
-      {
-        description: "Finds and stores overlapping figures",
-        action: "transform",
-        type: "iterator",
-        weight: 3,
-        func: ((a, b) => {
-          if (figures.overlap(a.figure, b.figure)) {
-            this._overlapping.push({a: a.id, b: b.id});
           }
         }),
       },
@@ -752,13 +732,6 @@ export default class Composition {
             return fid != id;
           });
         }),
-      },
-      {
-        description: "Removes any overlap records for a removed figure",
-        action: "remove",
-        type: "singular",
-        weight: 0,
-        func: (id => this._removeOverlaps(id)),
       },
       {
         description: "Removes any intersection records for a removed figure",
@@ -938,10 +911,6 @@ export default class Composition {
     } else {
       return [0, 0];
     }
-  }
-
-  _removeOverlaps(id) {
-    this._overlapping = this._overlapping.filter(o => !(o.a == id || o.b == id));
   }
 
   _removeIntersections(id) {

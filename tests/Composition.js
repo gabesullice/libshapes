@@ -254,10 +254,16 @@ test("Can find overlapping figures", t => {
     {input: [posA, posB], expected: []},
     {input: [posB, posC], expected: [{a: "fig-1", b: "fig-0"}]},
     {input: [posA, posB, posC], expected: [{a: "fig-2", b: "fig-1"}]},
-    {input: [posA, posB, posC, posD], expected: [{a: "fig-2", b: "fig-1"}, {a: "fig-3", b: "fig-1"}, {a: "fig-3", b: "fig-2"}]},
+    {
+      input: [posA, posB, posC, posD], expected: [
+        {a:"fig-3",b:"fig-1"},
+        {a:"fig-3",b:"fig-2"},
+        {a:"fig-2",b:"fig-1"},
+      ]
+    },
     {input: [posA, posB, posC, posD], remove: "fig-2", expected: [{a: "fig-3", b: "fig-1"}]},
     {input: [posB, posC], move: {fid: "fig-0", pos: [10,0]}, expected: []},
-    {input: [posA, posB], move: {fid: "fig-0", pos: [1.5,0]}, expected: [{a: "fig-0", b: "fig-1"}]},
+    {input: [posA, posB], move: {fid: "fig-0", pos: [1.5,0]}, expected: [{a: "fig-1", b: "fig-0"}]},
   ];
   cases.forEach(item => {
     const c = new Composition({snap: false});
