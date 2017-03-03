@@ -7,6 +7,8 @@ import {VertexTree} from "vertex-tree";
 export default class Composition {
 
   constructor() {
+    // _history is the only thing that must be initialized before any calls.
+    this._history = [];
     this.init(...arguments);
   }
 
@@ -29,7 +31,6 @@ export default class Composition {
     this._intersecting = [];
     this._gaps = [];
     this._vertexTwins = [];
-    this._history = [];
     this._vTree = new VertexTree({
       leftBound: 0,
       rightBound: this._bounds.length(),
