@@ -6,13 +6,19 @@ import {VertexTree} from "vertex-tree";
 
 export default class Composition {
 
-  constructor({
+  constructor() {
+    this.init(...arguments);
+  }
+
+  init({
     debug = false,
     bounds = [[0,0], [100,100]],
     doSnap = true,
     snapTolerance = 0.001,
     processGaps = false,
   } = {}) {
+    this._record("init", [...arguments]);
+
     this._debug = debug;
     this.bounds.apply(this, bounds);
     this.snap(doSnap);
@@ -45,6 +51,8 @@ export default class Composition {
   }
 
   bounds(b0, b1) {
+    this._record("bounds", [...arguments]);
+
     if (b0 !== undefined && b1 !== undefined) {
       this._bounds = new edges.Edge([b0, b1]);
     }
@@ -54,6 +62,8 @@ export default class Composition {
   }
 
   snap(doSnap) {
+    this._record("snap", [...arguments]);
+
     if (doSnap !== undefined) {
       this._doSnap = doSnap;
     }
@@ -61,6 +71,8 @@ export default class Composition {
   }
 
   snapTolerance(tolerance) {
+    this._record("snapTolerance", [...arguments]);
+
     if (tolerance !== undefined) {
       this._tolerance = tolerance;
     }
@@ -68,6 +80,8 @@ export default class Composition {
   }
 
   processGaps(doProcess) {
+    this._record("processGaps", [...arguments]);
+
     if (doProcess !== undefined) {
       this._doProcessGaps = doProcess;
     }
@@ -693,7 +707,6 @@ export default class Composition {
       return items;
     }, []);
 
-
     // 1. Extract the tags (which are figure ids) from each item.
     // 2. Deduplicate the fids.
     const fids = items
@@ -760,6 +773,14 @@ export default class Composition {
       }
       this._history.push({method, args});
     }
+  }
+
+  fromHistory(history) {
+    const composition = new Composition();
+    history.forEach(item => {
+      this[item.method].call(composition, ...item.args);
+    });
+    return composition;
   }
 
 }
