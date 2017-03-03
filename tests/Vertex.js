@@ -9,16 +9,31 @@ test("Can instantiate a Vertex", t => {
 
 test("Can normalize a Vertex", t => {
   const cases = [
-    {input: [ 0, 0], expected: {type: "vertex", data: {x:  "0", y:  "0"}}},
-    {input: [-1, 0], expected: {type: "vertex", data: {x: "-1", y:  "0"}}},
-    {input: [-1,-1], expected: {type: "vertex", data: {x: "-1", y: "-1"}}},
-    {input: [ 1, 1], expected: {type: "vertex", data: {x:  "1", y:  "1"}}},
-    {input: [ Infinity, 0], expected: {type: "vertex", data: {x:  "Infinity", y: "0"}}},
-    {input: [-Infinity, 0], expected: {type: "vertex", data: {x: "-Infinity", y: "0"}}},
+    {input: [ 0, 0], expected: {type: "vertex", data: {x:  0, y:  0}}},
+    {input: [-1, 0], expected: {type: "vertex", data: {x: -1, y:  0}}},
+    {input: [-1,-1], expected: {type: "vertex", data: {x: -1, y: -1}}},
+    {input: [ 1, 1], expected: {type: "vertex", data: {x:  1, y:  1}}},
+    {input: [ Infinity, 0], expected: {type: "vertex", data: {x:  Infinity, y: 0}}},
+    {input: [-Infinity, 0], expected: {type: "vertex", data: {x: -Infinity, y: 0}}},
   ];
   cases.forEach(item => {
     const v = new vertex.Vertex(item.input[0], item.input[1]);
     t.deepEqual(v.normalize(), item.expected)
+  });
+});
+
+test("Can denormalize a Vertex", t => {
+  const cases = [
+    {expected: [ 0, 0], input: {type: "vertex", data: {x:  0, y:  0}}},
+    {expected: [-1, 0], input: {type: "vertex", data: {x: -1, y:  0}}},
+    {expected: [-1,-1], input: {type: "vertex", data: {x: -1, y: -1}}},
+    {expected: [ 1, 1], input: {type: "vertex", data: {x:  1, y:  1}}},
+    {expected: [ Infinity, 0], input: {type: "vertex", data: {x:  Infinity, y: 0}}},
+    {expected: [-Infinity, 0], input: {type: "vertex", data: {x: -Infinity, y: 0}}},
+  ];
+  cases.forEach(item => {
+    const v = new vertex.Vertex(item.expected[0], item.expected[1]);
+    t.deepEqual(vertex.denormalize(item.input), v)
   });
 });
 

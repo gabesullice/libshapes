@@ -1,12 +1,13 @@
 import * as vertex from "./Vertex";
 import * as edges from "./Edge";
+import * as shapes from "./Shape";
 
 export class Figure {
 
   constructor(values) {
     this._shape = values.shape;
-    this._position = values.position === undefined ? [0,0] : values.position;
     this._rotation = values.rotation === undefined ? 0 : values.rotation;
+    this._position = values.position === undefined ? [0,0] : values.position;
     this._reflection = values.reflection === undefined ? {x: false, y: false} : values.reflection;
     this._compute()
   }
@@ -16,8 +17,8 @@ export class Figure {
       type: "figure",
       data: {
         shape: this.shape().normalize(),
-        rotation: this.rotation().toString(),
-        position: {x: this.position()[0].toString(), y: this.position()[1].toString()},
+        rotation: this.rotation(),
+        position: {x: this.position()[0], y: this.position()[1]},
         reflection: this._reflection,
       },
     };
@@ -204,6 +205,19 @@ export function coincident(f0, f1) {
 
 export function intersect(f0, f1) {
   return intersectAny(f0.edges(), f1.edges());
+}
+
+export function denormalize(content) {
+  if (content.type != 'figure') {
+    throw Error('Unexpected type. Unable to denormalize.');
+  }
+  try {
+    content.data.shape = shapes.denormalize(content.data.shape)
+    content.data.position = [content.data.position.x, content.data.position.y];
+    return new Figure(content.data);
+  } catch (e) {
+    throw Error('Unexpected data. Unable to denormalize.');
+  }
 }
 
 function coincidentAny(e0s, e1s) {

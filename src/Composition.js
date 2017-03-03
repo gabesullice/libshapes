@@ -8,7 +8,7 @@ export default class Composition {
 
   constructor() {
     // _history is the only thing that must be initialized before any calls.
-    this._history = [];
+    this._history = []; 
     this.init(...arguments);
   }
 

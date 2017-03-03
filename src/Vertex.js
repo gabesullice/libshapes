@@ -11,8 +11,8 @@ export class Vertex {
     return {
       type: "vertex",
       data: {
-        x: this.x.toString(),
-        y: this.y.toString(),
+        x: this.x,
+        y: this.y,
       }
     };
   }
@@ -50,4 +50,15 @@ export function reflect(v, angle) {
 export function angleBetween(v0, v1) {
   const t = Math.atan2((v1.y - v0.y), (v1.x - v0.x));
   return (t < 0) ? (Math.PI * 2) + t : t;
+}
+
+export function denormalize(content) {
+  if (content.type != 'vertex') {
+    throw Error('Unexpected type. Unable to denormalize.');
+  }
+  try {
+    return new Vertex(content.data.x, content.data.y);
+  } catch (e) {
+    throw Error('Unexpected data. Unable to denormalize.');
+  }
 }

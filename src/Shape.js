@@ -85,5 +85,19 @@ function same(s0, s1) {
   return true;
 }
 
+function denormalize(content) {
+  if (content.type != 'shape') {
+    throw Error('Unexpected type. Unable to denormalize.');
+  }
+  try {
+    const vertices = content.data.vertices
+      .map(v => vertex.denormalize(v))
+      .map(v => [v.x, v.y]);
+    return new Shape(vertices);
+  } catch (e) {
+    throw Error('Unexpected data. Unable to denormalize.');
+  }
+}
+
 export default Shape;
-export {Shape, same};
+export {Shape, same, denormalize};

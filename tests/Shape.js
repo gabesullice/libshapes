@@ -1,6 +1,6 @@
 import test from "ava";
 import * as vertex from "../lib/Vertex";
-import { Shape, same } from "../lib/Shape";
+import { Shape, same, denormalize as denormalizeShape } from "../lib/Shape";
 import { Edge } from "../lib/Edge";
 import ShapeFactory from "shape-factory";
 
@@ -41,6 +41,23 @@ test("Can normalize a Shape", t => {
   ];
   cases.forEach(item => {
     t.deepEqual(item.input.normalize(), item.expected)
+  });
+});
+
+test("Can denormalize a Shape", t => {
+  const cases = [
+    {
+      input: {
+        type: "shape",
+        data: {
+          vertices: ShapeMaker.make("equilateral").vertices().map(v => v.normalize()),
+        },
+      },
+      expected: ShapeMaker.make("equilateral"),
+    },
+  ];
+  cases.forEach(item => {
+    t.deepEqual(denormalizeShape(item.input), item.expected)
   });
 });
 

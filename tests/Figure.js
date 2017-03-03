@@ -49,10 +49,10 @@ test("Can normalize a Figure", t => {
         type: "figure",
         data: {
           shape: ShapeMaker.make("equilateral").normalize(),
-          rotation: "0",
+          rotation: 0,
           position: {
-            x: "0",
-            y: "0",
+            x: 0,
+            y: 0,
           },
           reflection: {
             x: false,
@@ -65,6 +65,35 @@ test("Can normalize a Figure", t => {
   cases.forEach(item => {
     const f = new figures.Figure(item.input);
     t.deepEqual(f.normalize(), item.expected)
+  });
+});
+
+test("Can denormalize a Figure", t => {
+  const cases = [
+    {
+      input: {
+        type: "figure",
+        data: {
+          shape: ShapeMaker.make("equilateral").normalize(),
+          rotation: 0,
+          position: {
+            x: 0,
+            y: 0,
+          },
+          reflection: {
+            x: false,
+            y: false,
+          },
+        },
+      },
+      expected: {
+        shape: ShapeMaker.make("equilateral"),
+      },
+    },
+  ];
+  cases.forEach(item => {
+    const f = new figures.Figure(item.expected);
+    t.deepEqual(figures.denormalize(item.input), f)
   });
 });
 
