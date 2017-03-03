@@ -4,7 +4,7 @@ import * as figures from "../lib/Figure";
 import GapFinder from "./utils/GapFinder.js";
 import {VertexTree} from "vertex-tree";
 
-export default class Composition {
+class Composition {
 
   constructor() {
     // _history is the only thing that must be initialized before any calls.
@@ -45,6 +45,8 @@ export default class Composition {
       subsectTree: this._subsectTree,
       debug,
     });
+
+    this._stopRecord();
   }
 
   figures() {
@@ -59,6 +61,9 @@ export default class Composition {
     }
     const l = this._bounds.left(), r = this._bounds.right();
     const ret = [[l.x, l.y], [r.x, r.y]];
+
+    this._stopRecord();
+
     return ret;
   }
 
@@ -68,6 +73,9 @@ export default class Composition {
     if (doSnap !== undefined) {
       this._doSnap = doSnap;
     }
+
+    this._stopRecord();
+
     return this._doSnap;
   }
 
@@ -77,6 +85,9 @@ export default class Composition {
     if (tolerance !== undefined) {
       this._tolerance = tolerance;
     }
+
+    this._stopRecord();
+
     return this._tolerance;
   }
 
@@ -86,6 +97,9 @@ export default class Composition {
     if (doProcess !== undefined) {
       this._doProcessGaps = doProcess;
     }
+
+    this._stopRecord();
+
     return this._doProcessGaps;
   }
 
@@ -178,6 +192,9 @@ export default class Composition {
 
     const id = this._getID();
     this._doOperations(id, figure, this._getOperations("insert"));
+
+    this._stopRecord();
+
     return id;
   }
 
@@ -188,6 +205,9 @@ export default class Composition {
       this._doOperations(id, this._figures[id], this._getOperations("remove"));
       return delete this._figures[id];
     }
+
+    this._stopRecord();
+
     return false;
   }
 
@@ -278,6 +298,8 @@ export default class Composition {
       && position !== undefined
       && (position[0] != final[0] || position[1] != final[1])
     );
+
+    this._stopRecord();
 
     return {
       start,
@@ -764,27 +786,39 @@ export default class Composition {
 
   _record(method, args) {
     if (this.debug()) {
-      switch (method) {
-        case "add": {
-          args.splice(0, 1, args[0].normalize());
-          break;
+      if (!this._recording) {
+        switch (method) {
+          case "add": {
+            args.splice(0, 1, args[0].normalize());
+            break;
+          }
+          default: {
+          }
         }
-        default: {
-        }
+
+        // If the last argument is null, it just shouldn't be recorded so that
+        // defaults can be used.
+        if (args[args.length - 1] === null) args.splice(-1, 1);
+
+        this._history.push({method, args});
       }
-      this._history.push({method, args});
+      this._recording = true;
     }
+  }
+
+  _stopRecord() {
+    this._recording = false;
   }
 
 }
 
-export function fromHistory(history) {
+function fromHistory(history) {
   const composition = new Composition();
   replay(history, composition);
   return composition;
 }
 
-export function replay(history, composition) {
+function replay(history, composition) {
   history.forEach(action => execute(action, composition));
 }
 
@@ -797,5 +831,9 @@ function execute(action, composition) {
     }
     default: {}
   }
+  //if (action.method == "transform") console.log(...args);
   composition[action.method].call(composition, ...args);
 }
+
+export default Composition;
+export { Composition, fromHistory, replay };
