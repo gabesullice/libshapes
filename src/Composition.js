@@ -776,12 +776,26 @@ export default class Composition {
     }
   }
 
-  fromHistory(history) {
-    const composition = new Composition();
-    history.forEach(item => {
-      this[item.method].call(composition, ...item.args);
-    });
-    return composition;
-  }
+}
 
+export function fromHistory(history) {
+  const composition = new Composition();
+  replay(history, composition);
+  return composition;
+}
+
+export function replay(history, composition) {
+  history.forEach(action => execute(action, composition));
+}
+
+function execute(action, composition) {
+  const args = action.args;
+  switch (action.method) {
+    case "add": {
+      args[0] = figures.denormalize(action.args[0]);
+      break;
+    }
+    default: {}
+  }
+  composition[action.method].call(composition, ...args);
 }
