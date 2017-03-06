@@ -106,8 +106,15 @@ export function intersect(e0, e1) {
   }
   // Define a vertex at the point (x,y).
   const intersection = new vertex.Vertex(x, y);
-  // Now determine if (x,y) falls within the bounding box of e0 or e1.
-  return withinBounds(e0, intersection) && withinBounds(e1, intersection);
+  // Get a list of all vertices.
+  const vertices = [e0.left(), e0.right(), e1.left(), e1.right()];
+  return (
+    // Ensure that the vertices aren't just touching an edge.
+    !vertices.some(v => vertex.same(v, intersection))
+    // Finally, determine if (x,y) falls within the bounding box of e0 or e1.
+    && withinBounds(e0, intersection)
+    && withinBounds(e1, intersection)
+  );
 }
 
 export function coincident(e0, e1) {
