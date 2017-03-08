@@ -234,7 +234,7 @@ export function withinBounds(edge, v) {
 export function on(edge, v) {
   // Find the line defined by e.
   const m = edge.slope(), b = edge.yIntercept();
-  if (Math.abs(m) === Infinity) {
+  if (Math.abs(m) == Infinity) {
     return eqEpsilon(v.x, edge.left().x) && v.y >= edge.bottom().y && v.y <= edge.top().y;
   } else if (Math.abs(m) < EPSILON) {
     return eqEpsilon(v.y, edge.bottom().y) && v.x >= edge.left().x && v.x <= edge.right().x;
@@ -263,6 +263,14 @@ function angle(v0, v1) {
 }
 
 function slope(v0, v1) {
+  if (eqEpsilon(v0.x, v1.x)) {
+    return (v0.y < v1.y) ? Infinity : -Infinity;
+  };
+
+  if (eqEpsilon(v0.y, v1.y)) {
+    return (v0.x < v1.x) ? 0 : -0;
+  };
+
   return (v1.y - v0.y)/(v1.x - v0.x);
 }
 
