@@ -4,10 +4,11 @@
   "description": "Library for manipulating shapes",
   "main": "index.js",
   "scripts": {
-    "babel": "babel",
-    "build": "babel src --out-dir lib",
+    "babel": "BABEL_ENV=production babel",
+    "build": "BABEL_ENV=production babel src --out-dir lib",
     "test": "ava tests/*.js tests/utils/*.js tests/regression/*.js -v",
-    "ava": "ava"
+    "ava": "ava",
+    "nyc": "nyc"
   },
   "repository": "git@github.com:gabesullice/shapes.git",
   "author": "Gabriel SULLICE",
@@ -16,9 +17,13 @@
     "ava": "^0.17.0",
     "babel-cli": "^6.18.0",
     "babel-preset-latest": "^6.16.0",
+    "nyc": "^10.1.2",
     "shape-factory": "^0.1.20"
   },
   "dependencies": {
     "vertex-tree": "^0.3.12"
+  },
+  "ava": {
+    "require": ["babel-core/register"]
   }
 }

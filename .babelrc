@@ -1,3 +1,10 @@
 {
-  "presets": ["latest"]
+  "presets": ["latest"],
+  "plugins": ["transform-runtime"],
+  "ignore": "./tests",
+  "env": {
+    "development": {
+      "sourceMaps": "inline"
+    }
+  }
 }
