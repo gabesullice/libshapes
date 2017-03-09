@@ -1,6 +1,6 @@
 import test from "ava";
 import fs from "fs";
-import * as composition from "../../lib/Composition";
+import * as composition from "../../src/Composition";
 
 const history = JSON.parse(fs.readFileSync("tests/data/history-004-hotair-balloon.json"));
 

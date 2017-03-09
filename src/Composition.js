@@ -1,6 +1,6 @@
-import * as vertex from "../lib/Vertex";
-import * as edges from "../lib/Edge";
-import * as figures from "../lib/Figure";
+import * as vertex from "../src/Vertex";
+import * as edges from "../src/Edge";
+import * as figures from "../src/Figure";
 import GapFinder from "./utils/GapFinder.js";
 import {VertexTree} from "vertex-tree";
 

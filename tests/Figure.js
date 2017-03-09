@@ -1,9 +1,9 @@
 import test from "ava";
 import ShapeFactory from "shape-factory";
-import * as vertex from "../lib/Vertex";
-import * as edges from "../lib/Edge";
-import Shape from "../lib/Shape";
-import * as figures from "../lib/Figure";
+import * as vertex from "../src/Vertex";
+import * as edges from "../src/Edge";
+import Shape from "../src/Shape";
+import * as figures from "../src/Figure";
 
 // The shape-factory library depends on this library, so it never has the
 // latest features that we're trying to test here. However, it _does_ have a

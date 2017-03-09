@@ -1,8 +1,8 @@
 import test from "ava";
 import ShapeFactory from "shape-factory";
-import Composition from "../../lib/Composition";
-import * as figure from "../../lib/Figure";
-import * as edges from "../../lib/Edge";
+import Composition from "../../src/Composition";
+import * as figure from "../../src/Figure";
+import * as edges from "../../src/Edge";
 
 const puzzle = [
   [

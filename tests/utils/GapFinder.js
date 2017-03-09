@@ -1,10 +1,10 @@
 import test from "ava";
-import * as figures from "../../lib/Figure";
-import * as vertex from "../../lib/Vertex";
-import * as edges from "../../lib/Edge";
+import * as figures from "../../src/Figure";
+import * as vertex from "../../src/Vertex";
+import * as edges from "../../src/Edge";
 import ShapeFactory from "shape-factory";
 import {VertexTree} from "vertex-tree";
-import GapFinder from "../../lib/utils/GapFinder";
+import GapFinder from "../../src/utils/GapFinder";
 
 const ShapeMaker = new ShapeFactory();
 

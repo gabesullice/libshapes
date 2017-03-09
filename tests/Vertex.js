@@ -1,5 +1,5 @@
 import test from "ava";
-import * as vertex from "../lib/Vertex";
+import * as vertex from "../src/Vertex";
 
 test("Can instantiate a Vertex", t => {
   const v = new vertex.Vertex(0, 0);

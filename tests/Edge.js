@@ -1,6 +1,6 @@
 import test from "ava";
-import * as vertex from "../lib/Vertex";
-import * as edges from "../lib/Edge";
+import * as vertex from "../src/Vertex";
+import * as edges from "../src/Edge";
 
 test("Can instantiate an Edge", t => {
   const edge = new edges.Edge([[0,0], [1,1]]);

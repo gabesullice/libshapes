@@ -1,6 +1,6 @@
 import test from "ava";
-import * as figures from "../../lib/Figure";
-import Composition from "../../lib/Composition";
+import * as figures from "../../src/Figure";
+import Composition from "../../src/Composition";
 import ShapeFactory from "shape-factory";
 
 

@@ -1,7 +1,7 @@
 import test from "ava";
-import * as vertex from "../lib/Vertex";
-import { Shape, same, denormalize as denormalizeShape } from "../lib/Shape";
-import { Edge } from "../lib/Edge";
+import * as vertex from "../src/Vertex";
+import { Shape, same, denormalize as denormalizeShape } from "../src/Shape";
+import { Edge } from "../src/Edge";
 import ShapeFactory from "shape-factory";
 
 // The shape-factory library depends on this library, so it never has the

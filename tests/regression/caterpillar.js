@@ -1,4 +1,4 @@
-import * as composition from '../../lib/Composition';
+import * as composition from '../../src/Composition';
 import fs from 'fs';
 import test from 'ava';
 
