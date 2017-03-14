@@ -1,6 +1,6 @@
 {
   "name": "libshapes",
-  "version": "0.15.37",
+  "version": "0.15.38",
   "description": "Library for manipulating shapes",
   "main": "index.js",
   "scripts": {
@@ -14,9 +14,9 @@
   "author": "Gabriel SULLICE",
   "license": "MIT",
   "devDependencies": {
-    "ava": "^0.17.0",
-    "babel-cli": "^6.18.0",
-    "babel-preset-latest": "^6.16.0",
+    "ava": "^0.18.2",
+    "babel-cli": "^6.24.0",
+    "babel-preset-latest": "^6.24.0",
     "nyc": "^10.1.2",
     "shape-factory": "^0.1.20"
   },

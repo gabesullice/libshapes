@@ -209,7 +209,7 @@ class Composition {
     this._record("add", [...arguments]);
 
     const id = this._getID();
-    this._doOperations(id, figure, this._getOperations("insert"));
+    this._add(id, figure, options);
 
     this._stopRecord();
 
@@ -325,6 +325,10 @@ class Composition {
       final,
       snapped: didSnap,
     };
+  }
+
+  _add(id, figure, options) {
+    this._doOperations(id, figure, this._getOperations("insert"));
   }
 
   _doOperations(id, figure, operations) {
@@ -840,6 +844,23 @@ class Composition {
 
 }
 
+function denormalize(content) {
+  if (content.type != 'composition') {
+    throw Error('Unexpected type. Unable to denormalize.');
+  }
+  try {
+    const composition = new Composition(content.data.options);
+    const denormalized = content.data.figures.forEach(item => {
+      console.log(item);
+      composition._add(item.id, figures.denormalize(item.figure));
+    });
+    return composition;
+  } catch (e) {
+    throw e;
+    throw Error('Unexpected data. Unable to denormalize.');
+  }
+}
+
 function same(a, b) {
   const as = Object.values(a.figures()), bs = Object.values(b.figures());
 
@@ -880,4 +901,4 @@ function execute(action, composition) {
 }
 
 export default Composition;
-export { Composition, same, fromHistory, replay };
+export { Composition, denormalize, same, fromHistory, replay };

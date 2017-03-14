@@ -3,7 +3,7 @@ import {Edge} from "../src/Edge";
 import * as vertex from "../src/Vertex";
 import * as figures from "../src/Figure";
 import ShapeFactory from "shape-factory";
-import { Composition, same as sameComposition } from "../src/Composition";
+import { Composition, same as sameComposition, denormalize as denormalizeComposition } from "../src/Composition";
 
 const ShapeMaker = new ShapeFactory();
 
@@ -143,6 +143,35 @@ test("Can normalize a composition", t => {
     const C = new Composition(item.options);
     item.input.figures.forEach(addFigureTo(C));
     t.deepEqual(C.normalize(), item.expect);
+  });
+});
+
+test.failing("Can denormalize a composition", t => {
+  const cases = [
+    {
+      data: {
+        type: "composition",
+        data: {
+          options: {
+            debug:false,
+            bounds:[[0, 0], [100, 100]],
+            doSnap:true,
+            snapTolerance:0.001,
+            processGaps:false},
+          figures: [
+            {
+              id: "fig-0",
+              figure: new figures.Figure({shape: ShapeMaker.make('square')}).normalize(),
+            },
+          ],
+        },
+      },
+    },
+  ];
+
+  cases.forEach(item => {
+    const C = denormalizeComposition(item.data);
+    t.deepEqual(C.normalize(), item.data);
   });
 });
 
