@@ -86,6 +86,66 @@ test("Can compare two compositions", t => {
   });
 });
 
+test("Can normalize a composition", t => {
+  const cases = [
+    {
+      input: {
+        options: {},
+        figures: [],
+      },
+      expect: {
+        type: "composition",
+        data: {
+          options: {
+            debug:false,
+            bounds:[[0, 0], [100, 100]],
+            doSnap:true,
+            snapTolerance:0.001,
+            processGaps:false},
+          figures: [],
+        },
+      },
+    },
+    {
+      input: {
+        options: {},
+        figures: [
+          {shape: ShapeMaker.make('square')},
+        ],
+      },
+      expect: {
+        type: "composition",
+        data: {
+          options: {
+            debug:false,
+            bounds:[[0, 0], [100, 100]],
+            doSnap:true,
+            snapTolerance:0.001,
+            processGaps:false},
+          figures: [
+            {
+              id: "fig-0",
+              figure: new figures.Figure({shape: ShapeMaker.make('square')}).normalize(),
+            },
+          ],
+        },
+      },
+    },
+  ];
+
+  const addFigureTo = (composition) => {
+    return options => {
+      composition.add(new figures.Figure(options));
+    };
+  };
+
+  cases.forEach(item => {
+    const C = new Composition(item.options);
+    item.input.figures.forEach(addFigureTo(C));
+    t.deepEqual(C.normalize(), item.expect);
+  });
+});
+
 test("Adding a figure to a composition adds its vertices to a vertex tree", t => {
   const fig = new figures.Figure({
     shape: ShapeMaker.make("square"),

@@ -49,6 +49,24 @@ class Composition {
     this._stopRecord();
   }
 
+  normalize() {
+    const options = {
+      debug: this.debug(),
+      bounds: this.bounds(),
+      doSnap: this.snap(),
+      snapTolerance: this.snapTolerance(),
+      processGaps: this.processGaps(),
+    };
+
+    return {
+      type: "composition",
+      data: {
+        options,
+        figures: this._normalizeFigures(),
+      },
+    };
+  }
+
   figures() {
     return this._figures;
   }
@@ -781,6 +799,16 @@ class Composition {
         return item.tags.length > 1;
       }
       return false;
+    });
+  }
+
+  _normalizeFigures() {
+    const figures = this.figures();
+    return Object.keys(figures).map(fid => {
+      return {
+        id: fid,
+        figure: figures[fid].normalize(),
+      };
     });
   }
 
