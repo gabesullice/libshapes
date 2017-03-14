@@ -61,7 +61,7 @@ class Composition {
     return {
       type: "composition",
       data: {
-        options,
+        options: options,
         figures: this._normalizeFigures(),
       },
     };
@@ -849,9 +849,9 @@ function denormalize(content) {
     throw Error('Unexpected type. Unable to denormalize.');
   }
   try {
-    const composition = new Composition(content.data.options);
-    const denormalized = content.data.figures.forEach(item => {
-      console.log(item);
+    const { data } = content;
+    const composition = new Composition(data.options);
+    const denormalized = data.figures.forEach(item => {
       composition._add(item.id, figures.denormalize(item.figure));
     });
     return composition;
@@ -896,7 +896,6 @@ function execute(action, composition) {
     }
     default: {}
   }
-  //if (action.method == "transform") console.log(...args);
   composition[action.method].call(composition, ...args);
 }
 

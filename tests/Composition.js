@@ -87,6 +87,7 @@ test("Can compare two compositions", t => {
 });
 
 test("Can normalize a composition", t => {
+  const figure = new figures.Figure({shape: ShapeMaker.make('square')});
   const cases = [
     {
       input: {
@@ -125,7 +126,7 @@ test("Can normalize a composition", t => {
           figures: [
             {
               id: "fig-0",
-              figure: new figures.Figure({shape: ShapeMaker.make('square')}).normalize(),
+              figure: figure.normalize(),
             },
           ],
         },
@@ -146,7 +147,8 @@ test("Can normalize a composition", t => {
   });
 });
 
-test.failing("Can denormalize a composition", t => {
+test("Can denormalize a composition", t => {
+  const figure = new figures.Figure({shape: ShapeMaker.make('square')});
   const cases = [
     {
       data: {
@@ -161,7 +163,7 @@ test.failing("Can denormalize a composition", t => {
           figures: [
             {
               id: "fig-0",
-              figure: new figures.Figure({shape: ShapeMaker.make('square')}).normalize(),
+              figure: figure.normalize(),
             },
           ],
         },
@@ -170,7 +172,12 @@ test.failing("Can denormalize a composition", t => {
   ];
 
   cases.forEach(item => {
-    const C = denormalizeComposition(item.data);
+    // We need to make an entirely new copy of the data to avoid denormalizing
+    // nested values before comparing them with t.deepEqual().
+    const data = JSON.parse(JSON.stringify(item.data));
+
+    const C = denormalizeComposition(data);
+
     t.deepEqual(C.normalize(), item.data);
   });
 });
