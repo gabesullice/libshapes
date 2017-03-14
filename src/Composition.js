@@ -812,6 +812,22 @@ class Composition {
 
 }
 
+function same(a, b) {
+  const as = Object.values(a.figures()), bs = Object.values(b.figures());
+
+  while (as.length > 0) {
+    const compare = as.pop();
+    const index = bs.findIndex(elem => figures.same(compare, elem));
+    if (index === -1) {
+      return false;
+    } else {
+      bs.splice(index, 1);
+    }
+  }
+
+  return bs.length == 0;
+}
+
 function fromHistory(history) {
   const composition = new Composition();
   replay(history, composition);
@@ -836,4 +852,4 @@ function execute(action, composition) {
 }
 
 export default Composition;
-export { Composition, fromHistory, replay };
+export { Composition, same, fromHistory, replay };

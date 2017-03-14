@@ -3,7 +3,7 @@ import {Edge} from "../src/Edge";
 import * as vertex from "../src/Vertex";
 import * as figures from "../src/Figure";
 import ShapeFactory from "shape-factory";
-import Composition from "../src/Composition";
+import { Composition, same as sameComposition } from "../src/Composition";
 
 const ShapeMaker = new ShapeFactory();
 
@@ -34,6 +34,55 @@ test("Can add multiple figures to a composition", t => {
   const c = new Composition({snap: false});
   cases.forEach(item => {
     t.is(c.add(item.input), item.expected);
+  });
+});
+
+test("Can compare two compositions", t => {
+  const cases = [
+    {
+      input: {a: [], b: []},
+      expect: true,
+    },
+    {
+      input: {a: [{shape: ShapeMaker.make('equilateral')}], b: []},
+      expect: false,
+    },
+    {
+      input: {
+        a: [{shape: ShapeMaker.make('equilateral')}],
+        b: [{shape: ShapeMaker.make('equilateral'), position: [1,0]}],
+      },
+      expect: false,
+    },
+    {
+      input: {
+        a: [{shape: ShapeMaker.make('square')}],
+        b: [{shape: ShapeMaker.make('square'), rotation: Math.PI/2}],
+      },
+      expect: true,
+    },
+    {
+      input: {
+        a: [],
+        b: [{shape: ShapeMaker.make('square')}],
+      },
+      expect: false,
+    },
+  ];
+
+  const addFigureTo = (composition) => {
+    return options => {
+      composition.add(new figures.Figure(options));
+    };
+  };
+
+  cases.forEach(item => {
+    const A = new Composition();
+    const B = new Composition();
+    item.input.a.forEach(addFigureTo(A));
+    item.input.b.forEach(addFigureTo(B));
+    const result = sameComposition(A, B);
+    t.is(result, item.expect);
   });
 });
 
