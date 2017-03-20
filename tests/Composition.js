@@ -1,5 +1,6 @@
 import test from "ava";
 import {Edge} from "../src/Edge";
+import * as edges from "../src/Edge";
 import * as vertex from "../src/Vertex";
 import * as figures from "../src/Figure";
 import ShapeFactory from "shape-factory";
@@ -502,8 +503,10 @@ test("Adding a figure to a composition inserts subsected edges in a vtree", t =>
   t.is(item.edges.length, 2, "Should have two edges eminating from the vertex.");
   const e0 = new Edge([[-1.5,-0.5], [-1.5, 0.5]]);
   const e1 = new Edge([[-1.5,0.5], [-1.5, 1.5]]);
-  t.deepEqual(item.edges[0], e0);
-  t.deepEqual(item.edges[1], e1);
+  const res0 = edges.same(item.edges[0], e0);
+  const res1 = edges.same(item.edges[1], e1);
+  t.true(res0);
+  t.true(res1);
 });
 
 test("Removing a figure from a composition removes subsected edges in a vtree", t => {
