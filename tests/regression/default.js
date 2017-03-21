@@ -24,12 +24,14 @@ histories.forEach((history, index) => {
 
   check(`Can validate a composition - Test #${index}`, t => {
     const C = composition.fromHistory(history.input.history);
-    //console.log(printComposition(C));
     const overlapping = C.overlapping().filter(pair => shouldKeep(pair.a, pair.b));
     const nonCoincident = C.nonCoincident().filter(id => shouldKeep(id));
-    //console.log(overlapping);
+    const nonIntegrated = C.nonIntegrated().filter(id => shouldKeep(id));
+    const floats = C.floats().filter(id => shouldKeep(id));
     t.is(overlapping.length, 0);
-    t.skip.is(nonCoincident.length, 0);
+    t.is(nonCoincident.length, 0);
+    t.is(nonIntegrated.length, 0);
+    t.is(floats.length, 0);
   });
 });
 
