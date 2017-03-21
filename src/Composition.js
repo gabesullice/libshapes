@@ -187,22 +187,47 @@ class Composition {
     return coincidentPairs;
   }
 
-  nonCoincident() {
-    return Object.keys(this._figures)
-      .map(key => { return {id: key, figure: this._figures[key]}; })
-      .map(item => { item.edges = item.figure.edges(); return item })
-      .filter(item => {
-        return item.edges.some(e0 => {
-          const areCoincident = e1 => edges.coincident(e0, e1);
-          const left = this._subsectTree.at(e0.left());
-          const right = this._subsectTree.at(e0.right());
+  nonCoincident(debug = false) {
+    const ids = Object.keys(this.figures());
+    const nonCoincident = new Set();
+    const allEdges = this.edges();
+
+    ids.forEach(id => {
+      const figure = this.get(id)
+      const coincident = figure.edges().every(edge => {
+        return allEdges.some(item => {
           return (
-            (left === undefined || !left.edges.some(areCoincident)) ||
-            (right === undefined || !right.edges.some(areCoincident))
-          );
+            id != item.id
+            && edges.coincident(edge, item.edge)
+          )
         });
+      });
+      if (!coincident) nonCoincident.add(id);
+    });
+
+    return [...nonCoincident];
+  }
+
+  edges() {
+    return Object.keys(this.figures())
+      // [{id, figure}]
+      .map(id => {
+        return {id: id, figure: this.get(id)};
       })
-      .map(item => item.id);
+      // [{id, figure}] -> [{id, [edge]}}
+      .map(item => {
+        return {id: item.id, edges: item.figure.edges()};
+      })
+      // [{id, [edge]}] -> [[{id, edge}]]
+      .map(item => {
+        return item.edges.map(edge => {
+          return {id: item.id, edge: edge};
+        })
+      })
+      // [[{id, edge}]] -> [{id, edge}]
+      .reduce((flat, edge) => {
+        return flat.concat(edge);
+      }, []);
   }
 
   add(figure, options) {

@@ -237,6 +237,17 @@ Getter/Setter for the `Composition`'s position. Bounds are used to determine the
 
 Returns an object containing all the `Figure`s within the composition. Each figure is assigned a unique key.
 
+###`Composition.edges()`
+
+Returns an array of objects where each object represents one edge of every figure in the composition. The object has the following structure:
+
+```javascript
+{
+  id: <id>, // the unique id of the figure to which the edge belongs.
+  edge: <edge> // an Edge object.
+}
+```
+
 ###`Composition.gaps()` **DEPRECATED**
 
 This method is deprecated, it cannot currently be relied upon to find all gaps in the composition.
