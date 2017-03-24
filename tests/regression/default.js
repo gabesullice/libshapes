@@ -17,17 +17,23 @@ const histories = fs.readdirSync(DATA_DIRECTORY)
 histories.forEach((history, index) => {
   const check = (history.failing) ? test.failing : test;
 
-  const ignore = new Set(history.input.ignore.concat(history.input.spaces));
-  const shouldKeep = function () {
-    return [...arguments].every(id => !ignore.has(id));
+  const tray = new Set(history.input.ignore);
+  const spaces = new Set(history.input.spaces);
+
+  const shouldKeep = (ignore) => {
+    return function () {
+      return [...arguments].every(id => !ignore.has(id));
+    }
   };
 
   check(`Can validate a composition - Test #${index}`, t => {
     const C = composition.fromHistory(history.input.history);
-    const overlapping = C.overlapping().filter(pair => shouldKeep(pair.a, pair.b));
-    const nonCoincident = C.nonCoincident().filter(id => shouldKeep(id));
-    const nonIntegrated = C.nonIntegrated().filter(id => shouldKeep(id));
-    const floats = C.floats().filter(id => shouldKeep(id));
+    const overlapping = C.overlapping(true)
+      .filter(pair => shouldKeep(tray)(pair.a, pair.b))
+      .filter(pair => shouldKeep(spaces)(pair.a, pair.b));
+    const nonCoincident = C.nonCoincident().filter(id => shouldKeep(tray)(id));
+    const nonIntegrated = C.nonIntegrated().filter(id => shouldKeep(tray)(id));
+    const floats = C.floats().filter(id => shouldKeep(tray)(id));
     t.is(overlapping.length, 0);
     t.is(nonCoincident.length, 0);
     t.is(nonIntegrated.length, 0);

@@ -102,6 +102,19 @@ export class Figure {
     return this;
   }
 
+  _innerVertices() {
+    const vAvg = this._vertexAverage();
+    return [vAvg].filter(v => vertexWithin(this, v));
+  }
+
+  _vertexAverage() {
+    const vs = this.vertices();
+    const vAvg = vs.reduce((vAvg, v) => {
+      return new vertex.Vertex(vAvg.x + v.x, vAvg.y + v.y);
+    }, new vertex.Vertex(0, 0));
+    return new vertex.Vertex(vAvg.x/vs.length, vAvg.y/vs.length);
+  }
+
   _compute(debug) {
     this._computed = this.shape().rotate(this._rotation);
 
@@ -181,6 +194,7 @@ export function overlap(f0, f1) {
   // figures do not overlap but are perfect complements.
   const f0vs = f0.vertices()
     .concat(f0.edges().map(e => e.midpoint()))
+    .concat(f0._innerVertices())
     .filter(v => edges.withinBounds(f1._bound, v))
     .filter(v => f1.edges().every(e => validPoint(e, v)));
 
@@ -189,6 +203,7 @@ export function overlap(f0, f1) {
 
   const f1vs = f1.vertices()
     .concat(f1.edges().map(e => e.midpoint()))
+    .concat(f1._innerVertices())
     .filter(v => edges.withinBounds(f0._bound, v))
     .filter(v => f0.edges().every(e => validPoint(e, v)));
 
