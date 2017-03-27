@@ -1,0 +1,3500 @@
+{
+  "failing": true,
+  "input": {
+    "spaces": [
+      "fig-0"
+    ],
+    "ignore": [
+      "fig-3",
+      "fig-7",
+      "fig-12",
+      "fig-15",
+      "fig-25",
+      "fig-27"
+    ],
+    "history": [
+      {
+        "method": "bounds",
+        "args": [
+          [
+            0,
+            0
+          ],
+          [
+            19,
+            12
+          ]
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snapTolerance",
+        "args": [
+          0.0125
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 8.91538414090221,
+                        "y": 5.267307929548894
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 9.41538414090221,
+                        "y": 4.401282525764455
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 9.41538414090221,
+                        "y": 5.401282525764454
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 10.41538414090221,
+                        "y": 7.133333333333331
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 9.41538414090221,
+                        "y": 7.133333333333332
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 8.549358737117773,
+                        "y": 7.633333333333332
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 7.683333333333334,
+                        "y": 7.133333333333333
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 7.183333333333334,
+                        "y": 7.999358737117771
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 6.183333333333334,
+                        "y": 7.999358737117771
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 5.683333333333334,
+                        "y": 7.133333333333333
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 4.817307929548895,
+                        "y": 7.633333333333332
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 3.9512825257644555,
+                        "y": 7.133333333333333
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 2.951282525764456,
+                        "y": 7.133333333333333
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 3.951282525764456,
+                        "y": 5.401282525764456
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 3.951282525764455,
+                        "y": 4.401282525764455
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 4.451282525764455,
+                        "y": 5.267307929548894
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 6.183333333333333,
+                        "y": 6.267307929548894
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 5.683333333333333,
+                        "y": 5.401282525764455
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 5.183333333333332,
+                        "y": 4.535257121980017
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 5.683333333333332,
+                        "y": 3.6692317181955785
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 6.183333333333332,
+                        "y": 4.535257121980017
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 7.183333333333332,
+                        "y": 4.535257121980016
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 7.683333333333332,
+                        "y": 3.6692317181955776
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 8.183333333333332,
+                        "y": 4.535257121980016
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 7.683333333333332,
+                        "y": 5.401282525764454
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 7.183333333333333,
+                        "y": 6.267307929548894
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 1,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5000000000000001,
+                        "y": 0.8660254037844386
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.4999999999999998,
+                        "y": 0.8660254037844387
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -1,
+                        "y": 1.2246467991473532e-16
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5000000000000004,
+                        "y": -0.8660254037844385
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.49999999999999933,
+                        "y": -0.866025403784439
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 15.1,
+                "y": 4
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": 0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": 0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.5
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 17.35,
+                "y": 4
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 1,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5000000000000001,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.4999999999999998,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -1,
+                        "y": -0.2886751345948126
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 15.1,
+                "y": 5.75
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.141592653589793,
+              "position": {
+                "x": 17.35,
+                "y": 6
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.8660254037844386
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": -0.8660254037844386
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 15.1,
+                "y": 8
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": 0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": 0.9330127018922186
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": -0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": -0.9330127018922186
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 17.35,
+                "y": 8
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-4",
+          {
+            "position": [
+              9.925,
+              6.816666666666666
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.141592653589793,
+              "position": {
+                "x": 17.35,
+                "y": 6
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.141592653589793,
+              "position": {
+                "x": 9.91538414090221,
+                "y": 6.844658198738518
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-8",
+          {
+            "position": [
+              8.908333333333333,
+              6.841666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-8",
+          {
+            "rotation": 3.665191429188092
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-8",
+          {
+            "position": [
+              9,
+              6.591666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-8",
+          {
+            "rotation": 4.1887902047863905
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-8",
+          {
+            "position": [
+              9.3,
+              6.458333333333333
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.141592653589793,
+              "position": {
+                "x": 9.91538414090221,
+                "y": 6.844658198738518
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-9",
+          {
+            "position": [
+              9.408333333333333,
+              5.966666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 4.1887902047863905,
+              "position": {
+                "x": 9.41538414090221,
+                "y": 6.555983064143705
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-10",
+          {
+            "position": [
+              8.433333333333334,
+              6.558333333333334
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-10",
+          {
+            "rotation": 3.665191429188092
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-10",
+          {
+            "rotation": 3.141592653589793
+          }
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-10",
+          {
+            "position": [
+              8.866666666666667,
+              6.825
+            ]
+          }
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-10",
+          {
+            "rotation": 2.6179938779914944
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-10",
+          {
+            "position": [
+              8.716666666666667,
+              7.15
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 4.1887902047863905,
+              "position": {
+                "x": 9.41538414090221,
+                "y": 6.555983064143705
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-11",
+          {
+            "rotation": 3.665191429188092
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-11",
+          {
+            "position": [
+              8.066666666666666,
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-6",
+          {
+            "position": [
+              7.758333333333333,
+              6.616666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": 0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": 0.9330127018922186
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": -0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": -0.9330127018922186
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 17.35,
+                "y": 8
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-6",
+          {
+            "rotation": -0.5235987755982988
+          }
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-6",
+          {
+            "rotation": -1.0471975511965976
+          }
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-6",
+          {
+            "rotation": -0.5235987755982988
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-6",
+          {
+            "position": [
+              8.608333333333334,
+              6.083333333333333
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-6",
+          {
+            "position": [
+              8.933333333333334,
+              6.35
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": 0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": 0.9330127018922186
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": -0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": -0.9330127018922186
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": -0.5235987755982988,
+              "position": {
+                "x": 8.732371439009992,
+                "y": 6.4503206314411115
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-13",
+          {
+            "rotation": 0
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-13",
+          {
+            "rotation": 0.5235987755982988
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-13",
+          {
+            "position": [
+              9.175,
+              5.058333333333334
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.6651914291880923,
+              "position": {
+                "x": 8.260683602522958,
+                "y": 7.133333333333332
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-14",
+          {
+            "position": [
+              8.583333333333334,
+              5.741666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-2",
+          {
+            "position": [
+              6.933333333333334,
+              6.541666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": 0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": 0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.5
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 17.35,
+                "y": 4
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-2",
+          {
+            "rotation": -0.5235987755982988
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-2",
+          {
+            "position": [
+              7.483333333333333,
+              6.466666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-2",
+          {
+            "position": [
+              7.658333333333333,
+              6.466666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": 0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": 0.5
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.5
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": -0.5235987755982988,
+              "position": {
+                "x": 7.866346035225552,
+                "y": 6.450320631441113
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-16",
+          {
+            "rotation": 0
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-16",
+          {
+            "rotation": 0.5235987755982988
+          }
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-16",
+          {
+            "position": [
+              5.758333333333333,
+              6.45
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": 0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": 0.9330127018922186
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": -0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": -0.9330127018922186
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0.5235987755982988,
+              "position": {
+                "x": 9.16538414090221,
+                "y": 5.334295227656673
+              },
+              "reflection": {
+                "x": false,
+                "y": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-17",
+          {
+            "reflection": {
+              "y": true
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-17",
+          {
+            "position": [
+              4.208333333333333,
+              5.425
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.6651914291880923,
+              "position": {
+                "x": 8.626709006307397,
+                "y": 5.767307929548892
+              },
+              "reflection": {
+                "x": false,
+                "y": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-18",
+          {
+            "reflection": {
+              "y": true
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-18",
+          {
+            "position": [
+              4.916666666666667,
+              5.825
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": 0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": 0.9330127018922186
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.25,
+                        "y": -0.06698729810778073
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.25,
+                        "y": -0.9330127018922186
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": -0.5235987755982988,
+              "position": {
+                "x": 8.732371439009992,
+                "y": 6.4503206314411115
+              },
+              "reflection": {
+                "x": false,
+                "y": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-19",
+          {
+            "reflection": {
+              "y": true
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-19",
+          {
+            "position": [
+              4.441666666666666,
+              6.45
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.6651914291880923,
+              "position": {
+                "x": 8.260683602522958,
+                "y": 7.133333333333332
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-20",
+          {
+            "position": [
+              4.591666666666667,
+              7.191666666666666
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 2.6179938779914944,
+              "position": {
+                "x": 8.838033871712584,
+                "y": 7.133333333333332
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-21",
+          {
+            "position": [
+              5.141666666666667,
+              7.166666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 4.1887902047863905,
+              "position": {
+                "x": 9.41538414090221,
+                "y": 6.555983064143705
+              },
+              "reflection": {
+                "x": false,
+                "y": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-22",
+          {
+            "reflection": {
+              "y": true
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-22",
+          {
+            "position": [
+              4,
+              6.391666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.141592653589793,
+              "position": {
+                "x": 9.41538414090221,
+                "y": 5.978632794954079
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-23",
+          {
+            "position": [
+              3.95,
+              5.975
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": -0.2886751345948127
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.577350269189626
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": -0.2886751345948127
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 3.141592653589793,
+              "position": {
+                "x": 9.91538414090221,
+                "y": 6.844658198738518
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-24",
+          {
+            "position": [
+              3.3083333333333336,
+              6.783333333333333
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-5",
+          {
+            "position": [
+              7.666666666666667,
+              4.483333333333333
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.8660254037844386
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": -0.8660254037844386
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 15.1,
+                "y": 8
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": 0.8660254037844386
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0,
+                        "y": -0.8660254037844386
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 7.683333333333331,
+                "y": 4.535257121980016
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-26",
+          {
+            "position": [
+              5.725,
+              4.533333333333333
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-1",
+          {
+            "position": [
+              6.7,
+              5.466666666666667
+            ]
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 1,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5000000000000001,
+                        "y": 0.8660254037844386
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.4999999999999998,
+                        "y": 0.8660254037844387
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -1,
+                        "y": 1.2246467991473532e-16
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5000000000000004,
+                        "y": -0.8660254037844385
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.49999999999999933,
+                        "y": -0.866025403784439
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 15.1,
+                "y": 4
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "snap",
+        "args": [
+          false
+        ]
+      },
+      {
+        "method": "add",
+        "args": [
+          {
+            "type": "figure",
+            "data": {
+              "shape": {
+                "type": "shape",
+                "data": {
+                  "vertices": [
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 1,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.5000000000000001,
+                        "y": 0.8660254037844386
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.4999999999999998,
+                        "y": 0.8660254037844387
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -1,
+                        "y": 1.2246467991473532e-16
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": -0.5000000000000004,
+                        "y": -0.8660254037844385
+                      }
+                    },
+                    {
+                      "type": "vertex",
+                      "data": {
+                        "x": 0.49999999999999933,
+                        "y": -0.866025403784439
+                      }
+                    }
+                  ]
+                }
+              },
+              "rotation": 0,
+              "position": {
+                "x": 6.683333333333333,
+                "y": 5.401282525764455
+              },
+              "reflection": {
+                "x": false,
+                "y": false
+              }
+            }
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "snap",
+        "args": [
+          true
+        ]
+      },
+      {
+        "method": "transform",
+        "args": [
+          "fig-28",
+          {
+            "position": [
+              6.683333333333334,
+              7.125
+            ]
+          }
+        ]
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      },
+      {
+        "method": "processGaps",
+        "args": []
+      }
+    ]
+  }
+}

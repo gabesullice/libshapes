@@ -287,8 +287,8 @@ function boundsCheck(boundA, boundB) {
 // An odd number of intersections means that a vertex is within a figure.
 function vertexWithin(figure, v) {
   const bndLn = figure._bound.length() * 1000;
-  const ray0 = new edges.Edge([[v.x, v.y], [v.x + bndLn, v.y]]);
-  const ray1 = new edges.Edge([[v.x - bndLn, v.y + bndLn/79], [v.x, v.y]]);
+  const ray0 = new edges.Edge([[v.x - bndLn, v.y + bndLn/79], [v.x, v.y]]);
+  const ray1 = new edges.Edge([[v.x - bndLn, v.y - bndLn/79], [v.x, v.y]]);
   const fEdges = figure.edges();
 
   // Count the number of intersections for both rays.
