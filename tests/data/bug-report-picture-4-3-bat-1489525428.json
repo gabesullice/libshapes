@@ -1,5 +1,5 @@
 {
-  "failing": true,
+  "failing": false,
   "input": {
     "spaces": [
       "fig-0"
