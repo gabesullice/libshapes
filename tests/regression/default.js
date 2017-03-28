@@ -34,6 +34,14 @@ histories.forEach((history, index) => {
     const nonCoincident = C.nonCoincident().filter(id => shouldKeep(tray)(id));
     const nonIntegrated = C.nonIntegrated().filter(id => shouldKeep(tray)(id));
     const floats = C.floats().filter(id => shouldKeep(tray)(id));
+    if (index == 1) {
+      //console.log(printComposition(C));
+      //console.log(printFigure(C.get('fig-2')));
+      //console.log('---');
+      //console.log(printFigure(C.get('fig-8')));
+      //console.log('---');
+      //console.log(printFigure(C.get('fig-9')));
+    }
     t.is(overlapping.length, 0);
     t.is(nonCoincident.length, 0);
     t.is(nonIntegrated.length, 0);
